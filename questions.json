@@ -1,1 +1,23 @@
+[
+  {
+    "question":"भारत की राजधानी क्या है? / What is the capital of India?",
+    "options":[
+      "Delhi",
+      "Mumbai",
+      "Patna",
+      "Kolkata"
+    ],
+    "answer":"Delhi"
+  },
 
+  {
+    "question":"RBI का मुख्यालय कहाँ है? / Where is RBI headquarters?",
+    "options":[
+      "Delhi",
+      "Patna",
+      "Mumbai",
+      "Kolkata"
+    ],
+    "answer":"Mumbai"
+  }
+]
