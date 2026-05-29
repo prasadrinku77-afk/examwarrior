@@ -1,254 +1,424 @@
-﻿<!DOCTYPE html>
-
+```html
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ExamWarrior</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins', sans-serif;
     }
 
-    body {
-      background: linear-gradient(135deg, #0f172a, #111827);
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
+    body{
+      background:#0f172a;
+      color:white;
+      min-height:100vh;
     }
 
-    .app {
-      width: 100%;
-      max-width: 450px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      border-radius: 25px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    .container{
+      max-width:500px;
+      margin:auto;
+      min-height:100vh;
+      background:#111827;
+      position:relative;
+      overflow:hidden;
     }
 
-    .logo {
-      text-align: center;
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 10px;
+    .top-section{
+      background:linear-gradient(135deg,#2563eb,#3b82f6);
+      padding:30px 25px 80px;
+      border-bottom-left-radius:35px;
+      border-bottom-right-radius:35px;
+      position:relative;
     }
 
-    .subtitle {
-      text-align: center;
-      color: #cbd5e1;
-      margin-bottom: 25px;
+    .logo{
+      font-size:32px;
+      font-weight:700;
     }
 
-    .screen {
-      display: none;
+    .subtitle{
+      margin-top:8px;
+      color:#dbeafe;
+      font-size:15px;
     }
 
-    .active {
-      display: block;
+    .profile{
+      position:absolute;
+      right:25px;
+      top:30px;
+      width:55px;
+      height:55px;
+      border-radius:50%;
+      background:white;
+      color:#2563eb;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:22px;
+      font-weight:bold;
     }
 
-    input {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 15px;
-      border: none;
-      border-radius: 12px;
-      background: #1e293b;
-      color: white;
-      font-size: 16px;
+    .stats-card{
+      width:90%;
+      margin:auto;
+      margin-top:-45px;
+      background:#1e293b;
+      border-radius:25px;
+      padding:20px;
+      display:flex;
+      justify-content:space-between;
+      box-shadow:0 10px 25px rgba(0,0,0,0.3);
     }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-top: 10px;
+    .stat{
+      text-align:center;
     }
 
-    button:hover {
-      background: #1d4ed8;
+    .stat h2{
+      color:#3b82f6;
+      font-size:24px;
     }
 
-    .question {
-      font-size: 22px;
-      margin-bottom: 20px;
-      line-height: 1.5;
+    .stat p{
+      color:#cbd5e1;
+      font-size:14px;
+      margin-top:5px;
     }
 
-    .option {
-      background: #1e293b;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: 0.3s;
-      border: 2px solid transparent;
+    .section{
+      padding:25px;
     }
 
-    .option:hover {
-      background: #334155;
+    .section-title{
+      font-size:22px;
+      margin-bottom:20px;
+      font-weight:600;
     }
 
-    .selected {
-      border-color: #3b82f6;
-      background: #1d4ed8;
+    .quiz-card{
+      background:#1e293b;
+      border-radius:22px;
+      padding:20px;
+      margin-bottom:18px;
+      transition:0.3s;
+      border:1px solid rgba(255,255,255,0.05);
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      font-size: 18px;
-      color: #facc15;
+    .quiz-card:hover{
+      transform:translateY(-4px);
     }
 
-    .result {
-      text-align: center;
+    .quiz-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
     }
 
-    .score {
-      font-size: 50px;
-      margin: 20px 0;
-      color: #22c55e;
+    .badge{
+      background:#2563eb;
+      padding:5px 12px;
+      border-radius:30px;
+      font-size:12px;
     }
 
-    .leaderboard-item {
-      background: #1e293b;
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
+    .time{
+      color:#facc15;
+      font-size:14px;
     }
 
-    .admin-box {
-      margin-top: 20px;
-      background: #1e293b;
-      padding: 15px;
-      border-radius: 15px;
+    .quiz-title{
+      font-size:20px;
+      font-weight:600;
+      margin-bottom:8px;
     }
 
-    .small {
-      font-size: 14px;
-      color: #cbd5e1;
-      margin-top: 10px;
-      text-align: center;
+    .quiz-desc{
+      color:#94a3b8;
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .start-btn{
+      width:100%;
+      margin-top:18px;
+      border:none;
+      background:#2563eb;
+      color:white;
+      padding:14px;
+      border-radius:15px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .start-btn:hover{
+      background:#1d4ed8;
+    }
+
+    .bottom-nav{
+      position:fixed;
+      bottom:0;
+      width:100%;
+      max-width:500px;
+      background:#111827;
+      display:flex;
+      justify-content:space-around;
+      padding:18px 0;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav-item{
+      text-align:center;
+      color:#94a3b8;
+      font-size:14px;
+    }
+
+    .active{
+      color:#3b82f6;
+    }
+
+    .question-screen{
+      display:none;
+      padding:25px;
+    }
+
+    .timer{
+      text-align:right;
+      color:#facc15;
+      margin-bottom:20px;
+      font-size:18px;
+      font-weight:600;
+    }
+
+    .question{
+      font-size:24px;
+      margin-bottom:25px;
+      line-height:1.5;
+    }
+
+    .option{
+      background:#1e293b;
+      padding:16px;
+      border-radius:16px;
+      margin-bottom:15px;
+      cursor:pointer;
+      transition:0.3s;
+      border:2px solid transparent;
+    }
+
+    .option:hover{
+      border-color:#2563eb;
+    }
+
+    .selected{
+      background:#2563eb;
+    }
+
+    .next-btn{
+      width:100%;
+      margin-top:20px;
+      background:#2563eb;
+      border:none;
+      padding:15px;
+      border-radius:16px;
+      color:white;
+      font-size:17px;
+      cursor:pointer;
+    }
+
+    .result-screen{
+      display:none;
+      text-align:center;
+      padding:40px 25px;
+    }
+
+    .result-screen h1{
+      font-size:38px;
+      margin-bottom:20px;
+    }
+
+    .score{
+      font-size:65px;
+      color:#3b82f6;
+      font-weight:700;
+      margin-bottom:20px;
+    }
+
+    .leaderboard{
+      margin-top:30px;
+      text-align:left;
+    }
+
+    .leader-item{
+      background:#1e293b;
+      padding:15px;
+      border-radius:15px;
+      margin-bottom:12px;
+      display:flex;
+      justify-content:space-between;
     }
 
   </style>
-
 </head>
 <body>
 
-<div class="app">
+<div class="container">
 
-  <div class="logo">ExamWarrior</div>
-  <div class="subtitle">SBI • BPSC • UPSC Quiz Platform</div>
+  <div id="homeScreen">
 
-  <!-- LOGIN SCREEN -->
+    <div class="top-section">
 
-  <div id="loginScreen" class="screen active">
+      <div class="logo">⚔️ ExamWarrior</div>
 
-```
-<input type="text" id="username" placeholder="Enter Your Name" />
+      <div class="subtitle">
+        SBI • BPSC • UPSC Preparation
+      </div>
 
-<button onclick="startQuiz()">Start Quiz</button>
+      <div class="profile">M</div>
 
-<div class="small">
-  Hindi + English Mock Test Platform
-</div>
-```
+    </div>
+
+    <div class="stats-card">
+
+      <div class="stat">
+        <h2>150+</h2>
+        <p>Mock Tests</p>
+      </div>
+
+      <div class="stat">
+        <h2>5K+</h2>
+        <p>Questions</p>
+      </div>
+
+      <div class="stat">
+        <h2>10K+</h2>
+        <p>Students</p>
+      </div>
+
+    </div>
+
+    <div class="section">
+
+      <div class="section-title">
+        Popular Quizzes
+      </div>
+
+      <div class="quiz-card">
+
+        <div class="quiz-top">
+          <div class="badge">BPSC</div>
+          <div class="time">⏳ 30 mins</div>
+        </div>
+
+        <div class="quiz-title">
+          Bihar GK Mega Test
+        </div>
+
+        <div class="quiz-desc">
+          Practice Bihar General Knowledge with timer-based MCQs.
+        </div>
+
+        <button class="start-btn" onclick="startQuiz()">
+          Start Quiz
+        </button>
+
+      </div>
+
+      <div class="quiz-card">
+
+        <div class="quiz-top">
+          <div class="badge">SBI PO</div>
+          <div class="time">⏳ 20 mins</div>
+        </div>
+
+        <div class="quiz-title">
+          Banking Awareness Quiz
+        </div>
+
+        <div class="quiz-desc">
+          Improve banking awareness for SBI and IBPS exams.
+        </div>
+
+        <button class="start-btn" onclick="startQuiz()">
+          Start Quiz
+        </button>
+
+      </div>
+
+    </div>
 
   </div>
 
-  <!-- QUIZ SCREEN -->
+  <div id="questionScreen" class="question-screen">
 
-  <div id="quizScreen" class="screen">
+    <div class="timer">
+      ⏳ <span id="timer">30</span>s
+    </div>
 
-```
-<div class="topbar">
-  <div>⏳ <span id="timer">30</span>s</div>
-  <div>🏆 <span id="score">0</span></div>
-</div>
+    <div class="question" id="question">
+      Question Here
+    </div>
 
-<div class="question" id="question"></div>
+    <div id="options"></div>
 
-<div id="options"></div>
-
-<button onclick="nextQuestion()">Next Question</button>
-```
-
-  </div>
-
-  <!-- RESULT SCREEN -->
-
-  <div id="resultScreen" class="screen">
-
-```
-<div class="result">
-
-  <h2>Quiz Completed 🎉</h2>
-
-  <div class="score" id="finalScore"></div>
-
-  <button onclick="showLeaderboard()">
-    View Leaderboard
-  </button>
-
-  <button onclick="restartQuiz()">
-    Restart Quiz
-  </button>
-
-</div>
-```
+    <button class="next-btn" onclick="nextQuestion()">
+      Next Question
+    </button>
 
   </div>
 
-  <!-- LEADERBOARD -->
+  <div id="resultScreen" class="result-screen">
 
-  <div id="leaderboardScreen" class="screen">
+    <h1>Quiz Completed 🎉</h1>
 
-```
-<h2 style="margin-bottom:20px; text-align:center;">
-  🏆 Leaderboard
-</h2>
+    <div class="score" id="score">
+      0/0
+    </div>
 
-<div id="leaderboard"></div>
+    <button class="start-btn" onclick="location.reload()">
+      Play Again
+    </button>
 
-<button onclick="restartQuiz()">
-  Play Again
-</button>
-```
+    <div class="leaderboard">
+
+      <h2 style="margin-bottom:15px;">
+        🏆 Leaderboard
+      </h2>
+
+      <div id="leaderboardList"></div>
+
+    </div>
 
   </div>
 
-  <!-- ADMIN PANEL -->
+  <div class="bottom-nav">
 
-  <div class="admin-box">
+    <div class="nav-item active">
+      🏠<br>Home
+    </div>
 
-```
-<h3 style="margin-bottom:10px;">
-  Admin Panel Demo
-</h3>
+    <div class="nav-item">
+      📚<br>Courses
+    </div>
 
-<button onclick="addQuestion()">
-  Add Demo Question
-</button>
-```
+    <div class="nav-item">
+      🧠<br>Quiz
+    </div>
+
+    <div class="nav-item">
+      👤<br>Profile
+    </div>
 
   </div>
 
@@ -256,55 +426,46 @@
 
 <script>
 
-const quizData = [
-
- let quizData = [];
+let quizData = [];
 
 fetch('questions.json')
 .then(response => response.json())
 .then(data => {
 
-   quizData = data;
-
-   loadQuestion();
+  quizData = data;
 
 });
-  
-];
 
 let currentQuestion = 0;
 let score = 0;
 let selectedOption = '';
 let timer = 30;
 let interval;
-let playerName = '';
 
-function startQuiz() {
+function startQuiz(){
 
-  playerName = document.getElementById('username').value;
+  document.getElementById('homeScreen').style.display = 'none';
 
-  if(playerName === '') {
-    alert('Please enter your name');
-    return;
-  }
+  document.getElementById('questionScreen').style.display = 'block';
 
-  document.getElementById('loginScreen').classList.remove('active');
-  document.getElementById('quizScreen').classList.add('active');
+  loadQuestion();
 
   startTimer();
 }
 
-function loadQuestion() {
+function loadQuestion(){
 
-  const q = quizData[currentQuestion];
+  const currentQuiz = quizData[currentQuestion];
 
-  document.getElementById('question').innerText = q.question;
+  document.getElementById('question').innerText =
+  currentQuiz.question;
 
-  const optionsContainer = document.getElementById('options');
+  const optionsContainer =
+  document.getElementById('options');
 
   optionsContainer.innerHTML = '';
 
-  q.options.forEach(option => {
+  currentQuiz.options.forEach(option => {
 
     const div = document.createElement('div');
 
@@ -317,9 +478,10 @@ function loadQuestion() {
     optionsContainer.appendChild(div);
 
   });
+
 }
 
-function selectOption(element, option) {
+function selectOption(element, option){
 
   selectedOption = option;
 
@@ -330,26 +492,25 @@ function selectOption(element, option) {
   element.classList.add('selected');
 }
 
-function nextQuestion() {
+function nextQuestion(){
 
-  if(selectedOption === '') {
-    alert('Select an option');
+  if(selectedOption === ''){
+    alert('Please select an option');
     return;
   }
 
-  if(selectedOption === quizData[currentQuestion].answer) {
+  if(selectedOption === quizData[currentQuestion].answer){
     score++;
   }
 
-  document.getElementById('score').innerText = score;
+  currentQuestion++;
 
   selectedOption = '';
 
-  currentQuestion++;
+  timer = 30;
 
-  if(currentQuestion < quizData.length) {
+  if(currentQuestion < quizData.length){
 
-    timer = 30;
     loadQuestion();
 
   } else {
@@ -358,7 +519,7 @@ function nextQuestion() {
   }
 }
 
-function startTimer() {
+function startTimer(){
 
   interval = setInterval(() => {
 
@@ -366,111 +527,78 @@ function startTimer() {
 
     document.getElementById('timer').innerText = timer;
 
-    if(timer <= 0) {
-      nextQuestionAuto();
+    if(timer <= 0){
+
+      nextQuestion();
+
     }
 
   },1000);
 }
 
-function nextQuestionAuto() {
-
-  selectedOption = '';
-
-  currentQuestion++;
-
-  if(currentQuestion < quizData.length) {
-
-    timer = 30;
-
-    loadQuestion();
-
-  } else {
-
-    finishQuiz();
-  }
-}
-
-function finishQuiz() {
+function finishQuiz(){
 
   clearInterval(interval);
 
-  document.getElementById('quizScreen').classList.remove('active');
+  document.getElementById('questionScreen').style.display = 'none';
 
-  document.getElementById('resultScreen').classList.add('active');
+  document.getElementById('resultScreen').style.display = 'block';
 
-  document.getElementById('finalScore').innerText = `${score}/${quizData.length}`;
+  document.getElementById('score').innerText =
+  `${score}/${quizData.length}`;
 
   saveLeaderboard();
+
+  showLeaderboard();
 }
 
-function saveLeaderboard() {
+function saveLeaderboard(){
 
-  let board = JSON.parse(localStorage.getItem('leaderboard')) || [];
+  let board =
+  JSON.parse(localStorage.getItem('leaderboard')) || [];
 
   board.push({
-    name: playerName,
-    score: score
+    name:'Player',
+    score:score
   });
 
-  board.sort((a,b) => b.score - a.score);
+  board.sort((a,b)=> b.score - a.score);
 
-  localStorage.setItem('leaderboard', JSON.stringify(board));
+  localStorage.setItem(
+    'leaderboard',
+    JSON.stringify(board)
+  );
 }
 
-function showLeaderboard() {
+function showLeaderboard(){
 
-  document.getElementById('resultScreen').classList.remove('active');
+  let board =
+  JSON.parse(localStorage.getItem('leaderboard')) || [];
 
-  document.getElementById('leaderboardScreen').classList.add('active');
+  const list =
+  document.getElementById('leaderboardList');
 
-  let board = JSON.parse(localStorage.getItem('leaderboard')) || [];
+  list.innerHTML = '';
 
-  const leaderboard = document.getElementById('leaderboard');
-
-  leaderboard.innerHTML = '';
-
-  board.slice(0,10).forEach((user,index) => {
+  board.slice(0,5).forEach((user,index)=>{
 
     const div = document.createElement('div');
 
-    div.classList.add('leaderboard-item');
+    div.classList.add('leader-item');
 
     div.innerHTML = `
       <span>#${index+1} ${user.name}</span>
       <span>${user.score}</span>
     `;
 
-    leaderboard.appendChild(div);
-  });
-}
-
-function restartQuiz() {
-
-  location.reload();
-}
-
-function addQuestion() {
-
-  quizData.push({
-
-    question: 'भारत का राष्ट्रीय पशु कौन है? / What is the national animal of India?',
-
-    options: [
-      'Lion',
-      'Tiger',
-      'Elephant',
-      'Leopard'
-    ],
-
-    answer: 'Tiger'
+    list.appendChild(div);
 
   });
 
-  alert('Demo question added successfully');
 }
 
 </script>
 
 </body>
 </html>
+```
