@@ -21,3 +21,15 @@
     "answer":"Mumbai"
   }
 ]
+[
+  {
+    "question": "Capital of Bihar?",
+    "options": ["Patna", "Delhi", "Ranchi", "Lucknow"],
+    "answer": "Patna"
+  },
+  {
+    "question": "Who is PM of India?",
+    "options": ["Modi", "Rahul", "Nitish", "Kejriwal"],
+    "answer": "Modi"
+  }
+]
