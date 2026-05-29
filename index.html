@@ -1,604 +1,273 @@
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ExamWarrior</title>
+export default function ExamWarrior() {
+  const courses = [
+    {
+      title: "UPSC GS Foundation",
+      desc: "Comprehensive preparation for UPSC Civil Services Examination.",
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      title: "BPSC Prelims Course",
+      desc: "Complete Bihar Public Service Commission preparation module.",
+      image:
+        "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      title: "Banking & SSC",
+      desc: "Quantitative aptitude, reasoning and English practice.",
+      image:
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+    },
+  ];
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  const toppers = [
+    "AIR 12 - Aman Kumar",
+    "AIR 24 - Priya Singh",
+    "BPSC Rank 8 - Rohan Raj",
+  ];
 
-  <style>
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+      {/* Navbar */}
+      <nav className="bg-white shadow-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-blue-700">ExamWarrior</h1>
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins', sans-serif;
-    }
+          <div className="hidden md:flex gap-8 font-medium">
+            <a href="#courses" className="hover:text-blue-600">Courses</a>
+            <a href="#notes" className="hover:text-blue-600">Notes</a>
+            <a href="#videos" className="hover:text-blue-600">Videos</a>
+            <a href="#test" className="hover:text-blue-600">Mock Tests</a>
+            <a href="#contact" className="hover:text-blue-600">Contact</a>
+          </div>
 
-    body{
-      background:#0f172a;
-      color:white;
-      min-height:100vh;
-    }
+          <button className="bg-blue-700 text-white px-5 py-2 rounded-xl hover:bg-blue-800 transition">
+            Login
+          </button>
+        </div>
+      </nav>
 
-    .container{
-      max-width:500px;
-      margin:auto;
-      min-height:100vh;
-      background:#111827;
-      position:relative;
-      overflow:hidden;
-    }
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-blue-900 to-blue-600 text-white py-24 px-6">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
+              India’s Premier Learning Platform for Competitive Exams
+            </h1>
 
-    .top-section{
-      background:linear-gradient(135deg,#2563eb,#3b82f6);
-      padding:30px 25px 80px;
-      border-bottom-left-radius:35px;
-      border-bottom-right-radius:35px;
-      position:relative;
-    }
+            <p className="text-lg text-blue-100 mb-8">
+              UPSC, BPSC, Banking, SSC & State PCS preparation with live classes,
+              notes, PDFs, current affairs and test series.
+            </p>
 
-    .logo{
-      font-size:32px;
-      font-weight:700;
-    }
+            <div className="flex gap-4">
+              <button className="bg-white text-blue-700 px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition">
+                Explore Courses
+              </button>
 
-    .subtitle{
-      margin-top:8px;
-      color:#dbeafe;
-      font-size:15px;
-    }
+              <button className="border border-white px-6 py-3 rounded-2xl hover:bg-white hover:text-blue-700 transition">
+                Watch Demo
+              </button>
+            </div>
+          </div>
 
-    .profile{
-      position:absolute;
-      right:25px;
-      top:30px;
-      width:55px;
-      height:55px;
-      border-radius:50%;
-      background:white;
-      color:#2563eb;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-size:22px;
-      font-weight:bold;
-    }
+          <div>
+            <img
+              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop"
+              alt="students"
+              className="rounded-3xl shadow-2xl"
+            />
+          </div>
+        </div>
+      </section>
 
-    .stats-card{
-      width:90%;
-      margin:auto;
-      margin-top:-45px;
-      background:#1e293b;
-      border-radius:25px;
-      padding:20px;
-      display:flex;
-      justify-content:space-between;
-      box-shadow:0 10px 25px rgba(0,0,0,0.3);
-    }
+      {/* Stats */}
+      <section className="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-6">
+        {[
+          ["50K+", "Students"],
+          ["200+", "Courses"],
+          ["500+", "PDF Notes"],
+          ["98%", "Success Rate"],
+        ].map((item, idx) => (
+          <div
+            key={idx}
+            className="bg-white p-8 rounded-3xl shadow-lg text-center"
+          >
+            <h2 className="text-4xl font-bold text-blue-700">{item[0]}</h2>
+            <p className="mt-2 text-gray-600">{item[1]}</p>
+          </div>
+        ))}
+      </section>
 
-    .stat{
-      text-align:center;
-    }
-
-    .stat h2{
-      color:#3b82f6;
-      font-size:24px;
-    }
-
-    .stat p{
-      color:#cbd5e1;
-      font-size:14px;
-      margin-top:5px;
-    }
-
-    .section{
-      padding:25px;
-    }
-
-    .section-title{
-      font-size:22px;
-      margin-bottom:20px;
-      font-weight:600;
-    }
-
-    .quiz-card{
-      background:#1e293b;
-      border-radius:22px;
-      padding:20px;
-      margin-bottom:18px;
-      transition:0.3s;
-      border:1px solid rgba(255,255,255,0.05);
-    }
-
-    .quiz-card:hover{
-      transform:translateY(-4px);
-    }
-
-    .quiz-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:15px;
-    }
-
-    .badge{
-      background:#2563eb;
-      padding:5px 12px;
-      border-radius:30px;
-      font-size:12px;
-    }
-
-    .time{
-      color:#facc15;
-      font-size:14px;
-    }
-
-    .quiz-title{
-      font-size:20px;
-      font-weight:600;
-      margin-bottom:8px;
-    }
-
-    .quiz-desc{
-      color:#94a3b8;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .start-btn{
-      width:100%;
-      margin-top:18px;
-      border:none;
-      background:#2563eb;
-      color:white;
-      padding:14px;
-      border-radius:15px;
-      font-size:16px;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.3s;
-    }
-
-    .start-btn:hover{
-      background:#1d4ed8;
-    }
-
-    .bottom-nav{
-      position:fixed;
-      bottom:0;
-      width:100%;
-      max-width:500px;
-      background:#111827;
-      display:flex;
-      justify-content:space-around;
-      padding:18px 0;
-      border-top:1px solid rgba(255,255,255,0.08);
-    }
-
-    .nav-item{
-      text-align:center;
-      color:#94a3b8;
-      font-size:14px;
-    }
-
-    .active{
-      color:#3b82f6;
-    }
-
-    .question-screen{
-      display:none;
-      padding:25px;
-    }
-
-    .timer{
-      text-align:right;
-      color:#facc15;
-      margin-bottom:20px;
-      font-size:18px;
-      font-weight:600;
-    }
-
-    .question{
-      font-size:24px;
-      margin-bottom:25px;
-      line-height:1.5;
-    }
-
-    .option{
-      background:#1e293b;
-      padding:16px;
-      border-radius:16px;
-      margin-bottom:15px;
-      cursor:pointer;
-      transition:0.3s;
-      border:2px solid transparent;
-    }
-
-    .option:hover{
-      border-color:#2563eb;
-    }
-
-    .selected{
-      background:#2563eb;
-    }
-
-    .next-btn{
-      width:100%;
-      margin-top:20px;
-      background:#2563eb;
-      border:none;
-      padding:15px;
-      border-radius:16px;
-      color:white;
-      font-size:17px;
-      cursor:pointer;
-    }
-
-    .result-screen{
-      display:none;
-      text-align:center;
-      padding:40px 25px;
-    }
-
-    .result-screen h1{
-      font-size:38px;
-      margin-bottom:20px;
-    }
-
-    .score{
-      font-size:65px;
-      color:#3b82f6;
-      font-weight:700;
-      margin-bottom:20px;
-    }
-
-    .leaderboard{
-      margin-top:30px;
-      text-align:left;
-    }
-
-    .leader-item{
-      background:#1e293b;
-      padding:15px;
-      border-radius:15px;
-      margin-bottom:12px;
-      display:flex;
-      justify-content:space-between;
-    }
-
-  </style>
-</head>
-<body>
-
-<div class="container">
-
-  <div id="homeScreen">
-
-    <div class="top-section">
-
-      <div class="logo">⚔️ ExamWarrior</div>
-
-      <div class="subtitle">
-        SBI • BPSC • UPSC Preparation
-      </div>
-
-      <div class="profile">M</div>
-
-    </div>
-
-    <div class="stats-card">
-
-      <div class="stat">
-        <h2>150+</h2>
-        <p>Mock Tests</p>
-      </div>
-
-      <div class="stat">
-        <h2>5K+</h2>
-        <p>Questions</p>
-      </div>
-
-      <div class="stat">
-        <h2>10K+</h2>
-        <p>Students</p>
-      </div>
-
-    </div>
-
-    <div class="section">
-
-      <div class="section-title">
-        Popular Quizzes
-      </div>
-
-      <div class="quiz-card">
-
-        <div class="quiz-top">
-          <div class="badge">BPSC</div>
-          <div class="time">⏳ 30 mins</div>
+      {/* Courses */}
+      <section id="courses" className="max-w-7xl mx-auto px-6 py-16">
+        <div className="flex justify-between items-center mb-10">
+          <h2 className="text-4xl font-bold">Popular Courses</h2>
+          <button className="text-blue-700 font-semibold">View All</button>
         </div>
 
-        <div class="quiz-title">
-          Bihar GK Mega Test
+        <div className="grid md:grid-cols-3 gap-8">
+          {courses.map((course, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 transition"
+            >
+              <img
+                src={course.image}
+                alt={course.title}
+                className="h-56 w-full object-cover"
+              />
+
+              <div className="p-6">
+                <h3 className="text-2xl font-bold mb-3">{course.title}</h3>
+                <p className="text-gray-600 mb-5">{course.desc}</p>
+
+                <button className="w-full bg-blue-700 text-white py-3 rounded-2xl hover:bg-blue-800 transition">
+                  Enroll Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Notes Section */}
+      <section id="notes" className="bg-blue-50 py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold mb-10 text-center">Study Materials & Notes</h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              "Modern History Notes",
+              "Indian Polity PDF",
+              "Current Affairs Magazine",
+              "Economics Handwritten Notes",
+              "BPSC Special Notes",
+              "Banking Awareness PDF",
+            ].map((note, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl p-6 shadow-lg flex justify-between items-center"
+              >
+                <div>
+                  <h3 className="font-bold text-lg">{note}</h3>
+                  <p className="text-gray-500 text-sm">PDF Material</p>
+                </div>
+
+                <button className="bg-blue-700 text-white px-4 py-2 rounded-xl">
+                  Download
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Videos */}
+      <section id="videos" className="max-w-7xl mx-auto px-6 py-16">
+        <h2 className="text-4xl font-bold mb-10 text-center">Latest Video Lectures</h2>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {[1, 2, 3].map((item) => (
+            <div key={item} className="bg-white rounded-3xl shadow-xl overflow-hidden">
+              <iframe
+                className="w-full h-56"
+                src="https://www.youtube.com/embed/ysz5S6PUM-U"
+                title="YouTube video"
+                allowFullScreen
+              ></iframe>
+
+              <div className="p-5">
+                <h3 className="text-xl font-bold">UPSC Strategy Lecture</h3>
+                <p className="text-gray-600 mt-2">
+                  Learn preparation strategy from expert faculty.
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Toppers */}
+      <section className="bg-gradient-to-r from-blue-700 to-indigo-700 text-white py-20 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-5xl font-bold mb-12">Our Toppers</h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {toppers.map((topper, idx) => (
+              <div key={idx} className="bg-white/10 backdrop-blur-lg p-10 rounded-3xl">
+                <div className="w-24 h-24 rounded-full bg-white mx-auto mb-5"></div>
+                <h3 className="text-2xl font-bold">{topper}</h3>
+                <p className="text-blue-100 mt-3">
+                  Success through dedication and expert mentorship.
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mock Tests */}
+      <section id="test" className="max-w-7xl mx-auto px-6 py-16">
+        <h2 className="text-4xl font-bold mb-10 text-center">Online Mock Test Series</h2>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {["UPSC Mock Test", "BPSC Mega Test"].map((test, idx) => (
+            <div key={idx} className="bg-white rounded-3xl p-8 shadow-xl">
+              <h3 className="text-3xl font-bold mb-4">{test}</h3>
+              <p className="text-gray-600 mb-6">
+                Practice real exam-level questions with timer and analytics.
+              </p>
+
+              <button className="bg-blue-700 text-white px-6 py-3 rounded-2xl">
+                Start Test
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer id="contact" className="bg-gray-900 text-white py-14 px-6 mt-12">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
+          <div>
+            <h2 className="text-3xl font-bold mb-4">ExamWarrior</h2>
+            <p className="text-gray-400">
+              India’s trusted online learning platform for UPSC, BPSC, Banking and SSC preparation.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+            <ul className="space-y-2 text-gray-400">
+              <li>Courses</li>
+              <li>Notes</li>
+              <li>Current Affairs</li>
+              <li>Mock Tests</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-4">Contact</h3>
+            <ul className="space-y-2 text-gray-400">
+              <li>Email: support@examwarrior.in</li>
+              <li>Phone: +91 9876543210</li>
+              <li>Patna | Delhi | Online</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-4">Download App</h3>
+            <button className="bg-blue-700 px-5 py-3 rounded-2xl">
+              Get Android App
+            </button>
+          </div>
         </div>
 
-        <div class="quiz-desc">
-          Practice Bihar General Knowledge with timer-based MCQs.
+        <div className="border-t border-gray-700 mt-12 pt-6 text-center text-gray-500">
+          © 2026 ExamWarrior. All rights reserved.
         </div>
-
-        <button class="start-btn" onclick="startQuiz()">
-          Start Quiz
-        </button>
-
-      </div>
-
-      <div class="quiz-card">
-
-        <div class="quiz-top">
-          <div class="badge">SBI PO</div>
-          <div class="time">⏳ 20 mins</div>
-        </div>
-
-        <div class="quiz-title">
-          Banking Awareness Quiz
-        </div>
-
-        <div class="quiz-desc">
-          Improve banking awareness for SBI and IBPS exams.
-        </div>
-
-        <button class="start-btn" onclick="startQuiz()">
-          Start Quiz
-        </button>
-
-      </div>
-
+      </footer>
     </div>
-
-  </div>
-
-  <div id="questionScreen" class="question-screen">
-
-    <div class="timer">
-      ⏳ <span id="timer">30</span>s
-    </div>
-
-    <div class="question" id="question">
-      Question Here
-    </div>
-
-    <div id="options"></div>
-
-    <button class="next-btn" onclick="nextQuestion()">
-      Next Question
-    </button>
-
-  </div>
-
-  <div id="resultScreen" class="result-screen">
-
-    <h1>Quiz Completed 🎉</h1>
-
-    <div class="score" id="score">
-      0/0
-    </div>
-
-    <button class="start-btn" onclick="location.reload()">
-      Play Again
-    </button>
-
-    <div class="leaderboard">
-
-      <h2 style="margin-bottom:15px;">
-        🏆 Leaderboard
-      </h2>
-
-      <div id="leaderboardList"></div>
-
-    </div>
-
-  </div>
-
-  <div class="bottom-nav">
-
-    <div class="nav-item active">
-      🏠<br>Home
-    </div>
-
-    <div class="nav-item">
-      📚<br>Courses
-    </div>
-
-    <div class="nav-item">
-      🧠<br>Quiz
-    </div>
-
-    <div class="nav-item">
-      👤<br>Profile
-    </div>
-
-  </div>
-
-</div>
-
-<script>
-
-let quizData = [];
-
-fetch('questions.json')
-.then(response => response.json())
-.then(data => {
-
-  quizData = data;
-
-});
-
-let currentQuestion = 0;
-let score = 0;
-let selectedOption = '';
-let timer = 30;
-let interval;
-
-function startQuiz(){
-
-  document.getElementById('homeScreen').style.display = 'none';
-
-  document.getElementById('questionScreen').style.display = 'block';
-
-  loadQuestion();
-
-  startTimer();
-}
-
-function loadQuestion(){
-
-  const currentQuiz = quizData[currentQuestion];
-
-  document.getElementById('question').innerText =
-  currentQuiz.question;
-
-  const optionsContainer =
-  document.getElementById('options');
-
-  optionsContainer.innerHTML = '';
-
-  currentQuiz.options.forEach(option => {
-
-    const div = document.createElement('div');
-
-    div.classList.add('option');
-
-    div.innerText = option;
-
-    div.onclick = () => selectOption(div, option);
-
-    optionsContainer.appendChild(div);
-
-  });
-
-}
-
-function selectOption(element, option){
-
-  selectedOption = option;
-
-  document.querySelectorAll('.option').forEach(opt => {
-    opt.classList.remove('selected');
-  });
-
-  element.classList.add('selected');
-}
-
-function nextQuestion(){
-
-  if(selectedOption === ''){
-    alert('Please select an option');
-    return;
-  }
-
-  if(selectedOption === quizData[currentQuestion].answer){
-    score++;
-  }
-
-  currentQuestion++;
-
-  selectedOption = '';
-
-  timer = 30;
-
-  if(currentQuestion < quizData.length){
-
-    loadQuestion();
-
-  } else {
-
-    finishQuiz();
-  }
-}
-
-function startTimer(){
-
-  interval = setInterval(() => {
-
-    timer--;
-
-    document.getElementById('timer').innerText = timer;
-
-    if(timer <= 0){
-
-      nextQuestion();
-
-    }
-
-  },1000);
-}
-
-function finishQuiz(){
-
-  clearInterval(interval);
-
-  document.getElementById('questionScreen').style.display = 'none';
-
-  document.getElementById('resultScreen').style.display = 'block';
-
-  document.getElementById('score').innerText =
-  `${score}/${quizData.length}`;
-
-  saveLeaderboard();
-
-  showLeaderboard();
-}
-
-function saveLeaderboard(){
-
-  let board =
-  JSON.parse(localStorage.getItem('leaderboard')) || [];
-
-  board.push({
-    name:'Player',
-    score:score
-  });
-
-  board.sort((a,b)=> b.score - a.score);
-
-  localStorage.setItem(
-    'leaderboard',
-    JSON.stringify(board)
   );
 }
-
-function showLeaderboard(){
-
-  let board =
-  JSON.parse(localStorage.getItem('leaderboard')) || [];
-
-  const list =
-  document.getElementById('leaderboardList');
-
-  list.innerHTML = '';
-
-  board.slice(0,5).forEach((user,index)=>{
-
-    const div = document.createElement('div');
-
-    div.classList.add('leader-item');
-
-    div.innerHTML = `
-      <span>#${index+1} ${user.name}</span>
-      <span>${user.score}</span>
-    `;
-
-    list.appendChild(div);
-
-  });
-
-}
-
-</script>
-
-</body>
-</html>
-```
