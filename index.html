@@ -1,273 +1,370 @@
-export default function ExamWarrior() {
-  const courses = [
-    {
-      title: "UPSC GS Foundation",
-      desc: "Comprehensive preparation for UPSC Civil Services Examination.",
-      image:
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      title: "BPSC Prelims Course",
-      desc: "Complete Bihar Public Service Commission preparation module.",
-      image:
-        "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      title: "Banking & SSC",
-      desc: "Quantitative aptitude, reasoning and English practice.",
-      image:
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
-    },
-  ];
+<!DOCTYPE html>
+<html lang="en">
 
-  const toppers = [
-    "AIR 12 - Aman Kumar",
-    "AIR 24 - Priya Singh",
-    "BPSC Rank 8 - Rohan Raj",
-  ];
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-      {/* Navbar */}
-      <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-blue-700">ExamWarrior</h1>
+<title>Manish Kumar Institute of Elementary and Higher Education</title>
 
-          <div className="hidden md:flex gap-8 font-medium">
-            <a href="#courses" className="hover:text-blue-600">Courses</a>
-            <a href="#notes" className="hover:text-blue-600">Notes</a>
-            <a href="#videos" className="hover:text-blue-600">Videos</a>
-            <a href="#test" className="hover:text-blue-600">Mock Tests</a>
-            <a href="#contact" className="hover:text-blue-600">Contact</a>
-          </div>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-          <button className="bg-blue-700 text-white px-5 py-2 rounded-xl hover:bg-blue-800 transition">
-            Login
-          </button>
-        </div>
-      </nav>
+<link rel="stylesheet" href="css/style.css">
+</head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-900 to-blue-600 text-white py-24 px-6">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              India’s Premier Learning Platform for Competitive Exams
-            </h1>
+<body>
 
-            <p className="text-lg text-blue-100 mb-8">
-              UPSC, BPSC, Banking, SSC & State PCS preparation with live classes,
-              notes, PDFs, current affairs and test series.
-            </p>
+<!-- NAVBAR -->
 
-            <div className="flex gap-4">
-              <button className="bg-white text-blue-700 px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition">
-                Explore Courses
-              </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
 
-              <button className="border border-white px-6 py-3 rounded-2xl hover:bg-white hover:text-blue-700 transition">
-                Watch Demo
-              </button>
-            </div>
-          </div>
+<div class="container">
 
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop"
-              alt="students"
-              className="rounded-3xl shadow-2xl"
-            />
-          </div>
-        </div>
-      </section>
+<a class="navbar-brand fw-bold" href="#">
+MK Institute
+</a>
 
-      {/* Stats */}
-      <section className="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-6">
-        {[
-          ["50K+", "Students"],
-          ["200+", "Courses"],
-          ["500+", "PDF Notes"],
-          ["98%", "Success Rate"],
-        ].map((item, idx) => (
-          <div
-            key={idx}
-            className="bg-white p-8 rounded-3xl shadow-lg text-center"
-          >
-            <h2 className="text-4xl font-bold text-blue-700">{item[0]}</h2>
-            <p className="mt-2 text-gray-600">{item[1]}</p>
-          </div>
-        ))}
-      </section>
+<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navmenu">
+<span class="navbar-toggler-icon"></span>
+</button>
 
-      {/* Courses */}
-      <section id="courses" className="max-w-7xl mx-auto px-6 py-16">
-        <div className="flex justify-between items-center mb-10">
-          <h2 className="text-4xl font-bold">Popular Courses</h2>
-          <button className="text-blue-700 font-semibold">View All</button>
-        </div>
+<div class="collapse navbar-collapse" id="navmenu">
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {courses.map((course, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 transition"
-            >
-              <img
-                src={course.image}
-                alt={course.title}
-                className="h-56 w-full object-cover"
-              />
+<ul class="navbar-nav ms-auto">
 
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-3">{course.title}</h3>
-                <p className="text-gray-600 mb-5">{course.desc}</p>
+<li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
 
-                <button className="w-full bg-blue-700 text-white py-3 rounded-2xl hover:bg-blue-800 transition">
-                  Enroll Now
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+<li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
 
-      {/* Notes Section */}
-      <section id="notes" className="bg-blue-50 py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-10 text-center">Study Materials & Notes</h2>
+<li class="nav-item"><a class="nav-link" href="#admission">Admission</a></li>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              "Modern History Notes",
-              "Indian Polity PDF",
-              "Current Affairs Magazine",
-              "Economics Handwritten Notes",
-              "BPSC Special Notes",
-              "Banking Awareness PDF",
-            ].map((note, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl p-6 shadow-lg flex justify-between items-center"
-              >
-                <div>
-                  <h3 className="font-bold text-lg">{note}</h3>
-                  <p className="text-gray-500 text-sm">PDF Material</p>
-                </div>
+<li class="nav-item"><a class="nav-link" href="#branches">Branches</a></li>
 
-                <button className="bg-blue-700 text-white px-4 py-2 rounded-xl">
-                  Download
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
 
-      {/* Videos */}
-      <section id="videos" className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-4xl font-bold mb-10 text-center">Latest Video Lectures</h2>
+</ul>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="bg-white rounded-3xl shadow-xl overflow-hidden">
-              <iframe
-                className="w-full h-56"
-                src="https://www.youtube.com/embed/ysz5S6PUM-U"
-                title="YouTube video"
-                allowFullScreen
-              ></iframe>
+</div>
 
-              <div className="p-5">
-                <h3 className="text-xl font-bold">UPSC Strategy Lecture</h3>
-                <p className="text-gray-600 mt-2">
-                  Learn preparation strategy from expert faculty.
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+</div>
 
-      {/* Toppers */}
-      <section className="bg-gradient-to-r from-blue-700 to-indigo-700 text-white py-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-5xl font-bold mb-12">Our Toppers</h2>
+</nav>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {toppers.map((topper, idx) => (
-              <div key={idx} className="bg-white/10 backdrop-blur-lg p-10 rounded-3xl">
-                <div className="w-24 h-24 rounded-full bg-white mx-auto mb-5"></div>
-                <h3 className="text-2xl font-bold">{topper}</h3>
-                <p className="text-blue-100 mt-3">
-                  Success through dedication and expert mentorship.
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+<!-- HERO -->
 
-      {/* Mock Tests */}
-      <section id="test" className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-4xl font-bold mb-10 text-center">Online Mock Test Series</h2>
+<section id="home" class="hero">
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {["UPSC Mock Test", "BPSC Mega Test"].map((test, idx) => (
-            <div key={idx} className="bg-white rounded-3xl p-8 shadow-xl">
-              <h3 className="text-3xl font-bold mb-4">{test}</h3>
-              <p className="text-gray-600 mb-6">
-                Practice real exam-level questions with timer and analytics.
-              </p>
+<div class="container">
 
-              <button className="bg-blue-700 text-white px-6 py-3 rounded-2xl">
-                Start Test
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
+<div class="row align-items-center">
 
-      {/* Footer */}
-      <footer id="contact" className="bg-gray-900 text-white py-14 px-6 mt-12">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">ExamWarrior</h2>
-            <p className="text-gray-400">
-              India’s trusted online learning platform for UPSC, BPSC, Banking and SSC preparation.
-            </p>
-          </div>
+<div class="col-lg-4 text-center">
 
-          <div>
-            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li>Courses</li>
-              <li>Notes</li>
-              <li>Current Affairs</li>
-              <li>Mock Tests</li>
-            </ul>
-          </div>
+<img src="assets/director.jpg" class="director-img">
 
-          <div>
-            <h3 className="text-xl font-bold mb-4">Contact</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li>Email: support@examwarrior.in</li>
-              <li>Phone: +91 9876543210</li>
-              <li>Patna | Delhi | Online</li>
-            </ul>
-          </div>
+</div>
 
-          <div>
-            <h3 className="text-xl font-bold mb-4">Download App</h3>
-            <button className="bg-blue-700 px-5 py-3 rounded-2xl">
-              Get Android App
-            </button>
-          </div>
-        </div>
+<div class="col-lg-8">
 
-        <div className="border-t border-gray-700 mt-12 pt-6 text-center text-gray-500">
-          © 2026 ExamWarrior. All rights reserved.
-        </div>
-      </footer>
-    </div>
-  );
-}
+<h1>
+Manish Kumar Institute of Elementary and Higher Education
+</h1>
+
+<h4 class="mt-3">
+Director: Manish Kumar
+</h4>
+
+<p>
+5+ Years Experience in Banking Industry
+<br>
+15+ Years Experience in Competitive Exam Guidance
+</p>
+
+<div class="hero-buttons">
+
+<a href="#admission" class="btn btn-warning btn-lg">
+Admission Open
+</a>
+
+<a href="#contact" class="btn btn-outline-light btn-lg">
+Contact Us
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="container py-5">
+
+<div class="row text-center">
+
+<div class="col-md-3">
+<div class="feature-box">
+📚
+<h5>Quality Education</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="feature-box">
+🎯
+<h5>Career Guidance</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="feature-box">
+🏆
+<h5>Competitive Exams</h5>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="feature-box">
+👨‍🏫
+<h5>Experienced Faculty</h5>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<!-- COURSES -->
+
+<section id="courses" class="bg-light py-5">
+
+<div class="container">
+
+<h2 class="section-title">
+School Coaching
+</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+<div class="card p-3">
+CBSE / BSEB / ICSE
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-3">
+Science / Mathematics / English
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-3">
+Commerce & Arts
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- EXAMS -->
+
+<section class="container py-5">
+
+<h2 class="section-title">
+Competitive Exams
+</h2>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<ul class="list-group">
+
+<li class="list-group-item">BPSC</li>
+<li class="list-group-item">SSC CGL / CHSL</li>
+<li class="list-group-item">IBPS / SBI / RBI</li>
+<li class="list-group-item">Railway</li>
+<li class="list-group-item">Bihar SI</li>
+<li class="list-group-item">NDA / CUET</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ADMISSION -->
+
+<section id="admission" class="bg-light py-5">
+
+<div class="container">
+
+<h2 class="section-title">
+Admission Guidance
+</h2>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<ul>
+<li>B.Ed</li>
+<li>D.El.Ed</li>
+<li>B.Tech</li>
+<li>Polytechnic</li>
+<li>MBBS</li>
+<li>BDS</li>
+<li>Nursing</li>
+<li>B.A / B.Sc / B.Com</li>
+<li>NET</li>
+<li>JRF</li>
+<li>Ph.D</li>
+</ul>
+
+</div>
+
+<div class="col-md-6">
+
+<form id="admissionForm">
+
+<input type="text" class="form-control mb-3" placeholder="Student Name">
+
+<input type="tel" class="form-control mb-3" placeholder="Mobile Number">
+
+<input type="email" class="form-control mb-3" placeholder="Email">
+
+<button class="btn btn-primary w-100">
+Apply Now
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- BRANCHES -->
+
+<section id="branches" class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">
+Our Branches
+</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="branch-card">
+
+<h4>Branch 1</h4>
+
+<p>
+Registry Chowk, Belsand
+<br>
+Near Pani Tanki
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="branch-card">
+
+<h4>Branch 2</h4>
+
+<p>
+Near Post Office
+<br>
+East of Ambedkar Chowk
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="branch-card">
+
+<h4>Branch 3 (Home)</h4>
+
+<p>
+Kadam Chowk
+<br>
+East of Mahaveer Sthan
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact" class="bg-primary text-white py-5">
+
+<div class="container">
+
+<h2>Contact Us</h2>
+
+<form>
+
+<input class="form-control mb-3" placeholder="Your Name">
+
+<input class="form-control mb-3" placeholder="Mobile Number">
+
+<textarea class="form-control mb-3" rows="4"></textarea>
+
+<button class="btn btn-warning">
+Send Inquiry
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<footer class="footer">
+
+<p>
+© 2026 Manish Kumar Institute of Elementary and Higher Education
+</p>
+
+</footer>
+
+<a href="https://wa.me/919999999999"
+class="whatsapp-btn">
+WhatsApp
+</a>
+
+<script src="js/app.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
