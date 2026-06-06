@@ -4,27 +4,6 @@
 // ======================================
 
 console.log("Website Loaded Successfully");
-
-// ======================================
-// ADMISSION FORM
-// ======================================
-
-const admissionForm = document.getElementById("admissionForm");
-
-if(admissionForm){
-
-admissionForm.addEventListener("submit", function(e){
-
-e.preventDefault();
-
-alert(
-"Thank you for your application. Our team will contact you shortly."
-);
-
-admissionForm.reset();
-
-});
-
 }
 
 // ======================================
