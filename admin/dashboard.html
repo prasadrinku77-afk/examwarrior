@@ -518,6 +518,33 @@ console.error(error);
 }
 
 // ======================================
+  // ======================================
+// WHATSAPP CONTACT
+// ======================================
+
+document.addEventListener("click",(e)=>{
+
+if(e.target.classList.contains("whatsappBtn")){
+
+const mobile =
+e.target.getAttribute("data-mobile");
+
+if(!mobile){
+
+alert("Mobile Number Not Found");
+
+return;
+
+}
+
+window.open(
+`https://wa.me/91${mobile}`,
+"_blank"
+);
+
+}
+
+});
 // DELETE ADMISSION
 // ======================================
 
