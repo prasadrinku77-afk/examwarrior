@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -20,19 +19,80 @@
 <div class="container d-flex justify-content-between">
 
 <span class="navbar-brand">
+
 MK School Admin Panel
+
 </span>
 
 <button
 id="logoutBtn"
 class="btn btn-light btn-sm">
-Logout </button>
+
+Logout
+
+</button>
 
 </div>
 
 </nav>
 
 <div class="container mt-5">
+
+<!-- STATISTICS -->
+
+<div class="row mb-4">
+
+<div class="col-md-4 mb-3">
+
+<div class="card shadow text-center">
+
+<div class="card-body">
+
+<h5>Total Admissions</h5>
+
+<h2 id="totalAdmissions">0</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<div class="card shadow text-center">
+
+<div class="card-body">
+
+<h5>Total Notices</h5>
+
+<h2 id="totalNotices">0</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<div class="card shadow text-center">
+
+<div class="card-body">
+
+<h5>Today's Admissions</h5>
+
+<h2 id="todayAdmissions">0</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ADD NOTICE -->
 
 <div class="row">
 
@@ -60,6 +120,8 @@ Save Notice
 </div>
 
 </div>
+
+<!-- ADMISSIONS -->
 
 <hr class="my-5">
 
@@ -95,6 +157,8 @@ Loading Admissions...
 </table>
 
 </div>
+
+<!-- NOTICES -->
 
 <hr class="my-5">
 
@@ -146,11 +210,29 @@ doc
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
-signOut
+signOut,
+onAuthStateChanged
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+// ======================================
+// DASHBOARD PROTECTION
+// ======================================
+
+onAuthStateChanged(auth, (user)=>{
+
+if(!user){
+
+window.location.href =
+"login.html";
+
+}
+
+});
+
+// ======================================
 // SAVE NOTICE
+// ======================================
 
 document
 .getElementById("saveNotice")
@@ -162,6 +244,7 @@ document.getElementById("notice").value.trim();
 if(!notice){
 
 alert("Please enter a notice");
+
 return;
 
 }
@@ -181,6 +264,7 @@ document.getElementById("notice").value="";
 alert("Notice Saved");
 
 loadNotices();
+loadStats();
 
 }catch(error){
 
@@ -192,7 +276,9 @@ alert("Failed to save notice");
 
 });
 
+// ======================================
 // LOAD ADMISSIONS
+// ======================================
 
 async function loadAdmissions(){
 
@@ -226,7 +312,8 @@ return;
 
 snapshot.forEach((admissionDoc)=>{
 
-const data = admissionDoc.data();
+const data =
+admissionDoc.data();
 
 table.innerHTML += `
 <tr>
@@ -258,7 +345,9 @@ table.innerHTML =
 
 }
 
+// ======================================
 // LOAD NOTICES
+// ======================================
 
 async function loadNotices(){
 
@@ -292,7 +381,8 @@ return;
 
 snapshot.forEach((noticeDoc)=>{
 
-const data = noticeDoc.data();
+const data =
+noticeDoc.data();
 
 table.innerHTML += `
 <tr>
@@ -320,7 +410,78 @@ table.innerHTML =
 
 }
 
+// ======================================
+// LOAD STATS
+// ======================================
+
+async function loadStats(){
+
+try{
+
+const admissionsSnapshot =
+await getDocs(
+collection(db,"admissions")
+);
+
+const noticesSnapshot =
+await getDocs(
+collection(db,"notices")
+);
+
+document.getElementById(
+"totalAdmissions"
+).innerText =
+admissionsSnapshot.size;
+
+document.getElementById(
+"totalNotices"
+).innerText =
+noticesSnapshot.size;
+
+let todayCount = 0;
+
+const today = new Date();
+
+admissionsSnapshot.forEach((docItem)=>{
+
+const data = docItem.data();
+
+if(data.createdAt){
+
+const admissionDate =
+data.createdAt.toDate
+? data.createdAt.toDate()
+: new Date(data.createdAt);
+
+if(
+admissionDate.toDateString()
+=== today.toDateString()
+){
+
+todayCount++;
+
+}
+
+}
+
+});
+
+document.getElementById(
+"todayAdmissions"
+).innerText =
+todayCount;
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
+// ======================================
 // DELETE ADMISSION
+// ======================================
 
 document.addEventListener("click", async (e)=>{
 
@@ -340,6 +501,7 @@ doc(db,"admissions",id)
 alert("Admission Deleted");
 
 loadAdmissions();
+loadStats();
 
 }catch(error){
 
@@ -353,7 +515,9 @@ alert("Delete Failed");
 
 });
 
+// ======================================
 // DELETE NOTICE
+// ======================================
 
 document.addEventListener("click", async (e)=>{
 
@@ -373,6 +537,7 @@ doc(db,"notices",id)
 alert("Notice Deleted");
 
 loadNotices();
+loadStats();
 
 }catch(error){
 
@@ -386,7 +551,9 @@ alert("Delete Failed");
 
 });
 
+// ======================================
 // LOGOUT
+// ======================================
 
 document
 .getElementById("logoutBtn")
@@ -411,8 +578,13 @@ alert("Logout Failed");
 
 });
 
+// ======================================
+
 loadAdmissions();
 loadNotices();
+loadStats();
+
+// ======================================
 
 </script>
 
