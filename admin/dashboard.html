@@ -335,6 +335,8 @@ orderBy("createdAt","desc")
 const snapshot =
 await getDocs(q);
 
+  allAdmissions = [];
+  
 table.innerHTML = "";
 
 if(snapshot.empty){
