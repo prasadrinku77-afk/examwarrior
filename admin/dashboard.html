@@ -127,99 +127,93 @@ Save Notice
 
 <hr class="my-5">
 
-<div class="row">
+<!-- ADMISSIONS -->
 
-    <!-- ADMISSIONS -->
-    <div class="col-lg-9">
+<hr class="my-5">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3">
 
-            <h2>Admission Enquiries</h2>
+    <h2>Admission Enquiries</h2>
 
-            <button
-                id="exportExcel"
-                class="btn btn-success">
-                Export Excel
-            </button>
+    <button
+        id="exportExcel"
+        class="btn btn-success">
+        Export Excel
+    </button>
 
-        </div>
+</div>
 
-        <div class="mb-3">
+<div class="mb-3">
 
-            <input
-                type="text"
-                id="searchAdmission"
-                class="form-control"
-                placeholder="Search by Name, Mobile, Email or Course">
+    <input
+        type="text"
+        id="searchAdmission"
+        class="form-control"
+        placeholder="Search by Name, Mobile, Email or Course">
 
-        </div>
+</div>
 
-        <div class="table-responsive">
+<div class="table-responsive">
 
-            <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped">
 
-                <thead>
+        <thead>
 
-                    <tr>
-                        <th>Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Course</th>
-                        <th>Query</th>
-                        <th>Action</th>
-                    </tr>
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Query</th>
+                <th>Action</th>
+            </tr>
 
-                </thead>
+        </thead>
 
-                <tbody id="admissionsTable">
+        <tbody id="admissionsTable">
 
-                    <tr>
-                        <td colspan="6">
-                            Loading Admissions...
-                        </td>
-                    </tr>
+            <tr>
+                <td colspan="6">
+                    Loading Admissions...
+                </td>
+            </tr>
 
-                </tbody>
+        </tbody>
 
-            </table>
+    </table>
 
-        </div>
+</div>
 
-    </div>
+<!-- NOTICES -->
 
-    <!-- NOTICES -->
-    <div class="col-lg-3">
+<hr class="my-5">
 
-        <h2 class="mb-3">Manage Notices</h2>
+<h2 class="mb-3">Manage Notices</h2>
 
-        <div class="table-responsive">
+<div class="table-responsive">
 
-            <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped">
 
-                <thead>
+        <thead>
 
-                    <tr>
-                        <th>Notice</th>
-                        <th>Action</th>
-                    </tr>
+            <tr>
+                <th>Notice</th>
+                <th>Action</th>
+            </tr>
 
-                </thead>
+        </thead>
 
-                <tbody id="noticesTable">
+        <tbody id="noticesTable">
 
-                    <tr>
-                        <td colspan="2">
-                            Loading Notices...
-                        </td>
-                    </tr>
+            <tr>
+                <td colspan="2">
+                    Loading Notices...
+                </td>
+            </tr>
 
-                </tbody>
+        </tbody>
 
-            </table>
-
-        </div>
-
-    </div>
+    </table>
 
 </div>
 <script type="module">
