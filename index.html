@@ -164,22 +164,48 @@
                 <div class="col-lg-8">
                     <div class="card shadow p-4">
                         <form id="admissionForm">
-                            <input type="text" class="form-control mb-3" placeholder="Student Name" required>
-                            <input type="tel" class="form-control mb-3" placeholder="Mobile Number" required>
-                            <input type="email" class="form-control mb-3" placeholder="Email Address">
-                            <select class="form-control mb-3">
-                                <option>Select Course</option>
-                                <option>B.Ed</option>
-                                <option>D.El.Ed</option>
-                                <option>B.Tech</option>
-                                <option>MBBS</option>
-                                <option>NET</option>
-                                <option>JRF</option>
-                                <option>Ph.D</option>
-                            </select>
-                            <textarea class="form-control mb-3" rows="4" placeholder="Write Your Query"></textarea>
-                            <button type="submit" class="btn btn-primary w-100">Submit Application</button>
-                        </form>
+
+    <input type="text"
+           id="studentName"
+           class="form-control mb-3"
+           placeholder="Student Name"
+           required>
+
+    <input type="tel"
+           id="mobileNumber"
+           class="form-control mb-3"
+           placeholder="Mobile Number"
+           required>
+
+    <input type="email"
+           id="emailAddress"
+           class="form-control mb-3"
+           placeholder="Email Address">
+
+    <select id="course"
+            class="form-control mb-3"
+            required>
+        <option value="">Select Course</option>
+        <option>B.Ed</option>
+        <option>D.El.Ed</option>
+        <option>B.Tech</option>
+        <option>MBBS</option>
+        <option>NET</option>
+        <option>JRF</option>
+        <option>Ph.D</option>
+    </select>
+
+    <textarea id="studentQuery"
+              class="form-control mb-3"
+              rows="4"
+              placeholder="Write Your Query"></textarea>
+
+    <button type="submit"
+            class="btn btn-primary w-100">
+        Submit Application
+    </button>
+
+</form>
                     </div>
                 </div>
             </div>
