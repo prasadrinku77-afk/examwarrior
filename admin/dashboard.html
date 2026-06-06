@@ -17,21 +17,22 @@
 
 <nav class="navbar navbar-dark bg-primary">
 
-<div class="container">
+<div class="container d-flex justify-content-between">
 
 <span class="navbar-brand">
-
 MK School Admin Panel
-
 </span>
+
+<button
+id="logoutBtn"
+class="btn btn-light btn-sm">
+Logout </button>
 
 </div>
 
 </nav>
 
 <div class="container mt-5">
-
-<!-- ADD NOTICE -->
 
 <div class="row">
 
@@ -59,8 +60,6 @@ Save Notice
 </div>
 
 </div>
-
-<!-- ADMISSIONS -->
 
 <hr class="my-5">
 
@@ -97,8 +96,6 @@ Loading Admissions...
 
 </div>
 
-<!-- NOTICES -->
-
 <hr class="my-5">
 
 <h2>Manage Notices</h2>
@@ -134,7 +131,7 @@ Loading Notices...
 
 <script type="module">
 
-import { db }
+import { db, auth }
 from "../js/firebase-config.js";
 
 import {
@@ -148,9 +145,12 @@ doc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ======================================
+import {
+signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 // SAVE NOTICE
-// ======================================
 
 document
 .getElementById("saveNotice")
@@ -162,7 +162,6 @@ document.getElementById("notice").value.trim();
 if(!notice){
 
 alert("Please enter a notice");
-
 return;
 
 }
@@ -193,9 +192,7 @@ alert("Failed to save notice");
 
 });
 
-// ======================================
 // LOAD ADMISSIONS
-// ======================================
 
 async function loadAdmissions(){
 
@@ -229,8 +226,7 @@ return;
 
 snapshot.forEach((admissionDoc)=>{
 
-const data =
-admissionDoc.data();
+const data = admissionDoc.data();
 
 table.innerHTML += `
 <tr>
@@ -262,9 +258,7 @@ table.innerHTML =
 
 }
 
-// ======================================
 // LOAD NOTICES
-// ======================================
 
 async function loadNotices(){
 
@@ -298,8 +292,7 @@ return;
 
 snapshot.forEach((noticeDoc)=>{
 
-const data =
-noticeDoc.data();
+const data = noticeDoc.data();
 
 table.innerHTML += `
 <tr>
@@ -327,9 +320,7 @@ table.innerHTML =
 
 }
 
-// ======================================
 // DELETE ADMISSION
-// ======================================
 
 document.addEventListener("click", async (e)=>{
 
@@ -362,9 +353,7 @@ alert("Delete Failed");
 
 });
 
-// ======================================
 // DELETE NOTICE
-// ======================================
 
 document.addEventListener("click", async (e)=>{
 
@@ -397,13 +386,33 @@ alert("Delete Failed");
 
 });
 
-// ======================================
+// LOGOUT
+
+document
+.getElementById("logoutBtn")
+.addEventListener("click", async ()=>{
+
+try{
+
+await signOut(auth);
+
+alert("Logged Out Successfully");
+
+window.location.href =
+"login.html";
+
+}catch(error){
+
+console.error(error);
+
+alert("Logout Failed");
+
+}
+
+});
 
 loadAdmissions();
-
 loadNotices();
-
-// ======================================
 
 </script>
 
