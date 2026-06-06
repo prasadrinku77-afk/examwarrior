@@ -353,6 +353,11 @@ snapshot.forEach((admissionDoc)=>{
 const data =
 admissionDoc.data();
 
+allAdmissions.push({
+id: admissionDoc.id,
+...data
+});
+
 table.innerHTML += `
 <tr>
 <td>${data.studentName || ""}</td>
