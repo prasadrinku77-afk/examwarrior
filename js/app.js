@@ -120,3 +120,75 @@ card.style.transition =
 // Firebase code will be added in Phase 2
 
 console.log("Ready for Firebase Integration");
+// ======================
+// ADMISSION FORM
+// ======================
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA8uZDSlXt9Jfglhh47zyo0wjdRxHuFMRc",
+  authDomain: "mk-school-300b3.firebaseapp.com",
+  projectId: "mk-school-300b3",
+  storageBucket: "mk-school-300b3.firebasestorage.app",
+  messagingSenderId: "153218908826",
+  appId: "1:153218908826:web:c71655455007f525431523",
+  measurementId: "G-6959G49TVX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const admissionForm = document.getElementById("admissionForm");
+
+if (admissionForm) {
+
+  admissionForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      await addDoc(collection(db, "admissions"), {
+
+        studentName:
+          document.getElementById("studentName").value,
+
+        mobileNumber:
+          document.getElementById("mobileNumber").value,
+
+        emailAddress:
+          document.getElementById("emailAddress").value,
+
+        course:
+          document.getElementById("course").value,
+
+        query:
+          document.getElementById("studentQuery").value,
+
+        createdAt: serverTimestamp()
+
+      });
+
+      alert("Application Submitted Successfully!");
+
+      admissionForm.reset();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Submission Failed!");
+
+    }
+
+  });
+
+}
