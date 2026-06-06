@@ -605,7 +605,75 @@ alert("Logout Failed");
 });
 
 // ======================================
+// ======================================
+// EXPORT ADMISSIONS TO EXCEL
+// ======================================
 
+document
+.getElementById("exportExcel")
+.addEventListener("click", async ()=>{
+
+try{
+
+const snapshot =
+await getDocs(
+collection(db,"admissions")
+);
+
+const data = [];
+
+snapshot.forEach((docItem)=>{
+
+const item =
+docItem.data();
+
+data.push({
+
+Name:
+item.studentName || "",
+
+Mobile:
+item.mobileNumber || "",
+
+Email:
+item.emailAddress || "",
+
+Course:
+item.course || "",
+
+Query:
+item.studentQuery || ""
+
+});
+
+});
+
+const worksheet =
+XLSX.utils.json_to_sheet(data);
+
+const workbook =
+XLSX.utils.book_new();
+
+XLSX.utils.book_append_sheet(
+workbook,
+worksheet,
+"Admissions"
+);
+
+XLSX.writeFile(
+workbook,
+"Admissions.xlsx"
+);
+
+}catch(error){
+
+console.error(error);
+
+alert("Export Failed");
+
+}
+
+});
 loadAdmissions();
 loadNotices();
 loadStats();
