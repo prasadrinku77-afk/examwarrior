@@ -730,6 +730,74 @@ alert("Export Failed");
 }
 
 });
+  // ======================================
+// SEARCH ADMISSIONS
+// ======================================
+
+document
+.getElementById("searchAdmission")
+.addEventListener("keyup", function(){
+
+const search =
+this.value.toLowerCase();
+
+const table =
+document.getElementById("admissionsTable");
+
+table.innerHTML = "";
+
+const filtered =
+allAdmissions.filter(item =>
+
+(item.studentName || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+(item.mobileNumber || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+(item.emailAddress || "")
+.toLowerCase()
+.includes(search)
+
+||
+
+(item.course || "")
+.toLowerCase()
+.includes(search)
+
+);
+
+if(filtered.length === 0){
+
+table.innerHTML =
+"<tr><td colspan='6'>No Records Found</td></tr>";
+
+return;
+
+}
+
+filtered.forEach(data => {
+
+table.innerHTML += `
+<tr>
+<td>${data.studentName || ""}</td>
+<td>${data.mobileNumber || ""}</td>
+<td>${data.emailAddress || ""}</td>
+<td>${data.course || ""}</td>
+<td>${data.studentQuery || ""}</td>
+<td>Search Result</td>
+</tr>
+`;
+
+});
+
+});
 loadAdmissions();
 loadNotices();
 loadStats();
