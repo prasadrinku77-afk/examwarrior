@@ -241,50 +241,49 @@
             </div>
 
             <div id="resource-detail-view" class="card shadow-sm border-0 d-none mt-4">
-    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
-        <h4 class="fw-bold text-primary mb-0" id="selected-exam-title">Exam Materials</h4>
-        <button class="btn btn-sm btn-outline-secondary" onclick="closeResourceView()">
-            <i class="fa-solid fa-arrow-left me-1"></i> Back to All Exams
-        </button>
-    </div>
-    <div class="card-body p-4 bg-white rounded-bottom">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
+                    <h4 class="fw-bold text-primary mb-0" id="selected-exam-title">Exam Materials</h4>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="closeResourceView()">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Back to All Exams
+                    </button>
+                </div>
+                <div class="card-body p-4 bg-white rounded-bottom">
 
-        <div id="tier-toggle-container" class="mb-4 text-center d-none">
-            <div class="btn-group" role="group">
-                <input type="radio" class="btn-check" name="examTier" id="tierPT" checked onclick="switchTier('PT')">
-                <label class="btn btn-outline-primary px-4 fw-semibold" for="tierPT">Preliminary Test (PT)</label>
+                    <div id="tier-toggle-container" class="mb-4 text-center d-none">
+                        <div class="btn-group" role="group" aria-label="Tier selection">
+                            <input type="radio" class="btn-check" name="examTier" id="tierPT" checked onclick="switchTier('PT')">
+                            <label class="btn btn-outline-primary px-4 fw-semibold" for="tierPT">Preliminary Test (PT)</label>
 
-                <input type="radio" class="btn-check" name="examTier" id="tierMains" onclick="switchTier('Mains')">
-                <label class="btn btn-outline-primary px-4 fw-semibold" for="tierMains">Mains Examination</label>
+                            <input type="radio" class="btn-check" name="examTier" id="tierMains" onclick="switchTier('Mains')">
+                            <label class="btn btn-outline-primary px-4 fw-semibold" for="tierMains">Mains Examination</label>
+                        </div>
+                    </div>
+
+                    <ul class="nav nav-pills mb-4 bg-light p-2 rounded" id="resourceContentTypeTabs" role="tablist">
+                        <li class="nav-item flex-fill text-center" role="presentation">
+                            <button class="nav-link active w-100 fw-bold" id="notes-tab" data-bs-toggle="pill" data-bs-target="#panel-notes" type="button" role="tab" aria-controls="panel-notes" aria-selected="true">
+                                <i class="fa-solid fa-file-pdf me-2"></i>PDF Notes
+                            </button>
+                        </li>
+                        <li class="nav-item flex-fill text-center" role="presentation">
+                            <button class="nav-link w-100 fw-bold" id="videos-tab" data-bs-toggle="pill" data-bs-target="#panel-videos" type="button" role="tab" aria-controls="panel-videos" aria-selected="false">
+                                <i class="fa-solid fa-video me-2"></i>Video Classes
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="resourceTabContent">
+                        <div class="tab-pane fade show active" id="panel-notes" role="tabpanel" aria-labelledby="notes-tab">
+                            <div class="row g-4" id="download-links-grid"></div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="panel-videos" role="tabpanel" aria-labelledby="videos-tab">
+                            <div class="row g-3" id="video-links-grid"></div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-
-        <ul class="nav nav-pills mb-4 bg-light p-2 rounded" id="resourceContentTypeTabs" role="tablist">
-            <li class="nav-item flex-fill text-center" role="presentation">
-                <button class="nav-link active w-100 fw-bold" id="notes-tab" data-bs-toggle="pill" data-bs-target="#panel-notes" type="button" role="tab" aria-controls="panel-notes" aria-selected="true">
-                    <i class="fa-solid fa-file-pdf me-2"></i>PDF Notes
-                </button>
-            </li>
-            <li class="nav-item flex-fill text-center" role="presentation">
-                <button class="nav-link w-100 fw-bold" id="videos-tab" data-bs-toggle="pill" data-bs-target="#panel-videos" type="button" role="tab" aria-controls="panel-videos" aria-selected="false">
-                    <i class="fa-solid fa-video me-2"></i>Video Classes
-                </button>
-            </li>
-        </ul>
-
-        <div class="tab-content" id="resourceTabContent">
-            <div class="tab-pane fade show active" id="panel-notes" role="tabpanel" aria-labelledby="notes-tab">
-                <div class="row g-3" id="download-links-grid"></div>
-            </div>
-            
-            <div class="tab-pane fade" id="panel-videos" role="tabpanel" aria-labelledby="videos-tab">
-                <div class="row g-3" id="video-links-grid"></div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
         </div>
     </section>
 
