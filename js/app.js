@@ -68,31 +68,85 @@ if (admissionForm) {
 }
 
 // ======================================
-// DYNAMIC PDF NOTES PORTAL ENGINE
+// DYNAMIC VIDEO & NOTE PORTAL ENGINE
 // ======================================
 
-// Tracking states globally
 let currentExamType = '';
 let currentTier = 'PT'; 
 
-// Trigger visibility transitions for nested layouts
+// Database Catalog containing custom structured video layouts for each system course folder
+const videoClassesDatabase = {
+  upsc: {
+    PT: [
+      { title: "UPSC Prelims GS Strategy & Core Blueprint Analysis", channel: "Manish Kumar School", duration: "45 mins", url: "https://www.youtube.com/" },
+      { title: "CSAT Logical Reasoning & Data Interpretation Tricks", channel: "Reasoning Expert", duration: "1 hr 15 mins", url: "https://www.youtube.com/" }
+    ],
+    Mains: [
+      { title: "GS Answer Writing Frameworks & Structural Layouts", channel: "Civil Services Desk", duration: "2 hrs", url: "https://www.youtube.com/" },
+      { title: "Essay Writing Masterclass & Case Studies Presentation", channel: "Manish Kumar School", duration: "55 mins", url: "https://www.youtube.com/" }
+    ]
+  },
+  bpsc: {
+    PT: [
+      { title: "Bihar Special History, Geography & Current Affairs", channel: "BPSC Core Academy", duration: "1 hr 30 mins", url: "https://www.youtube.com/" },
+      { title: "General Science High-Yield Expected Questions", channel: "Science Desk", duration: "50 mins", url: "https://www.youtube.com/" }
+    ],
+    Mains: [
+      { title: "BPSC GS Paper II Polity & Economic Analysis Setup", channel: "Manish Kumar School", duration: "1 hr 40 mins", url: "https://www.youtube.com/" }
+    ]
+  },
+  bssc: {
+    Default: [
+      { title: "BSSC CGL Math Shortcut Formulas & Calculation Speeds", channel: "Quantitative Aptitude", duration: "1 hr 05 mins", url: "https://www.youtube.com/" },
+      { title: "General Studies Previous Mock Target Analysis Set", channel: "GS Faculty Panel", duration: "48 mins", url: "https://www.youtube.com/" }
+    ]
+  },
+  "bpsc-teacher": {
+    Default: [
+      { title: "Child Development & Pedagogy (CDP) Core Theory Lecture", channel: "Teaching Portal", duration: "1 hr 20 mins", url: "https://www.youtube.com/" },
+      { title: "General Hindi Qualifying Paper Grammar Rules Blueprint", channel: "Manish Kumar School", duration: "38 mins", url: "https://www.youtube.com/" }
+    ]
+  },
+  ssc: {
+    Default: [
+      { title: "SSC English Grammar Complete Revision Rules Course", channel: "English Language Faculty", duration: "2 hrs 15 mins", url: "https://www.youtube.com/" },
+      { title: "Advanced Mathematics Geometry & Trigonometry Tactics", channel: "Quant Expert", duration: "1 hr 50 mins", url: "https://www.youtube.com/" }
+    ]
+  },
+  railway: {
+    Default: [
+      { title: "RRB NTPC & Group D General Science Bootcamp Series", channel: "Science Desk", duration: "1 hr 12 mins", url: "https://www.youtube.com/" },
+      { title: "Railway Exam Non-Technical Reasoning Logical Drills", channel: "Manish Kumar School", duration: "45 mins", url: "https://www.youtube.com/" }
+    ]
+  },
+  banking: {
+    Default: [
+      { title: "SBI & IBPS PO Quantitative Aptitude Speed Calculation Drills", channel: "Banking Focus Academy", duration: "58 mins", url: "https://www.youtube.com/" },
+      { title: "Banking Awareness, Financial Systems & Current Trends", channel: "Manish Kumar School", duration: "1 hr 02 mins", url: "https://www.youtube.com/" }
+    ]
+  }
+};
+
 window.showExamOptions = function(examId, structuralTitle) {
     currentExamType = examId;
-    currentTier = 'PT'; // Clear state memory back to defaults
+    currentTier = 'PT'; 
     
-    // Hide parent layout cards container
+    // Auto-focus back onto the PDF Notes tab view cleanly whenever selecting an exam
+    const initialTabTrigger = document.getElementById('notes-tab');
+    if (initialTabTrigger) {
+        const tabInstance = bootstrap.Tab.getOrCreateInstance(initialTabTrigger);
+        tabInstance.show();
+    }
+
     const standardGrid = document.getElementById('exam-cards-container');
     if (standardGrid) standardGrid.classList.add('d-none');
     
-    // Unhide target granular workspace detail card
     const detailView = document.getElementById('resource-detail-view');
     if (detailView) detailView.classList.remove('d-none');
     
-    // Set matching tracking label text
     const contextTitle = document.getElementById('selected-exam-title');
     if (contextTitle) contextTitle.innerText = structuralTitle;
 
-    // Filter tier view button layout toggles explicitly for civil targets
     const tierBox = document.getElementById('tier-toggle-container');
     if (tierBox) {
         if (examId === 'upsc' || examId === 'bpsc') {
@@ -105,9 +159,9 @@ window.showExamOptions = function(examId, structuralTitle) {
     }
 
     renderResourceLinks();
+    renderVideoLinks();
 };
 
-// Return control mapping states backward
 window.closeResourceView = function() {
     const detailView = document.getElementById('resource-detail-view');
     if (detailView) detailView.classList.add('d-none');
@@ -116,20 +170,18 @@ window.closeResourceView = function() {
     if (standardGrid) standardGrid.classList.remove('d-none');
 };
 
-// Handle tier context modifications
 window.switchTier = function(tierName) {
     currentTier = tierName;
     renderResourceLinks();
+    renderVideoLinks();
 };
 
-// Build sub-directory layout arrays matching uploaded PDF asset pathways
 function renderResourceLinks() {
     const targetGrid = document.getElementById('download-links-grid');
     if (!targetGrid) return;
     
-    targetGrid.innerHTML = ''; // Clean tracking view elements out safely
+    targetGrid.innerHTML = ''; 
 
-    // Flowchart resource type definitions
     const resourceTypes = [
         { name: 'Recommended Reference Books', icon: 'fa-book text-warning', file: 'books.pdf' },
         { name: 'Previous Year Papers', icon: 'fa-folder-open text-info', file: 'pyp.pdf' },
@@ -139,14 +191,12 @@ function renderResourceLinks() {
     ];
 
     resourceTypes.forEach(resource => {
-        // Formulate clean file string naming outputs
         let structuralPath = `pdf/${currentExamType}_`;
         if (currentExamType === 'upsc' || currentExamType === 'bpsc') {
             structuralPath += `${currentTier.toLowerCase()}_`;
         }
         structuralPath += resource.file;
 
-        // Build Bootstrap inner columns safely
         const listColumn = document.createElement('div');
         listColumn.className = 'col-md-6 col-lg-4';
         listColumn.innerHTML = `
@@ -166,6 +216,59 @@ function renderResourceLinks() {
             </div>
         `;
         targetGrid.appendChild(listColumn);
+    });
+}
+
+function renderVideoLinks() {
+    const videoGrid = document.getElementById('video-links-grid');
+    if (!videoGrid) return;
+
+    videoGrid.innerHTML = '';
+
+    const examData = videoClassesDatabase[currentExamType];
+    let videosArray = [];
+
+    if (examData) {
+        if (currentExamType === 'upsc' || currentExamType === 'bpsc') {
+            videosArray = examData[currentTier] || [];
+        } else {
+            videosArray = examData['Default'] || [];
+        }
+    }
+
+    if (videosArray.length === 0) {
+        videoGrid.innerHTML = `
+            <div class="col-12 text-center py-4">
+                <p class="text-muted mb-0"><i class="fa-solid fa-video-slash me-2"></i>No online lectures linked for this tier yet.</p>
+            </div>`;
+        return;
+    }
+
+    videosArray.forEach(video => {
+        const videoColumn = document.createElement('div');
+        videoColumn.className = 'col-md-6';
+        videoColumn.innerHTML = `
+            <div class="card h-100 border rounded shadow-sm bg-white overflow-hidden">
+                <div class="card-body p-3 d-flex align-items-start">
+                    <div class="bg-danger text-white rounded p-3 d-flex align-items-center justify-content-center me-3" style="width: 55px; height: 55px;">
+                        <i class="fa-solid fa-play fa-xl"></i>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <h6 class="text-dark mb-1 fw-bold text-truncate" title="${video.title}">${video.title}</h6>
+                        <div class="d-flex align-items-center flex-wrap gap-2 text-muted small mt-2">
+                            <span><i class="fa-solid fa-circle-user me-1 text-secondary"></i>${video.channel}</span>
+                            <span class="badge bg-secondary-subtle text-secondary font-monospace">${video.duration}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light border-top p-2 d-flex justify-content-end">
+                    <a href="${video.url}" target="_blank" class="btn btn-sm btn-danger px-3 fw-bold">
+                        <i class="fa-brands fa-youtube me-1"></i> Watch Video Class
+                    </a>
+                </div>
+            </div>
+        `;
+        videoGrid.appendChild(videoColumn);
     });
 }
 
@@ -226,7 +329,6 @@ function animateCardsOnScroll() {
 }
 
 window.addEventListener("scroll", animateCardsOnScroll);
-// Run on initial page trigger to check position status of cards instantly
 document.addEventListener("DOMContentLoaded", animateCardsOnScroll);
 
 console.log("Firebase Ready");
