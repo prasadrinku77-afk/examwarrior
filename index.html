@@ -36,16 +36,18 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
         }
-        /* Live Mock Portal Interface Styles */
-        .exam-header { background-color: #0d6efd; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; }
-        .question-box { background: white; border-radius: 8px; padding: 25px; min-height: 340px; }
-        .option-card { border: 1px solid #dee2e6; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; }
-        .option-card:hover { background-color: #f8f9fa; border-color: #b5d5ff; }
-        .option-card.selected { background-color: #d1e7dd; border-color: #a3cfbb; color: #0f5132; font-weight: bold; }
-        .palette-btn { width: 38px; height: 38px; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid #ccc; background-color: #fff; cursor: pointer; font-weight: 500; }
-        .palette-btn.answered { background-color: #198754; color: white; border-color: #198754; }
-        .palette-btn.marked { background-color: #ffc107; color: #212529; border-color: #ffc107; }
-        .palette-btn.current { border: 2px solid #0d6efd; box-shadow: 0 0 5px rgba(13,110,253,0.5); }
+        .custom-quiz-option:hover {
+            background-color: #e9ecef !important;
+            border-color: #0d6efd !important;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
     </style>
 </head>
 <body>
@@ -60,8 +62,6 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#bihar-mock">Bihar Exam Mock Test</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#bihar-current">Bihar Exam Current Affairs</a></li>
                     <li class="nav-item"><a class="nav-link" href="#competitive">Competitive Exams</a></li>
                     <li class="nav-item"><a class="nav-link" href="#materials">PDF Notes</a></li>
                     <li class="nav-item"><a class="nav-link" href="#admission">Admission</a></li>
@@ -131,148 +131,6 @@
         </div>
     </section>
 
-    <section id="bihar-mock" class="py-5 bg-white">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold text-dark"><i class="fa-solid fa-laptop text-primary me-2"></i> Bihar Exam Mock Test</h2>
-                <p class="text-muted">Access online mock series and continuous evaluation matrices mapped specifically to upcoming BPSC, Bihar SI, and BSSC test modules.</p>
-            </div>
-            
-            <div class="row justify-content-center" id="mock-dashboard-view">
-                <div class="col-md-8 text-center">
-                    <div class="card p-5 shadow-sm border-0 bg-light">
-                        <h4 class="text-primary fw-bold mb-3">Live BPSC & BSSC Exam Simulator Ready</h4>
-                        <p class="text-muted mb-4">Experience a real competitive environment complete with standard time counters, review markers, and instant performance metrics.</p>
-                        <button class="btn btn-primary btn-lg px-5 fw-bold shadow-sm" onclick="startActiveMockWorkspace()">
-                            <i class="fa-solid fa-play me-2"></i> Start Active Mock Test
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="live-mock-interface" class="d-none mt-2 shadow shadow-lg rounded-3 border-0">
-                <header class="exam-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="m-0 fw-bold"><i class="fa-solid fa-square-poll-vertical me-2"></i> BIHAR EXAM PORTAL</h5>
-                        <small class="text-white-50">Manish Kumar School Online Examination</small>
-                    </div>
-                    <div class="d-flex align-items-center gap-4">
-                        <div class="bg-dark bg-opacity-25 px-3 py-1 rounded">
-                            <i class="fa-regular fa-clock me-2"></i> Time Remaining: <span id="exam-timer" class="fw-bold text-warning">45:00</span>
-                        </div>
-                        <div class="text-end d-none d-sm-block">
-                            <strong class="d-block text-warning">Candidate Terminal</strong>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="p-4 bg-white rounded-bottom">
-                    <div class="row g-4">
-                        <div class="col-lg-8 border-end border-light">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-secondary px-3 py-2">General Studies (GS Paper)</span>
-                                <span class="text-muted fw-bold">Q. <span id="current-q-num">1</span> / <span id="total-q-num">5</span></span>
-                            </div>
-                            <div class="question-box d-flex flex-column justify-content-between shadow-sm border p-4 rounded bg-white">
-                                <div>
-                                    <h5 id="question-text" class="text-dark lh-base fw-semibold mb-4">Loading question data...</h5>
-                                    <div id="options-container"></div>
-                                </div>
-                                <div class="d-flex justify-content-between border-top pt-3 mt-4">
-                                    <button class="btn btn-outline-secondary px-3" id="btn-prev" onclick="navigateQuestion(-1)"><i class="fa-solid fa-chevron-left me-1"></i> Previous</button>
-                                    <div>
-                                        <button class="btn btn-warning text-dark me-2" onclick="markForReview()">Mark for Review</button>
-                                        <button class="btn btn-light text-danger border me-2" onclick="clearResponse()">Clear</button>
-                                    </div>
-                                    <button class="btn btn-primary px-4" id="btn-next" onclick="navigateQuestion(1)">Save & Next <i class="fa-solid fa-chevron-right ms-1"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <h6 class="fw-bold text-secondary mb-3"><i class="fa-solid fa-table-cells text-primary me-2"></i>Question Palette Map</h6>
-                            <div class="d-flex flex-wrap gap-2 mb-4" id="palette-grid"></div>
-                            
-                            <div class="border-top pt-3 mb-4">
-                                <div class="row g-2 text-start small">
-                                    <div class="col-6"><span class="badge bg-white text-dark border me-1">1</span> Not Visited</div>
-                                    <div class="col-6"><span class="badge bg-secondary text-white me-1">1</span> Skipped</div>
-                                    <div class="col-6"><span class="badge bg-success me-1">1</span> Answered</div>
-                                    <div class="col-6"><span class="badge bg-warning text-dark me-1">1</span> For Review</div>
-                                </div>
-                            </div>
-                            <button class="btn btn-success w-100 py-2.5 fw-bold text-uppercase shadow-sm" onclick="finishExamPrompt()">
-                                <i class="fa-solid fa-circle-check me-2"></i> Submit Examination
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="bihar-current" class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold text-dark"><i class="fa-solid fa-newspaper text-warning me-2"></i> Bihar Exam Current Affairs</h2>
-                <p class="text-muted">Stay calibrated with monthly dynamic review maps, regional developments, administrative charts, and current economic outlines for BPSC, Bihar SI & BSSC.</p>
-            </div>
-
-            <div class="row g-4 justify-content-center">
-                <div class="col-sm-6 col-md-4">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action bg-white">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 55px; height: 55px; background-color: #fff3e0;">
-                                    <i class="fa-solid fa-calendar-check fa-lg text-warning"></i>
-                                </div>
-                                <h5 class="fw-bold mb-1">January 2026</h5>
-                                <p class="small text-muted mb-3">Bihar Budget Highlights & Special Economic Survey Analysis</p>
-                            </div>
-                            <a href="pdf/current_affairs_jan_2026.pdf" target="_blank" class="btn btn-outline-warning btn-sm w-100 fw-bold">
-                                <i class="fa-solid fa-file-arrow-download me-2"></i>Download PDF
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action bg-white">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 55px; height: 55px; background-color: #fff3e0;">
-                                    <i class="fa-solid fa-calendar-check fa-lg text-warning"></i>
-                                </div>
-                                <h5 class="fw-bold mb-1">February 2026</h5>
-                                <p class="small text-muted mb-3">State Appointments, New Policies & Regional Schemes</p>
-                            </div>
-                            <a href="pdf/current_affairs_feb_2026.pdf" target="_blank" class="btn btn-outline-warning btn-sm w-100 fw-bold">
-                                <i class="fa-solid fa-file-arrow-download me-2"></i>Download PDF
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action bg-white">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 55px; height: 55px; background-color: #fff3e0;">
-                                    <i class="fa-solid fa-calendar-check fa-lg text-warning"></i>
-                                </div>
-                                <h5 class="fw-bold mb-1">March 2026</h5>
-                                <p class="small text-muted mb-3">Bihar Geography Trends, Agriculture Roadmap & Sports News</p>
-                            </div>
-                            <a href="pdf/current_affairs_mar_2026.pdf" target="_blank" class="btn btn-outline-warning btn-sm w-100 fw-bold">
-                                <i class="fa-solid fa-file-arrow-download me-2"></i>Download PDF
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="competitive" class="py-5">
         <div class="container">
             <h2 class="text-center mb-5">Competitive Exam Preparation</h2>
@@ -309,6 +167,18 @@
             </div>
 
             <div class="row g-4 justify-content-center" id="exam-cards-container">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" style="border-left: 4px solid #dc3545 !important;" onclick="showBiharExamsPortal()">
+                        <div class="card-body">
+                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #ffebee;">
+                                <i class="fa-solid fa-star fa-lg text-danger animate-pulse"></i>
+                            </div>
+                            <h5 class="fw-bold mb-1 text-danger">Bihar Upcoming Exams</h5>
+                            <small class="text-muted">2026 Notifications</small>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-sm-6 col-md-4 col-lg-3">
                     <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('upsc', 'UPSC CSE Materials')">
                         <div class="card-body">
@@ -402,10 +272,12 @@
                     </button>
                 </div>
                 <div class="card-body p-4 bg-white rounded-bottom">
+
                     <div id="tier-toggle-container" class="mb-4 text-center d-none">
                         <div class="btn-group" role="group" aria-label="Tier selection">
                             <input type="radio" class="btn-check" name="examTier" id="tierPT" checked onclick="switchTier('PT')">
                             <label class="btn btn-outline-primary px-4 fw-semibold" for="tierPT">Preliminary Test (PT)</label>
+
                             <input type="radio" class="btn-check" name="examTier" id="tierMains" onclick="switchTier('Mains')">
                             <label class="btn btn-outline-primary px-4 fw-semibold" for="tierMains">Mains Examination</label>
                         </div>
@@ -428,10 +300,12 @@
                         <div class="tab-pane fade show active" id="panel-notes" role="tabpanel" aria-labelledby="notes-tab">
                             <div class="row g-4" id="download-links-grid"></div>
                         </div>
+                        
                         <div class="tab-pane fade" id="panel-videos" role="tabpanel" aria-labelledby="videos-tab">
                             <div class="row g-3" id="video-links-grid"></div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -542,190 +416,416 @@
 
     <a href="https://wa.me/917909003467" class="whatsapp-btn">WhatsApp</a>
 
+    <div class="modal fade" id="biharExamsModal" tabindex="-1" aria-labelledby="biharExamsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold" id="biharExamsModalLabel"><i class="fa-solid fa-graduation-cap me-2"></i> Bihar Upcoming Examination Portal - 2026</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="resetBiharPortalView()"></button>
+                </div>
+                <div class="modal-body bg-light p-4">
+                    
+                    <div id="bihar-list-view">
+                        <p class="text-muted mb-4">Select an upcoming target examination to view relevant master notes, expected cut-offs, comprehensive curriculums, and timed evaluation series.</p>
+                        <div class="row g-3" id="bihar-exams-grid-target">
+                            </div>
+                    </div>
+
+                    <div id="bihar-detail-view" class="d-none">
+                        <button class="btn btn-sm btn-outline-secondary mb-4" onclick="backToBiharList()">
+                            <i class="fa-solid fa-arrow-left me-1"></i> Back to Examination List
+                        </button>
+                        
+                        <div class="row g-4">
+                            <div class="col-lg-7">
+                                <div class="card shadow-sm border-0 mb-4">
+                                    <div class="card-body">
+                                        <h3 class="fw-bold text-primary mb-1" id="bx-title">Exam Title</h3>
+                                        <span class="badge bg-success mb-3">Resource Status: Fully Synced</span>
+                                        
+                                        <div class="mt-3">
+                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-book-open text-muted me-2"></i> About Exam & Notes</h6>
+                                            <p class="text-muted" id="bx-notes">Loading descriptions...</p>
+                                        </div>
+                                        <hr>
+                                        <div class="mt-3">
+                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-scroll text-muted me-2"></i> Official Syllabus</h6>
+                                            <p class="text-muted" id="bx-syllabus">Loading curriculum mapping data...</p>
+                                        </div>
+                                        <hr>
+                                        <div class="mt-3">
+                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-chart-line text-muted me-2"></i> Expected Cut-Off Matrix</h6>
+                                            <p class="text-muted" id="bx-cutoff">Analyzing previous patterns...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5">
+                                <div class="card shadow-sm border-0 bg-dark text-white p-3">
+                                    <div class="card-body">
+                                        <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-stopwatch me-2"></i> Integrated Mock Test Series</h5>
+                                        <p class="small text-white-50">Test your operational depth with full-length standard practice exams matched to actual exam structural patterns.</p>
+                                        <div class="d-grid gap-2 mt-4" id="bx-mock-container">
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="bihar-quiz-view" class="d-none">
+                        <div class="card shadow-sm border-0 p-4">
+                            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                                <div>
+                                    <h4 class="fw-bold text-dark mb-0" id="quiz-arena-title">Mock Examination Arena</h4>
+                                    <small class="text-muted" id="quiz-arena-subtitle">Duration: 2 Hours (120 Mins)</small>
+                                </div>
+                                <div class="bg-danger text-white px-3 py-2 rounded fw-bold fs-5">
+                                    <i class="fa-solid fa-clock me-1"></i> <span id="quiz-timer">120:00</span>
+                                </div>
+                            </div>
+                            
+                            <div id="quiz-operational-body">
+                                <div class="alert alert-info py-2 small">
+                                    <strong>System Note:</strong> Answer all benchmark questions carefully. Do not close or minimize this tab while your exam session is running.
+                                </div>
+                                <div id="quiz-question-container" class="my-4">
+                                    </div>
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button class="btn btn-secondary px-4" id="quiz-prev-btn" onclick="navigateQuiz(-1)">Previous</button>
+                                    <button class="btn btn-primary px-4" id="quiz-next-btn" onclick="navigateQuiz(1)">Next</button>
+                                    <button class="btn btn-success px-4 d-none" id="quiz-submit-btn" onclick="finalizeQuizExecution()">Submit Exam Paper</button>
+                                </div>
+                            </div>
+
+                            <div id="quiz-score-container" class="d-none text-center py-5">
+                                <div class="display-1 text-success fw-bold mb-3"><i class="fa-solid fa-square-poll-vertical"></i></div>
+                                <h2 class="fw-bold text-dark">Exam Session Completed!</h2>
+                                <p class="lead text-muted my-3" id="quiz-final-score-text">You successfully completed your evaluation sheet.</p>
+                                <button class="btn btn-outline-danger px-4 mt-2" onclick="exitQuizArena()">Exit Exam Arena</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script type="module" src="js/app.js"></script>
 
-    <script>
-        const mockQuestions = [
-            {
-                question: "Which soil cover dominates the largest geographical surface plain area across Bihar?",
-                options: ["Alluvial Soil", "Red and Yellow Soil", "Laterite Soil", "Marshy Soil"],
-                correct: 0
-            },
-            {
-                question: "The ancient historical site of Nalanda Mahavihara was built during the reign of which dynasty?",
-                options: ["Maurya Dynasty", "Gupta Dynasty", "Pala Dynasty", "Kushan Dynasty"],
-                correct: 1
-            },
-            {
-                question: "Which of the following rivers forms the boundary line between Bihar and Uttar Pradesh?",
-                options: ["Kosi River", "Gandak River", "Karmanasa River", "Bagmati River"],
-                correct: 2
-            },
-            {
-                question: "What pigment captures solar photons within cell plastids during plant photosynthesis?",
-                options: ["Carotenoid", "Anthocyanin", "Chlorophyll a", "Phycobilin"],
-                correct: 2
-            },
-            {
-                question: "The First Buddhist Council was convened immediately after the Mahaparinirvana of Buddha at which location?",
-                options: ["Rajgriha", "Vaishali", "Pataliputra", "Kashmir"],
-                correct: 0
-            }
-        ];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        let currentIndex = 0;
-        let userResponses = new Array(mockQuestions.length).fill(null);
-        let reviewStatus = new Array(mockQuestions.length).fill(false);
-        let examTimeSeconds = 45 * 60; 
-        let timerInterval = null;
+        // Firebase Configuration Core Sync Data
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8uZDSlXt9Jfglhh47zyo0wjdRxHuFMRc",
+            authDomain: "mk-school-300b3.firebaseapp.com",
+            projectId: "mk-school-300b3",
+            storageBucket: "mk-school-300b3.firebasestorage.app",
+            messagingSenderId: "153218908826",
+            appId: "1:153218908826:web:c71655455007f525431523",
+            measurementId: "G-6959G49TVX"
+        };
 
-        function startActiveMockWorkspace() {
-            document.getElementById("mock-dashboard-view").classList.add("d-none");
-            document.getElementById("live-mock-interface").classList.remove("d-none");
-            
-            initPaletteGrid();
-            loadQuestion(0);
-            startExamCountdownTimer();
-        }
+        // Initialize App & DB Connection
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        const noticeContainer = document.getElementById("homepage-notice-list");
 
-        function initPaletteGrid() {
-            const grid = document.getElementById("palette-grid");
-            grid.innerHTML = "";
-            for (let i = 0; i < mockQuestions.length; i++) {
-                const btn = document.createElement("button");
-                btn.className = "palette-btn";
-                btn.id = `palette-btn-${i}`;
-                btn.innerText = i + 1;
-                btn.onclick = () => loadQuestion(i);
-                grid.appendChild(btn);
-            }
-        }
+        // Set up the Real-time stream listener
+        function getLiveNotices() {
+            const noticesCollection = collection(db, "notices");
+            const q = query(noticesCollection, orderBy("createdAt", "desc"));
 
-        function loadQuestion(index) {
-            // Update previous step classes on old current button
-            document.getElementById(`palette-btn-${currentIndex}`).classList.remove("current");
-            
-            currentIndex = index;
-            const currentQuestion = mockQuestions[currentIndex];
-            
-            // Setup active question tracking highlights
-            const currentBtn = document.getElementById(`palette-btn-${currentIndex}`);
-            currentBtn.classList.add("current");
-            if(userResponses[currentIndex] === null && !reviewStatus[currentIndex]) {
-                currentBtn.classList.add("bg-secondary", "text-white"); // Marked as skipped/visited
-            }
+            onSnapshot(q, (snapshot) => {
+                noticeContainer.innerHTML = ""; // Clear current items
 
-            document.getElementById("current-q-num").innerText = currentIndex + 1;
-            document.getElementById("total-q-num").innerText = mockQuestions.length;
-            document.getElementById("question-text").innerText = currentQuestion.question;
-
-            // Generate structural options markup
-            const optionsContainer = document.getElementById("options-container");
-            optionsContainer.innerHTML = "";
-            currentQuestion.options.forEach((option, idx) => {
-                const card = document.createElement("div");
-                card.className = "option-card";
-                if (userResponses[currentIndex] === idx) {
-                    card.className += " selected";
-                }
-                card.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${option}`;
-                card.onclick = () => selectOptionElement(idx);
-                optionsContainer.appendChild(card);
-            });
-
-            // Toggle active back/prev control states
-            document.getElementById("btn-prev").disabled = (currentIndex === 0);
-            document.getElementById("btn-next").innerHTML = (currentIndex === mockQuestions.length - 1) ? 
-                'Review Workspace <i class="fa-solid fa-calculator ms-1"></i>' : 
-                'Save & Next <i class="fa-solid fa-chevron-right ms-1"></i>';
-        }
-
-        function selectOptionElement(optionIdx) {
-            userResponses[currentIndex] = optionIdx;
-            reviewStatus[currentIndex] = false; // Answering overrides review status
-            
-            // Clean custom palette layouts
-            const paletteBtn = document.getElementById(`palette-btn-${currentIndex}`);
-            paletteBtn.className = "palette-btn current answered";
-            
-            // Refresh options window
-            loadQuestion(currentIndex);
-        }
-
-        function navigateQuestion(direction) {
-            let targetedIndex = currentIndex + direction;
-            if (targetedIndex >= 0 && targetedIndex < mockQuestions.length) {
-                loadQuestion(targetedIndex);
-            }
-        }
-
-        function markForReview() {
-            reviewStatus[currentIndex] = true;
-            userResponses[currentIndex] = null; // Clear answer if marked for review purely
-            
-            const paletteBtn = document.getElementById(`palette-btn-${currentIndex}`);
-            paletteBtn.className = "palette-btn current marked";
-            navigateQuestion(1);
-        }
-
-        function clearResponse() {
-            userResponses[currentIndex] = null;
-            reviewStatus[currentIndex] = false;
-            
-            const paletteBtn = document.getElementById(`palette-btn-${currentIndex}`);
-            paletteBtn.className = "palette-btn current bg-secondary text-white";
-            loadQuestion(currentIndex);
-        }
-
-        function startExamCountdownTimer() {
-            timerInterval = setInterval(() => {
-                if (examTimeSeconds <= 0) {
-                    clearInterval(timerInterval);
-                    autoSubmitExamination();
+                if (snapshot.empty) {
+                    noticeContainer.innerHTML = '<li class="list-group-item text-white-50 text-center">No active notices.</li>';
                     return;
                 }
-                examTimeSeconds--;
-                let mins = Math.floor(examTimeSeconds / 60);
-                let secs = examTimeSeconds % 60;
-                document.getElementById("exam-timer").innerText = 
-                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+                snapshot.forEach((doc) => {
+                    const notice = doc.data();
+                    const li = document.createElement("li");
+                    li.className = "list-group-item d-flex align-items-start gap-2";
+                    
+                    li.innerHTML = `
+                        <span>🔹</span>
+                        <div>${notice.notice}</div>
+                    `;
+                    noticeContainer.appendChild(li);
+                });
+            }, (error) => {
+                console.error("Firebase Snapshot Error: ", error);
+                noticeContainer.innerHTML = '<li class="list-group-item text-danger">Failed to sync updates.</li>';
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", getLiveNotices);
+
+        // =========================================================================
+        // BIHAR UPCOMING EXAMINATIONS PORTAL DATA & ENGINE LOGIC
+        // =========================================================================
+        const BIHAR_EXAMS_DATASET = {
+            "bssc-grad": {
+                title: "Bihar SSC Graduate Level Exam",
+                notes: "Detailed core notes covering General Studies, Logical Reasoning, Mental Ability, and General Science. Designed systematically for the 4th Graduate Level Combined Competitive Exam.",
+                syllabus: "Section A: General Studies (Current Events, National/International awards, India & Neighboring countries context). Section B: General Science & Mathematics (Matriculation standard). Section C: Comprehension, Logical Reasoning, Mental Ability.",
+                cutoff: "Expected General Category Benchmark: 105 - 112 Marks (Based on relative difficulty index calculation rules).",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "bssc-inter": {
+                title: "Bihar SSC Inter Level Exam",
+                notes: "Foundation conceptual reference files focused heavily on static General Knowledge, numerical speed analytics, and basic general science frameworks.",
+                syllabus: "150 Questions Total: General Studies (50 Qs), General Science & Math (50 Qs), Comprehension & Mental Ability Reasoning (50 Qs).",
+                cutoff: "Expected Target Threshold Range: 98 - 104 Marks out of 150 questions structural weighting matrix.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "bssc-tenth": {
+                title: "Bihar SSC Tenth Level Exam",
+                notes: "Simplified revision summaries and practice manuals specialized for Matriculation entry grade structural evaluations.",
+                syllabus: "Basic Arithmetic arrays, elementary structural general awareness metrics, basic reasoning sequences, and fundamental Hindi grammar sets.",
+                cutoff: "Estimated safe target performance profile: 78% - 82% aggregated metrics scaling.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "railway-d": {
+                title: "Railway Group D Exam",
+                notes: "High-yield functional study files mapping standard operational engineering rules, simple computational mathematics patterns, and physics applications.",
+                syllabus: "General Science (25), Mathematics (25), General Intelligence & Reasoning (30), General Awareness and Current Affairs (20). Total time: 90 Mins.",
+                cutoff: "Projected Normalized Cut-Off Range: 68 - 74 (Varies dynamically across distinct railway regional cluster boards).",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "bpsc-cce": {
+                title: "BPSC CCE 72nd Examination",
+                notes: "Comprehensive analysis sheets focusing on Ancient/Modern History of Bihar, Indian Polity, Socio-Economic geography indicators, and modern current developments.",
+                syllabus: "Prelims: Single paper on General Studies (150 Marks, Negative marking enforced at 1/3 deduction standard). Emphasis on History of Bihar, Freedom Struggle contribution, and Economy post-independence.",
+                cutoff: "Expected Safe Competitive Zone Threshold: 92 - 96 Marks under strict negative scaling patterns.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "bpsc-aedo": {
+                title: "BPSC AEDO Exam",
+                notes: "Targeted administrative domain concepts, state developmental policy architectures, and executive tracking workflows.",
+                syllabus: "Paper I: General Knowledge and State Policy metrics. Paper II: Professional Administrative Specialization portfolios and local executive legal mandates.",
+                cutoff: "Projected Safe Clearing Performance Metric: 65% across primary aggregates.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "bpsc-forest": {
+                title: "BPSC Assistant Conservator of Forest",
+                notes: "Advanced operational modules covering environmental ecology laws, forestry taxonomy paradigms, conservation geography metrics, and regional climate classifications.",
+                syllabus: "Compulsory Papers: General Studies & General Hindi. Optional Technical Subjects: Agriculture, Environmental Engineering, Forestry, Botany, Zoology.",
+                cutoff: "Expected Technical Shortlist Bracket: 62% - 68% evaluated scoring indexes.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "bssc-prohibition": {
+                title: "Bihar SSC Prohibition Exam",
+                notes: "Targeted reference tracking metrics regarding state regulatory enforcement codes, standard civic penal systems, and legal basics.",
+                syllabus: "General Studies framework, local administrative enforcement protocols, quantitative arithmetic arrays, and regional current events tracking lists.",
+                cutoff: "Projected standard performance index: 80 - 85 Correct Question responses.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "deled-2026": {
+                title: "D.El.Ed Entrance 2026",
+                notes: "High-yield evaluation preparation units targeting primary level education teaching methodologies, childhood psychological development tracking, and foundational pedagogy.",
+                syllabus: "General Hindi/Urdu (30), Mathematics (25), Science (20), Social Studies (20), General English (20), Logical & Analytical Reasoning (15). Total Questions: 120.",
+                cutoff: "Expected Government Institutional Seating Allocation Threshold: 85+ Points standard.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            },
+            "bed-2026": {
+                title: "B.Ed Entrance 2026",
+                notes: "Strategic mock compilation matrices detailing teaching aptitude profiles, advanced classroom asset management strategies, and logical learning deductions.",
+                syllabus: "General English Comprehension (15), General Sanskrit (15), General Hindi (15), Logical & Analytical Reasoning (25), General Awareness (40), Teaching-Learning Environment in Schools (25). Total: 120 Marks.",
+                cutoff: "Expected State Merit Safe Ranking Zone: 78 - 84 Marks for direct institutional selection.",
+                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+            }
+        };
+
+        let activeBiharExamKey = null;
+        let currentQuestionIndex = 0;
+        let quizCountdownTimer = null;
+        let userSelectedAnswers = [];
+
+        let sampleQuestionsList = [
+            { q: "Who led the rebellion of 1857 in Bihar?", o: ["Kunwar Singh", "Nana Sahib", "Tantia Tope", "Birgis Qadr"], a: 0 },
+            { q: "Which soil type covers the maximum area in the plains of Bihar?", o: ["Red Soil", "Alluvial Soil", "Laterite Soil", "Black Soil"], a: 1 },
+            { q: "What is the primary duration allocated for BSSC/BPSC preliminary evaluations?", o: ["1 Hour", "1.5 Hours", "2 Hours", "3 Hours"], a: 2 }
+        ];
+
+        window.showBiharExamsPortal = function() {
+            const gridTarget = document.getElementById("bihar-exams-grid-target");
+            gridTarget.innerHTML = "";
+            
+            Object.keys(BIHAR_EXAMS_DATASET).forEach(key => {
+                const item = BIHAR_EXAMS_DATASET[key];
+                gridTarget.innerHTML += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm p-3 hover-action" onclick="viewBiharExamDetails('${key}')">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-2">${item.title}</h6>
+                                    <p class="text-muted small mb-3">${item.notes.substring(0, 85)}...</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2 border-top pt-2">
+                                    <span class="text-danger small fw-semibold">View Resources →</span>
+                                    <span class="badge bg-light text-secondary border">Notes & Mocks</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            window.resetBiharPortalView();
+            const modalElement = new bootstrap.Modal(document.getElementById('biharExamsModal'));
+            modalElement.show();
+        };
+
+        window.viewBiharExamDetails = function(key) {
+            activeBiharExamKey = key;
+            const targetData = BIHAR_EXAMS_DATASET[key];
+            
+            document.getElementById("bx-title").innerText = targetData.title;
+            document.getElementById("bx-notes").innerText = targetData.notes;
+            document.getElementById("bx-syllabus").innerText = targetData.syllabus;
+            document.getElementById("bx-cutoff").innerText = targetData.cutoff;
+            
+            const mockContainer = document.getElementById("bx-mock-container");
+            mockContainer.innerHTML = "";
+            
+            targetData.mocks.forEach((mockName) => {
+                mockContainer.innerHTML += `
+                    <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100" onclick="startMockExamArena('${mockName}')">
+                        <span><i class="fa-solid fa-file-signature me-2"></i> ${mockName}</span>
+                        <span class="badge bg-warning text-dark">2 Hours</span>
+                    </button>
+                `;
+            });
+
+            document.getElementById("bihar-list-view").classList.add("d-none");
+            document.getElementById("bihar-detail-view").classList.remove("d-none");
+        };
+
+        window.backToBiharList = function() {
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-list-view").classList.remove("d-none");
+        };
+
+        window.resetBiharPortalView = function() {
+            clearInterval(quizCountdownTimer);
+            document.getElementById("bihar-quiz-view").classList.add("d-none");
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-list-view").classList.remove("d-none");
+        };
+
+        window.startMockExamArena = function(mockName) {
+            if(!confirm(`Do you want to initiate the timed 2-Hour assessment session for: ${mockName}?`)) return;
+            
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-quiz-view").classList.remove("d-none");
+            document.getElementById("quiz-operational-body").classList.remove("d-none");
+            document.getElementById("quiz-score-container").classList.add("d-none");
+            
+            document.getElementById("quiz-arena-title").innerText = `${BIHAR_EXAMS_DATASET[activeBiharExamKey].title} - ${mockName}`;
+            
+            currentQuestionIndex = 0;
+            userSelectedAnswers = new Array(sampleQuestionsList.length).fill(null);
+            
+            renderQuizQuestion();
+            beginQuizTimerCount(120 * 60); 
+        };
+
+        function renderQuizQuestion() {
+            const qContainer = document.getElementById("quiz-question-container");
+            const item = sampleQuestionsList[currentQuestionIndex];
+            
+            let optionsHtml = "";
+            item.o.forEach((option, idx) => {
+                const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
+                optionsHtml += `
+                    <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
+                        <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
+                        <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
+                    </div>
+                `;
+            });
+
+            qContainer.innerHTML = `
+                <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${sampleQuestionsList.length}</h5>
+                <p class="fs-5 text-secondary mb-4">${item.q}</p>
+                <div class="options-block-wrapper">${optionsHtml}</div>
+            `;
+            
+            document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
+            if(currentQuestionIndex === sampleQuestionsList.length - 1) {
+                document.getElementById("quiz-next-btn").classList.add("d-none");
+                document.getElementById("quiz-submit-btn").classList.remove("d-none");
+            } else {
+                document.getElementById("quiz-next-btn").classList.remove("d-none");
+                document.getElementById("quiz-submit-btn").classList.add("d-none");
+            }
+        }
+
+        window.selectQuizOption = function(index) {
+            const radioBtn = document.getElementById(`opt-${index}`);
+            if(radioBtn) radioBtn.checked = true;
+            userSelectedAnswers[currentQuestionIndex] = index;
+        };
+
+        window.navigateQuiz = function(direction) {
+            currentQuestionIndex += direction;
+            renderQuizQuestion();
+        };
+
+        function beginQuizTimerCount(durationSeconds) {
+            clearInterval(quizCountdownTimer);
+            let counter = durationSeconds;
+            const display = document.getElementById("quiz-timer");
+            
+            quizCountdownTimer = setInterval(() => {
+                let hours = Math.floor(counter / 3600);
+                let minutes = Math.floor((counter % 3600) / 60);
+                let seconds = counter % 60;
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.innerText = (hours > 0 ? hours + ":" : "") + minutes + ":" + seconds;
+
+                if (--counter < 0) {
+                    clearInterval(quizCountdownTimer);
+                    window.finalizeQuizExecution();
+                }
             }, 1000);
         }
 
-        function finishExamPrompt() {
-            if(confirm("Are you sure you want to end your test session and compute standard accuracy metrics?")) {
-                autoSubmitExamination();
-            }
-        }
-
-        function autoSubmitExamination() {
-            clearInterval(timerInterval);
-            let score = 0;
-            let answeredCount = 0;
-
-            userResponses.forEach((resp, idx) => {
-                if(resp !== null) {
-                    answeredCount++;
-                    if(resp === mockQuestions[idx].correct) {
-                        score++;
-                    }
+        window.finalizeQuizExecution = function() {
+            clearInterval(quizCountdownTimer);
+            
+            let correctCount = 0;
+            sampleQuestionsList.forEach((item, index) => {
+                if(userSelectedAnswers[index] === item.a) {
+                    correctCount++;
                 }
             });
 
-            // Display instantaneous evaluation window matrix
-            alert(`=== EXAMINATION REPORT ===\n\nTotal Questions: ${mockQuestions.length}\nAnswered: ${answeredCount}\nCorrect Answers: ${score}\nFinal Score: ${score} / ${mockQuestions.length}`);
-            
-            // Reset visibility toggles
-            document.getElementById("live-mock-interface").classList.add("d-none");
-            document.getElementById("mock-dashboard-view").classList.remove("d-none");
-            
-            // Flush localized session configurations
-            currentIndex = 0;
-            userResponses = new Array(mockQuestions.length).fill(null);
-            reviewStatus = new Array(mockQuestions.length).fill(false);
-            examTimeSeconds = 45 * 60;
-        }
+            document.getElementById("quiz-operational-body").classList.add("d-none");
+            document.getElementById("quiz-score-container").classList.remove("d-none");
+            document.getElementById("quiz-final-score-text").innerHTML = `
+                Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${sampleQuestionsList.length} base evaluation samples.<br>
+                <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
+            `;
+        };
+
+        window.exitQuizArena = function() {
+            window.resetBiharPortalView();
+            window.backToBiharList();
+        };
     </script>
 </body>
 </html>
