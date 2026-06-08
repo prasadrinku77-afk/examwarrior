@@ -651,11 +651,68 @@
         let quizCountdownTimer = null;
         let userSelectedAnswers = [];
 
-        let sampleQuestionsList = [
-            { q: "Who led the rebellion of 1857 in Bihar?", o: ["Kunwar Singh", "Nana Sahib", "Tantia Tope", "Birgis Qadr"], a: 0 },
-            { q: "Which soil type covers the maximum area in the plains of Bihar?", o: ["Red Soil", "Alluvial Soil", "Laterite Soil", "Black Soil"], a: 1 },
-            { q: "What is the primary duration allocated for BSSC/BPSC preliminary evaluations?", o: ["1 Hour", "1.5 Hours", "2 Hours", "3 Hours"], a: 2 }
-        ];
+        // PASTE THIS TO REPLACE THE OLD viewBiharExamDetails FUNCTION
+window.viewBiharExamDetails = async function(key) {
+    activeBiharExamKey = key;
+    
+    // Set loading placeholders while fetching from cloud documents
+    document.getElementById("bx-title").innerText = "Connecting to Cloud...";
+    document.getElementById("bx-notes").innerText = "Syncing descriptions...";
+    document.getElementById("bx-syllabus").innerText = "Mapping curriculum structure...";
+    document.getElementById("bx-cutoff").innerText = "Analyzing threshold patterns...";
+    
+    const mockContainer = document.getElementById("bx-mock-container");
+    mockContainer.innerHTML = `<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-warning"></div> Loading tests...</div>`;
+
+    try {
+        // 1. Fetch main exam configurations (Title, Syllabus, Cutoff, Notes) from Firestore
+        // We use import-based access or map directly to your live database instance
+        const { doc, getDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+        
+        const docRef = doc(db, "exams", key);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const cloudData = docSnap.data();
+            document.getElementById("bx-title").innerText = cloudData.title || "Exam Information Track";
+            document.getElementById("bx-notes").innerText = cloudData.notes || "No extra reference notes published yet.";
+            document.getElementById("bx-syllabus").innerText = cloudData.syllabus || "Syllabus details pending upload.";
+            document.getElementById("bx-cutoff").innerText = cloudData.cutoff || "Cutoff parameters not registered.";
+        } else {
+            document.getElementById("bx-title").innerText = "Profile Ready";
+            document.getElementById("bx-notes").innerText = "Database slot registered successfully! Use your creator panel to fill fields.";
+        }
+
+        // 2. Fetch live papers created inside the "mocks" subcollection
+        const mocksColRef = collection(db, "exams", key, "mocks");
+        const querySnapshot = await getDocs(mocksColRef);
+        mockContainer.innerHTML = "";
+
+        if (querySnapshot.empty) {
+            mockContainer.innerHTML = `<p class="small text-white-50">No evaluation mock papers created for this track yet.</p>`;
+            return;
+        }
+
+        // Generate clickable buttons for every paper found inside your database profile
+        querySnapshot.forEach((mockDoc) => {
+            const mockData = mockDoc.data();
+            mockContainer.innerHTML += `
+                <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100 mb-2" onclick="startLiveCloudMockSession('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')">
+                    <span><i class="fa-solid fa-file-signature me-2"></i> ${mockData.name || 'Evaluation Paper'}</span>
+                    <span class="badge bg-warning text-dark">${mockData.duration || '2 hours'}</span>
+                </button>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Cloud Retrieval Failure: ", err);
+        mockContainer.innerHTML = `<p class="text-danger small">Failed to load real-time cloud items.</p>`;
+    }
+
+    // Toggle panel layout visibility
+    document.getElementById("bihar-list-view").classList.add("d-none");
+    document.getElementById("bihar-detail-view").classList.remove("d-none");
+};
 
         window.showBiharExamsPortal = function() {
             const gridTarget = document.getElementById("bihar-exams-grid-target");
