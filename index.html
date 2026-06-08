@@ -36,6 +36,16 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
         }
+        /* Live Mock Portal Interface Styles */
+        .exam-header { background-color: #0d6efd; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; }
+        .question-box { background: white; border-radius: 8px; padding: 25px; min-height: 340px; }
+        .option-card { border: 1px solid #dee2e6; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; }
+        .option-card:hover { background-color: #f8f9fa; border-color: #b5d5ff; }
+        .option-card.selected { background-color: #d1e7dd; border-color: #a3cfbb; color: #0f5132; font-weight: bold; }
+        .palette-btn { width: 38px; height: 38px; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid #ccc; background-color: #fff; cursor: pointer; font-weight: 500; }
+        .palette-btn.answered { background-color: #198754; color: white; border-color: #198754; }
+        .palette-btn.marked { background-color: #ffc107; color: #212529; border-color: #ffc107; }
+        .palette-btn.current { border: 2px solid #0d6efd; box-shadow: 0 0 5px rgba(13,110,253,0.5); }
     </style>
 </head>
 <body>
@@ -129,11 +139,74 @@
                 <h2 class="fw-bold text-dark"><i class="fa-solid fa-laptop text-primary me-2"></i> Bihar Exam Mock Test</h2>
                 <p class="text-muted">Access online mock series and continuous evaluation matrices mapped specifically to upcoming BPSC, Bihar SI, and BSSC test modules.</p>
             </div>
-            <div class="row justify-content-center">
+            
+            <div class="row justify-content-center" id="mock-dashboard-view">
                 <div class="col-md-8 text-center">
                     <div class="card p-5 shadow-sm border-0 bg-light">
-                        <h4 class="text-secondary mb-3">Online Mock Workspace Coming Soon</h4>
-                        <p class="text-muted mb-0">We are configuring our interactive examination portal natively. Please check back shortly or connect via WhatsApp for early registration keys.</p>
+                        <h4 class="text-primary fw-bold mb-3">Live BPSC & BSSC Exam Simulator Ready</h4>
+                        <p class="text-muted mb-4">Experience a real competitive environment complete with standard time counters, review markers, and instant performance metrics.</p>
+                        <button class="btn btn-primary btn-lg px-5 fw-bold shadow-sm" onclick="startActiveMockWorkspace()">
+                            <i class="fa-solid fa-play me-2"></i> Start Active Mock Test
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="live-mock-interface" class="d-none mt-2 shadow shadow-lg rounded-3 border-0">
+                <header class="exam-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="m-0 fw-bold"><i class="fa-solid fa-square-poll-vertical me-2"></i> BIHAR EXAM PORTAL</h5>
+                        <small class="text-white-50">Manish Kumar School Online Examination</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="bg-dark bg-opacity-25 px-3 py-1 rounded">
+                            <i class="fa-regular fa-clock me-2"></i> Time Remaining: <span id="exam-timer" class="fw-bold text-warning">45:00</span>
+                        </div>
+                        <div class="text-end d-none d-sm-block">
+                            <strong class="d-block text-warning">Candidate Terminal</strong>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="p-4 bg-white rounded-bottom">
+                    <div class="row g-4">
+                        <div class="col-lg-8 border-end border-light">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-secondary px-3 py-2">General Studies (GS Paper)</span>
+                                <span class="text-muted fw-bold">Q. <span id="current-q-num">1</span> / <span id="total-q-num">5</span></span>
+                            </div>
+                            <div class="question-box d-flex flex-column justify-content-between shadow-sm border p-4 rounded bg-white">
+                                <div>
+                                    <h5 id="question-text" class="text-dark lh-base fw-semibold mb-4">Loading question data...</h5>
+                                    <div id="options-container"></div>
+                                </div>
+                                <div class="d-flex justify-content-between border-top pt-3 mt-4">
+                                    <button class="btn btn-outline-secondary px-3" id="btn-prev" onclick="navigateQuestion(-1)"><i class="fa-solid fa-chevron-left me-1"></i> Previous</button>
+                                    <div>
+                                        <button class="btn btn-warning text-dark me-2" onclick="markForReview()">Mark for Review</button>
+                                        <button class="btn btn-light text-danger border me-2" onclick="clearResponse()">Clear</button>
+                                    </div>
+                                    <button class="btn btn-primary px-4" id="btn-next" onclick="navigateQuestion(1)">Save & Next <i class="fa-solid fa-chevron-right ms-1"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <h6 class="fw-bold text-secondary mb-3"><i class="fa-solid fa-table-cells text-primary me-2"></i>Question Palette Map</h6>
+                            <div class="d-flex flex-wrap gap-2 mb-4" id="palette-grid"></div>
+                            
+                            <div class="border-top pt-3 mb-4">
+                                <div class="row g-2 text-start small">
+                                    <div class="col-6"><span class="badge bg-white text-dark border me-1">1</span> Not Visited</div>
+                                    <div class="col-6"><span class="badge bg-secondary text-white me-1">1</span> Skipped</div>
+                                    <div class="col-6"><span class="badge bg-success me-1">1</span> Answered</div>
+                                    <div class="col-6"><span class="badge bg-warning text-dark me-1">1</span> For Review</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-success w-100 py-2.5 fw-bold text-uppercase shadow-sm" onclick="finishExamPrompt()">
+                                <i class="fa-solid fa-circle-check me-2"></i> Submit Examination
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -434,11 +507,175 @@
     
     <script type="module" src="js/app.js"></script>
 
+    <script>
+        const mockQuestions = [
+            {
+                question: "Which soil cover dominates the largest geographical surface plain area across Bihar?",
+                options: ["Alluvial Soil", "Red and Yellow Soil", "Laterite Soil", "Marshy Soil"],
+                correct: 0
+            },
+            {
+                question: "The ancient historical site of Nalanda Mahavihara was built during the reign of which dynasty?",
+                options: ["Maurya Dynasty", "Gupta Dynasty", "Pala Dynasty", "Kushan Dynasty"],
+                correct: 1
+            },
+            {
+                question: "Which of the following rivers forms the boundary line between Bihar and Uttar Pradesh?",
+                options: ["Kosi River", "Gandak River", "Karmanasa River", "Bagmati River"],
+                correct: 2
+            },
+            {
+                question: "What pigment captures solar photons within cell plastids during plant photosynthesis?",
+                options: ["Carotenoid", "Anthocyanin", "Chlorophyll a", "Phycobilin"],
+                correct: 2
+            },
+            {
+                question: "The First Buddhist Council was convened immediately after the Mahaparinirvana of Buddha at which location?",
+                options: ["Rajgriha", "Vaishali", "Pataliputra", "Kashmir"],
+                correct: 0
+            }
+        ];
+
+        let currentIndex = 0;
+        let userResponses = new Array(mockQuestions.length).fill(null);
+        let reviewStatus = new Array(mockQuestions.length).fill(false);
+        let examTimeSeconds = 45 * 60; 
+        let timerInterval = null;
+
+        function startActiveMockWorkspace() {
+            document.getElementById("mock-dashboard-view").classList.add("d-none");
+            document.getElementById("live-mock-interface").classList.remove("d-none");
+            
+            // Build Matrix Palette Tracking Grid Buttons
+            const paletteGrid = document.getElementById("palette-grid");
+            paletteGrid.innerHTML = "";
+            mockQuestions.forEach((_, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "palette-btn";
+                btn.id = `palette-num-${idx}`;
+                btn.innerText = idx + 1;
+                btn.onclick = () => jumpToQuestion(idx);
+                paletteGrid.appendChild(btn);
+            });
+
+            renderQuestion();
+            startTimer();
+        }
+
+        function renderQuestion() {
+            const q = mockQuestions[currentIndex];
+            document.getElementById("current-q-num").innerText = currentIndex + 1;
+            document.getElementById("total-q-num").innerText = mockQuestions.length;
+            document.getElementById("question-text").innerText = q.question;
+
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+
+            q.options.forEach((opt, oIdx) => {
+                const div = document.createElement("div");
+                div.className = `option-card ${userResponses[currentIndex] === oIdx ? 'selected' : ''}`;
+                div.innerHTML = `<strong>${String.fromCharCode(65 + oIdx)}.</strong> ${opt}`;
+                div.onclick = () => selectOption(oIdx);
+                optionsContainer.appendChild(div);
+            });
+
+            mockQuestions.forEach((_, idx) => {
+                const pBtn = document.getElementById(`palette-num-${idx}`);
+                pBtn.className = "palette-btn";
+                
+                if (idx === currentIndex) pBtn.classList.add('current');
+                
+                if (userResponses[idx] !== null) {
+                    pBtn.classList.add('answered');
+                } else if (reviewStatus[idx]) {
+                    pBtn.classList.add('marked');
+                } else if (idx < currentIndex) {
+                    pBtn.classList.add('bg-secondary', 'text-white');
+                }
+            });
+
+            document.getElementById("btn-prev").disabled = currentIndex === 0;
+            document.getElementById("btn-next").innerHTML = currentIndex === mockQuestions.length - 1 ? "Finish Exam" : "Save & Next <i class='fa-solid fa-chevron-right ms-1'></i>";
+        }
+
+        function selectOption(index) {
+            userResponses[currentIndex] = index;
+            renderQuestion();
+        }
+
+        function clearResponse() {
+            userResponses[currentIndex] = null;
+            reviewStatus[currentIndex] = false;
+            renderQuestion();
+        }
+
+        function markForReview() {
+            reviewStatus[currentIndex] = true;
+            navigateQuestion(1);
+        }
+
+        function jumpToQuestion(targetIndex) {
+            currentIndex = targetIndex;
+            renderQuestion();
+        }
+
+        function navigateQuestion(step) {
+            if (currentIndex === mockQuestions.length - 1 && step === 1) {
+                finishExamPrompt();
+                return;
+            }
+            const nextIdx = currentIndex + step;
+            if (nextIdx >= 0 && nextIdx < mockQuestions.length) {
+                currentIndex = nextIdx;
+                renderQuestion();
+            }
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById("exam-timer");
+            timerInterval = setInterval(() => {
+                if (examTimeSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    evaluateTotalScore();
+                } else {
+                    examTimeSeconds--;
+                    const mins = Math.floor(examTimeSeconds / 60).toString().padStart(2, '0');
+                    const secs = (examTimeSeconds % 60).toString().padStart(2, '0');
+                    timerEl.innerText = `${mins}:${secs}`;
+                }
+            }, 1000);
+        }
+
+        function finishExamPrompt() {
+            if (confirm("Are you sure you want to complete and submit your mock responses?")) {
+                clearInterval(timerInterval);
+                evaluateTotalScore();
+            }
+        }
+
+        function evaluateTotalScore() {
+            let correctCount = 0;
+            mockQuestions.forEach((q, idx) => {
+                if (userResponses[idx] === q.correct) correctCount++;
+            });
+            alert(`🎉 Mock Completed Successfully!\nYour Score: ${correctCount} out of ${mockQuestions.length}`);
+            
+            // Return back smoothly to status grid
+            document.getElementById("live-mock-interface").classList.add("d-none");
+            document.getElementById("mock-dashboard-view").classList.remove("d-none");
+            
+            // Reset configurations
+            currentIndex = 0;
+            examTimeSeconds = 45 * 60;
+            userResponses.fill(null);
+            reviewStatus.fill(false);
+        }
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration Core Sync Data
         const firebaseConfig = {
             apiKey: "AIzaSyA8uZDSlXt9Jfglhh47zyo0wjdRxHuFMRc",
             authDomain: "mk-school-300b3.firebaseapp.com",
@@ -449,34 +686,26 @@
             measurementId: "G-6959G49TVX"
         };
 
-        // Initialize App & DB Connection
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
         const noticeContainer = document.getElementById("homepage-notice-list");
 
-        // Set up the Real-time stream listener
         function getLiveNotices() {
             const noticesCollection = collection(db, "notices");
             const q = query(noticesCollection, orderBy("createdAt", "desc"));
 
             onSnapshot(q, (snapshot) => {
-                noticeContainer.innerHTML = ""; // Clear current items
-
+                noticeContainer.innerHTML = "";
                 if (snapshot.empty) {
                     noticeContainer.innerHTML = '<li class="list-group-item text-white-50 text-center">No active notices.</li>';
                     return;
                 }
-
                 snapshot.forEach((doc) => {
                     const notice = doc.data();
                     const li = document.createElement("li");
                     li.className = "list-group-item d-flex align-items-start gap-2";
-                    
-                    li.innerHTML = `
-                        <span>🔹</span>
-                        <div>${notice.notice}</div>
-                    `;
+                    li.innerHTML = `<span>🔹</span><div>${notice.notice}</div>`;
                     noticeContainer.appendChild(li);
                 });
             }, (error) => {
@@ -484,7 +713,6 @@
                 noticeContainer.innerHTML = '<li class="list-group-item text-danger">Failed to sync updates.</li>';
             });
         }
-
         document.addEventListener("DOMContentLoaded", getLiveNotices);
     </script>
 </body>
