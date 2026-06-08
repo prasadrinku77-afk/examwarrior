@@ -861,23 +861,105 @@ window.viewBiharExamDetails = async function(key) {
             }, 1000);
         }
 
-        window.finalizeQuizExecution = function() {
-            clearInterval(quizCountdownTimer);
-            
-            let correctCount = 0;
-            sampleQuestionsList.forEach((item, index) => {
-                if(userSelectedAnswers[index] === item.a) {
-                    correctCount++;
-                }
-            });
+        let cloudQuestionsList = [];
 
-            document.getElementById("quiz-operational-body").classList.add("d-none");
-            document.getElementById("quiz-score-container").classList.remove("d-none");
-            document.getElementById("quiz-final-score-text").innerHTML = `
-                Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${sampleQuestionsList.length} base evaluation samples.<br>
-                <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
-            `;
-        };
+window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
+    if(!confirm(`Do you want to initiate the timed assessment session for: ${paperName}?`)) return;
+    
+    document.getElementById("bihar-detail-view").classList.add("d-none");
+    document.getElementById("bihar-quiz-view").classList.remove("d-none");
+    document.getElementById("quiz-operational-body").classList.add("d-none");
+    
+    const qContainer = document.getElementById("quiz-question-container");
+    qContainer.innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-muted mt-2">Generating question sheets from cloud database structures...</p>
+        </div>`;
+    
+    try {
+        const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+        const questionsColRef = collection(db, "exams", examId, "mocks", mockId, "questions");
+        const snapshot = await getDocs(questionsColRef);
+        
+        cloudQuestionsList = [];
+        snapshot.forEach(doc => {
+            cloudQuestionsList.push(doc.data());
+        });
+        
+        if(cloudQuestionsList.length === 0) {
+            qContainer.innerHTML = `
+                <div class="alert alert-warning border-0 text-dark">
+                    <h5>⚠️ Empty Mock Paper Profile</h5>
+                    <p class="mb-0">This paper has been created, but no questions have been uploaded yet. Please use your bulk uploader tool!</p>
+                </div>`;
+            return;
+        }
+        
+        document.getElementById("quiz-arena-title").innerText = paperName;
+        document.getElementById("quiz-operational-body").classList.remove("d-none");
+        document.getElementById("quiz-score-container").classList.add("d-none");
+        
+        currentQuestionIndex = 0;
+        userSelectedAnswers = new Array(cloudQuestionsList.length).fill(null);
+        
+        renderCloudQuestionItem();
+        beginQuizTimerCount(120 * 60); 
+        
+    } catch(err) {
+        console.error(err);
+        qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
+    }
+};
+
+window.renderCloudQuestionItem = function() {
+    const qContainer = document.getElementById("quiz-question-container");
+    const item = cloudQuestionsList[currentQuestionIndex];
+    
+    let optionsHtml = "";
+    item.o.forEach((option, idx) => {
+        const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
+        optionsHtml += `
+            <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
+                <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
+                <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
+            </div>
+        `;
+    });
+
+    qContainer.innerHTML = `
+        <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
+        <p class="fs-5 text-secondary mb-4">${item.q}</p>
+        <div class="options-block-wrapper">${optionsHtml}</div>
+    `;
+    
+    document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
+    if(currentQuestionIndex === cloudQuestionsList.length - 1) {
+        document.getElementById("quiz-next-btn").classList.add("d-none");
+        document.getElementById("quiz-submit-btn").classList.remove("d-none");
+    } else {
+        document.getElementById("quiz-next-btn").classList.remove("d-none");
+        document.getElementById("quiz-submit-btn").classList.add("d-none");
+    }
+};
+
+window.finalizeQuizExecution = function() {
+    clearInterval(quizCountdownTimer);
+    
+    let correctCount = 0;
+    cloudQuestionsList.forEach((item, index) => {
+        if(userSelectedAnswers[index] === item.a) {
+            correctCount++;
+        }
+    });
+
+    document.getElementById("quiz-operational-body").classList.add("d-none");
+    document.getElementById("quiz-score-container").classList.remove("d-none");
+    document.getElementById("quiz-final-score-text").innerHTML = `
+        Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${cloudQuestionsList.length} base evaluation samples.<br>
+        <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
+    `;
+};
 // =========================================================================
 // NEW LIVE CLOUD EXAM SYSTEM ENGINE LOGIC
 // =========================================================================
