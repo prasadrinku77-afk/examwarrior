@@ -36,17 +36,36 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
         }
+        
+        /* PracticeMock System Palette Badges Styling */
+        .badge-answered { background-color: #2e7d32; color: #ffffff; }
+        .badge-not-answered { background-color: #d32f2f; color: #ffffff; }
+        .badge-review { background-color: #7b1fa2; color: #ffffff; }
+        .badge-not-visited { background-color: #eeeeee; color: #424242; border: 1px solid #ccc; }
+        
+        .palette-grid-btn {
+            width: 42px;
+            height: 42px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s ease;
+        }
+        .palette-grid-btn:hover {
+            opacity: 0.85;
+            transform: scale(1.05);
+        }
+        .custom-quiz-option {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
         .custom-quiz-option:hover {
-            background-color: #e9ecef !important;
-            border-color: #0d6efd !important;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        .animate-pulse {
-            animation: pulse 2s infinite;
+            background-color: #f1f3f5 !important;
         }
     </style>
 </head>
@@ -78,26 +97,22 @@
                 <div class="col-lg-3 text-center">
                     <img src="director.jpeg" alt="Director Manish Kumar" class="director-img img-fluid rounded-circle shadow" style="max-width: 200px;">
                 </div>
-                
                 <div class="col-lg-5">
                     <span class="badge bg-warning text-dark mb-3">ADMISSION OPEN 2026</span>
                     <h1 class="display-6 fw-bold">MANISH KUMAR SCHOOL OF ELEMENTARY AND HIGHER EDUCATION</h1>
                     <h3 class="h5 mt-3 text-warning">A Step Towards A Bright Future</h3>
                     <p class="lead mt-3 mb-1">Director: Manish Kumar</p>
-                    <small class="d-block text-white-50 mb-3">
-                        ✔ 5+ Years Banking Industry | ✔ 15+ Years Competitive Exam Guidance
-                    </small>
+                    <small class="d-block text-white-50 mb-3">✔ 5+ Years Banking Industry | ✔ 15+ Years Competitive Exam Guidance</small>
                     <div class="d-flex gap-2">
                         <a href="#admission" class="btn btn-warning btn-md">Apply Now</a>
                         <a href="#contact" class="btn btn-outline-light btn-md">Contact Us</a>
                     </div>
                 </div>
-
                 <div class="col-lg-4">
                     <div class="card notice-card shadow p-3">
                         <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2 border-secondary">
                             <h5 class="m-0 text-warning fw-bold">📢 LATEST NOTICES</h5>
-                            <span class="spinner-grow spinner-grow-sm text-warning" role="status" id="live-indicator"></span>
+                            <span class="spinner-grow spinner-grow-sm text-warning" id="live-indicator"></span>
                         </div>
                         <ul class="list-group notice-list-group list-group-flush" id="homepage-notice-list">
                             <li class="list-group-item text-white-50">Connecting to live feed...</li>
@@ -108,228 +123,146 @@
         </div>
     </section>
 
-    <section class="container py-5">
-        <div class="row text-center">
-            <div class="col-md-3 mb-3"><div class="card p-4 h-100"><h4>📚</h4><h5>School Coaching</h5></div></div>
-            <div class="col-md-3 mb-3"><div class="card p-4 h-100"><h4>🎯</h4><h5>Competitive Exams</h5></div></div>
-            <div class="col-md-3 mb-3"><div class="card p-4 h-100"><h4>🎓</h4><h5>Admission Guidance</h5></div></div>
-            <div class="col-md-3 mb-3"><div class="card p-4 h-100"><h4>🏆</h4><h5>Career Counselling</h5></div></div>
-        </div>
-    </section>
-
-    <section id="courses" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">School Coaching</h2>
-            <div class="row text-center">
-                <div class="col-md-4 mb-3"><div class="card p-4 fw-bold shadow-sm">CBSE</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 fw-bold shadow-sm">BSEB</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 fw-bold shadow-sm">ICSE</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 shadow-sm">Science</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 shadow-sm">Mathematics</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 shadow-sm">English</div></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="competitive" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Competitive Exam Preparation</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <ul class="list-group shadow-sm">
-                        <li class="list-group-item">BPSC</li>
-                        <li class="list-group-item">SSC CGL</li>
-                        <li class="list-group-item">SSC CHSL</li>
-                        <li class="list-group-item">Banking (IBPS / SBI / RBI)</li>
-                        <li class="list-group-item">Railway</li>
-                        <li class="list-group-item">Bihar SI</li>
-                    </ul>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <ul class="list-group shadow-sm">
-                        <li class="list-group-item">CUET</li>
-                        <li class="list-group-item">NDA</li>
-                        <li class="list-group-item">NET</li>
-                        <li class="list-group-item">JRF</li>
-                        <li class="list-group-item">Ph.D Entrance</li>
-                        <li class="list-group-item">Other Government Exams</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="materials" class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="fw-bold text-dark"><i class="fa-solid fa-file-pdf text-danger me-2"></i> PDF Notes Portal</h2>
-                <p class="text-muted">Select your target competitive exam course below to access systematic folders of reference notes and mock papers.</p>
+                <h2 class="fw-bold text-dark"><i class="fa-solid fa-file-pdf text-danger me-2"></i> PDF Notes & Practice Hub</h2>
+                <p class="text-muted">Select an examination path below to view available notes, official syllabi, and multi-tiered PracticeMock testing resources.</p>
             </div>
 
-            <div class="row g-4 justify-content-center" id="exam-cards-container">
+            <div class="row g-4 justify-content-center">
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" style="border-left: 4px solid #dc3545 !important;" onclick="showBiharExamsPortal()">
+                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" style="border-top: 4px solid #dc3545 !important;" onclick="openBiharExamsPortal()">
                         <div class="card-body">
                             <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #ffebee;">
-                                <i class="fa-solid fa-star fa-lg text-danger animate-pulse"></i>
+                                <i class="fa-solid fa-square-poll-horizontal fa-lg text-danger"></i>
                             </div>
-                            <h5 class="fw-bold mb-1 text-danger">Bihar Upcoming Exams</h5>
-                            <small class="text-muted">2026 Notifications</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('upsc', 'UPSC CSE Materials')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #e3f2fd;">
-                                <i class="fa-solid fa-building-columns fa-lg text-primary"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">UPSC</h5>
-                            <small class="text-muted">Civil Services</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('bpsc', 'BPSC State Exam Materials')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #e8f5e9;">
-                                <i class="fa-solid fa-gavel fa-lg text-success"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">BPSC</h5>
-                            <small class="text-muted">Bihar Civil Services</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('bssc', 'BSSC Exam Resources')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #e0f7fa;">
-                                <i class="fa-solid fa-map-location-dot fa-lg text-info"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">BSSC</h5>
-                            <small class="text-muted">Bihar Staff Selection</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('bpsc-teacher', 'BPSC Teacher Recruitment')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #fff3e0;">
-                                <i class="fa-solid fa-chalkboard-user fa-lg text-warning"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">BPSC Teacher</h5>
-                            <small class="text-muted">TRE Resources</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('ssc', 'SSC Central Exam Materials')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #ffebee;">
-                                <i class="fa-solid fa-id-card fa-lg text-danger"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">SSC</h5>
-                            <small class="text-muted">CGL, CHSL, MTS</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('railway', 'RRB Railway Resources')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #f5f5f5;">
-                                <i class="fa-solid fa-train fa-lg text-secondary"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">Railway</h5>
-                            <small class="text-muted">RRB NTPC, Group D</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('banking', 'Banking Exam Resources')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #eceff1;">
-                                <i class="fa-solid fa-piggy-bank fa-lg text-dark"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">Banking</h5>
-                            <small class="text-muted">IBPS, SBI PO/Clerk</small>
+                            <h5 class="fw-bold mb-1 text-danger">Bihar Exam Portal</h5>
+                            <small class="badge bg-danger">PracticeMock UI Engine</small>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div id="resource-detail-view" class="card shadow-sm border-0 d-none mt-4">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
-                    <h4 class="fw-bold text-primary mb-0" id="selected-exam-title">Exam Materials</h4>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="closeResourceView()">
-                        <i class="fa-solid fa-arrow-left me-1"></i> Back to All Exams
-                    </button>
+    <div class="modal fade" id="biharExamsModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white py-2">
+                    <h6 class="modal-title fw-bold" id="exam-portal-header-title">PracticeMock Smart Evaluation Center</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="shutdownActiveSession()"></button>
                 </div>
-                <div class="card-body p-4 bg-white rounded-bottom">
+                <div class="modal-body p-0 bg-light position-relative">
 
-                    <div id="tier-toggle-container" class="mb-4 text-center d-none">
-                        <div class="btn-group" role="group" aria-label="Tier selection">
-                            <input type="radio" class="btn-check" name="examTier" id="tierPT" checked onclick="switchTier('PT')">
-                            <label class="btn btn-outline-primary px-4 fw-semibold" for="tierPT">Preliminary Test (PT)</label>
+                    <div id="mock-dashboard-view" class="p-4">
+                        <h4 class="fw-bold text-dark mb-3">Target Exam Selector</h4>
+                        <div class="row g-3" id="exams-list-target-grid"></div>
+                    </div>
 
-                            <input type="radio" class="btn-check" name="examTier" id="tierMains" onclick="switchTier('Mains')">
-                            <label class="btn btn-outline-primary px-4 fw-semibold" for="tierMains">Mains Examination</label>
+                    <div id="mock-extended-info-view" class="d-none p-4">
+                        <button class="btn btn-sm btn-outline-secondary mb-3" onclick="revertToDashboard()"><i class="fa-solid fa-arrow-left me-1"></i> Back</button>
+                        <div class="row g-4">
+                            <div class="col-lg-8">
+                                <div class="card border-0 shadow-sm p-4">
+                                    <h2 class="fw-bold text-primary mb-1" id="info-exam-title">-</h2>
+                                    <span class="badge bg-light text-success border border-success align-self-start my-2">Dynamic Sync Online</span>
+                                    <hr>
+                                    <h6 class="fw-bold text-secondary"><i class="fa-solid fa-file-pdf me-2"></i>Notes & References</h6>
+                                    <p class="text-muted small" id="info-exam-notes">-</p>
+                                    <hr>
+                                    <h6 class="fw-bold text-secondary"><i class="fa-solid fa-list-check me-2"></i>Curriculum Mapping</h6>
+                                    <p class="text-muted small" id="info-exam-syllabus">-</p>
+                                    <hr>
+                                    <h6 class="fw-bold text-secondary"><i class="fa-solid fa-chart-bar me-2"></i>Expected Cutoff Breakdown</h6>
+                                    <p class="text-muted small" id="info-exam-cutoff">-</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card border-0 shadow-sm p-3">
+                                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-clock-rotate-left text-danger me-2"></i>Test Selection Matrix</h5>
+                                    <div class="d-grid gap-2" id="info-mock-sets-container"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <ul class="nav nav-pills mb-4 bg-light p-2 rounded" id="resourceContentTypeTabs" role="tablist">
-                        <li class="nav-item flex-fill text-center" role="presentation">
-                            <button class="nav-link active w-100 fw-bold" id="notes-tab" data-bs-toggle="pill" data-bs-target="#panel-notes" type="button" role="tab" aria-controls="panel-notes" aria-selected="true">
-                                <i class="fa-solid fa-file-pdf me-2"></i>PDF Notes
-                            </button>
-                        </li>
-                        <li class="nav-item flex-fill text-center" role="presentation">
-                            <button class="nav-link w-100 fw-bold" id="videos-tab" data-bs-toggle="pill" data-bs-target="#panel-videos" type="button" role="tab" aria-controls="panel-videos" aria-selected="false">
-                                <i class="fa-solid fa-video me-2"></i>Video Classes
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content" id="resourceTabContent">
-                        <div class="tab-pane fade show active" id="panel-notes" role="tabpanel" aria-labelledby="notes-tab">
-                            <div class="row g-4" id="download-links-grid"></div>
+                    <div id="live-mock-interface" class="d-none h-100 position-absolute w-100 top-0 left-0 bg-white" style="z-index: 1050; overflow-y: auto;">
+                        <div class="row g-0" style="min-height: 100%;">
+                            <div class="col-lg-9 d-flex flex-column border-end bg-white">
+                                <div class="bg-light px-4 py-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <h5 class="fw-bold text-dark mb-0" id="live-interface-mock-title">Active Examination Paper</h5>
+                                    <div class="bg-danger text-white px-3 py-2 rounded fw-bold style-timer font-monospace" id="live-session-timer">45:00</div>
+                                </div>
+                                <div class="p-4 flex-grow-1" id="live-question-card-container">
+                                    </div>
+                                <div class="bg-light p-3 border-top d-flex justify-content-between">
+                                    <div>
+                                        <button class="btn btn-outline-secondary btn-sm px-3 me-2" onclick="shiftActiveIndex(-1)">Previous</button>
+                                        <button class="btn btn-outline-primary btn-sm px-3" onclick="shiftActiveIndex(1)">Next</button>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-warning btn-sm px-3 me-2 text-dark fw-bold" onclick="markCurrentForReview()">Mark For Review</button>
+                                        <button class="btn btn-success btn-sm px-4 fw-bold" onclick="finishExamPrompt()">Submit Paper</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 bg-light p-3 d-flex flex-column justify-content-between border-start">
+                                <div>
+                                    <div class="card p-3 mb-3 border-0 bg-white shadow-sm">
+                                        <h6 class="fw-bold mb-3 border-bottom pb-2">Status Metrics Overview</h6>
+                                        <div class="row g-2 text-center small mb-2">
+                                            <div class="col-6"><span class="badge badge-answered d-block py-2" id="side-stat-ans">0 Answered</span></div>
+                                            <div class="col-6"><span class="badge badge-not-answered d-block py-2" id="side-stat-unans">0 Unanswered</span></div>
+                                        </div>
+                                        <div class="row g-2 text-center small">
+                                            <div class="col-6"><span class="badge badge-review d-block py-2" id="side-stat-rev">0 Review</span></div>
+                                            <div class="col-6"><span class="badge badge-not-visited d-block py-2" id="side-stat-vis">0 Unvisited</span></div>
+                                        </div>
+                                    </div>
+                                    <h6 class="fw-bold small text-muted text-uppercase mb-2">Question Navigation Palette</h6>
+                                    <div class="d-flex flex-wrap gap-2" id="side-palette-grid-target"></div>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="alert alert-info py-2 small border-0 mb-0">
+                                        <strong>Interface Guide:</strong> Use the grid links above to switch quickly between sections.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="tab-pane fade" id="panel-videos" role="tabpanel" aria-labelledby="videos-tab">
-                            <div class="row g-3" id="video-links-grid"></div>
+                    </div>
+
+                    <div id="live-analysis-interface" class="d-none p-4 overflow-auto h-100 bg-light">
+                        <div class="row g-4">
+                            <div class="col-lg-4">
+                                <div class="card border-0 bg-primary text-white p-4 text-center shadow mb-4">
+                                    <h6 class="text-white-50 text-uppercase fw-bold small mb-1">Calculated Merit Rank</h6>
+                                    <h1 class="display-3 fw-bold my-1" id="report-rank">#--</h1>
+                                    <p class="mb-0 small text-white-50" id="report-takers-count">Processing live scoreboard comparisons...</p>
+                                </div>
+                                <div class="card border-0 shadow-sm p-3 mb-4">
+                                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Diagnostic Summary</h6>
+                                    <div class="d-flex justify-content-between mb-2"><span>🟢 Right Answers:</span><span id="report-right" class="fw-bold text-success">0</span></div>
+                                    <div class="d-flex justify-content-between mb-2"><span>🔴 Wrong Answers:</span><span id="report-wrong" class="fw-bold text-danger">0</span></div>
+                                    <div class="d-flex justify-content-between mb-2"><span>⚪ Unattempted Items:</span><span id="report-blank" class="fw-bold text-secondary">0</span></div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between"><span>📊 Precision Accuracy Index:</span><span id="report-accuracy" class="fw-bold text-primary">0%</span></div>
+                                </div>
+                                <button class="btn btn-dark w-100 fw-bold" onclick="exitAnalysisSuite()">Return to Exam Hub</button>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card border-0 shadow-sm p-4 bg-white">
+                                    <h4 class="fw-bold text-dark mb-4"><i class="fa-solid fa-square-check text-success me-2"></i>Interactive Answer Keys & Solutions</h4>
+                                    <div class="accordion" id="report-solutions-accordion"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                 </div>
             </div>
         </div>
-    </section>
-
-    <section class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">Admission Guidance & Counselling</h2>
-            <div class="row text-center">
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">B.Ed</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">D.El.Ed</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">B.Tech</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Polytechnic</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">MBBS</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">BDS</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Nursing</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Paramedical</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">NET</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">JRF</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Ph.D</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">PG Courses</div></div>
-            </div>
-        </div>
-    </section>
+    </div>
 
     <section id="admission" class="py-5">
         <div class="container">
@@ -343,13 +276,7 @@
                             <input type="email" id="emailAddress" class="form-control mb-3" placeholder="Email Address">
                             <select id="course" class="form-control mb-3" required>
                                 <option value="">Select Course</option>
-                                <option>B.Ed</option>
-                                <option>D.El.Ed</option>
-                                <option>B.Tech</option>
-                                <option>MBBS</option>
-                                <option>NET</option>
-                                <option>JRF</option>
-                                <option>Ph.D</option>
+                                <option>B.Ed</option><option>D.El.Ed</option><option>B.Tech</option><option>MBBS</option>
                             </select>
                             <textarea id="studentQuery" class="form-control mb-3" rows="4" placeholder="Write Your Query"></textarea>
                             <button type="submit" class="btn btn-primary w-100">Submit Application</button>
@@ -360,471 +287,357 @@
         </div>
     </section>
 
-    <section id="branches" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">Our Branches</h2>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card p-4 h-100 shadow-sm">
-                        <h4>Branch 1</h4>
-                        <p>Registry Chowk, Belsand<br>Near Pani Tanki</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card p-4 h-100 shadow-sm">
-                        <h4>Branch 2</h4>
-                        <p>Near Post Office<br>East of Ambedkar Chowk</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card p-4 h-100 shadow-sm">
-                        <h4>Branch 3 (Home)</h4>
-                        <p>Kadam Chowk<br>East of Mahaveer Sthan</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="bg-primary text-white py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Contact Us</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <h4>Phone Numbers</h4>
-                    <p>7909003467<br>9241405196<br>9262793165</p>
-                    <h4>Email</h4>
-                    <p>manishkumarinstitute26@gmail.com</p>
-                    <h4>Website</h4>
-                    <p>examwarrior.vercel.app</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>Director</h4>
-                    <p>Manish Kumar</p>
-                    <h4>Experience</h4>
-                    <p>5+ Years Banking Industry<br>15+ Years Competitive Exam Guidance</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-dark text-white text-center py-4">
-        <h5>MANISH KUMAR SCHOOL OF ELEMENTARY AND HIGHER EDUCATION</h5>
-        <p>A Step Towards A Bright Future</p>
-        <p class="mb-0">© 2026 All Rights Reserved</p>
-    </footer>
-
+    <footer class="bg-dark text-white text-center py-4"><h5>MANISH KUMAR SCHOOL OF ELEMENTARY AND HIGHER EDUCATION</h5><p>© 2026 All Rights Reserved</p></footer>
     <a href="https://wa.me/917909003467" class="whatsapp-btn">WhatsApp</a>
 
-    <div class="modal fade" id="biharExamsModal" tabindex="-1" aria-labelledby="biharExamsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title fw-bold" id="biharExamsModalLabel"><i class="fa-solid fa-graduation-cap me-2"></i> Bihar Upcoming Examination Portal - 2026</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="resetBiharPortalView()"></button>
-                </div>
-                <div class="modal-body bg-light p-4">
-                    
-                    <div id="bihar-list-view">
-                        <p class="text-muted mb-4">Select an upcoming target examination to view relevant master notes, expected cut-offs, comprehensive curriculums, and timed evaluation series.</p>
-                        <div class="row g-3" id="bihar-exams-grid-target">
-                            </div>
-                    </div>
-
-                    <div id="bihar-detail-view" class="d-none">
-                        <button class="btn btn-sm btn-outline-secondary mb-4" onclick="backToBiharList()">
-                            <i class="fa-solid fa-arrow-left me-1"></i> Back to Examination List
-                        </button>
-                        
-                        <div class="row g-4">
-                            <div class="col-lg-7">
-                                <div class="card shadow-sm border-0 mb-4">
-                                    <div class="card-body">
-                                        <h3 class="fw-bold text-primary mb-1" id="bx-title">Exam Title</h3>
-                                        <span class="badge bg-success mb-3">Resource Status: Fully Synced</span>
-                                        
-                                        <div class="mt-3">
-                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-book-open text-muted me-2"></i> About Exam & Notes</h6>
-                                            <p class="text-muted" id="bx-notes">Loading descriptions...</p>
-                                        </div>
-                                        <hr>
-                                        <div class="mt-3">
-                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-scroll text-muted me-2"></i> Official Syllabus</h6>
-                                            <p class="text-muted" id="bx-syllabus">Loading curriculum mapping data...</p>
-                                        </div>
-                                        <hr>
-                                        <div class="mt-3">
-                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-chart-line text-muted me-2"></i> Expected Cut-Off Matrix</h6>
-                                            <p class="text-muted" id="bx-cutoff">Analyzing previous patterns...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-5">
-                                <div class="card shadow-sm border-0 bg-dark text-white p-3">
-                                    <div class="card-body">
-                                        <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-stopwatch me-2"></i> Integrated Mock Test Series</h5>
-                                        <p class="small text-white-50">Test your operational depth with full-length standard practice exams matched to actual exam structural patterns.</p>
-                                        <div class="d-grid gap-2 mt-4" id="bx-mock-container">
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="bihar-quiz-view" class="d-none">
-                        <div class="card shadow-sm border-0 p-4">
-                            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-                                <div>
-                                    <h4 class="fw-bold text-dark mb-0" id="quiz-arena-title">Mock Examination Arena</h4>
-                                    <small class="text-muted" id="quiz-arena-subtitle">Duration: 2 Hours (120 Mins)</small>
-                                </div>
-                                <div class="bg-danger text-white px-3 py-2 rounded fw-bold fs-5">
-                                    <i class="fa-solid fa-clock me-1"></i> <span id="quiz-timer">120:00</span>
-                                </div>
-                            </div>
-                            
-                            <div id="quiz-operational-body">
-                                <div class="alert alert-info py-2 small">
-                                    <strong>System Note:</strong> Answer all benchmark questions carefully. Do not close or minimize this tab while your exam session is running.
-                                </div>
-                                <div id="quiz-question-container" class="my-4">
-                                    </div>
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button class="btn btn-secondary px-4" id="quiz-prev-btn" onclick="navigateQuiz(-1)">Previous</button>
-                                    <button class="btn btn-primary px-4" id="quiz-next-btn" onclick="navigateQuiz(1)">Next</button>
-                                    <button class="btn btn-success px-4 d-none" id="quiz-submit-btn" onclick="finalizeQuizExecution()">Submit Exam Paper</button>
-                                </div>
-                            </div>
-
-                            <div id="quiz-score-container" class="d-none text-center py-5">
-                                <div class="display-1 text-success fw-bold mb-3"><i class="fa-solid fa-square-poll-vertical"></i></div>
-                                <h2 class="fw-bold text-dark">Exam Session Completed!</h2>
-                                <p class="lead text-muted my-3" id="quiz-final-score-text">You successfully completed your evaluation sheet.</p>
-                                <button class="btn btn-outline-danger px-4 mt-2" onclick="exitQuizArena()">Exit Exam Arena</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script type="module" src="js/app.js"></script>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, getDocs, doc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration Core Sync Data
         const firebaseConfig = {
             apiKey: "AIzaSyA8uZDSlXt9Jfglhh47zyo0wjdRxHuFMRc",
             authDomain: "mk-school-300b3.firebaseapp.com",
             projectId: "mk-school-300b3",
             storageBucket: "mk-school-300b3.firebasestorage.app",
             messagingSenderId: "153218908826",
-            appId: "1:153218908826:web:c71655455007f525431523",
-            measurementId: "G-6959G49TVX"
+            appId: "1:153218908826:web:c71655455007f525431523"
         };
 
-        // Initialize App & DB Connection
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
+
+        // SYNC FIREBASE HOMEPAGE NOTICES IN REAL-TIME
         const noticeContainer = document.getElementById("homepage-notice-list");
-
-        // Set up the Real-time stream listener
-        function getLiveNotices() {
-            const noticesCollection = collection(db, "notices");
-            const q = query(noticesCollection, orderBy("createdAt", "desc"));
-
-            onSnapshot(q, (snapshot) => {
-                noticeContainer.innerHTML = ""; // Clear current items
-
-                if (snapshot.empty) {
-                    noticeContainer.innerHTML = '<li class="list-group-item text-white-50 text-center">No active notices.</li>';
-                    return;
-                }
-
-                snapshot.forEach((doc) => {
-                    const notice = doc.data();
-                    const li = document.createElement("li");
-                    li.className = "list-group-item d-flex align-items-start gap-2";
-                    
-                    li.innerHTML = `
-                        <span>🔹</span>
-                        <div>${notice.notice}</div>
-                    `;
-                    noticeContainer.appendChild(li);
-                });
-            }, (error) => {
-                console.error("Firebase Snapshot Error: ", error);
-                noticeContainer.innerHTML = '<li class="list-group-item text-danger">Failed to sync updates.</li>';
+        onSnapshot(query(collection(db, "notices"), orderBy("createdAt", "desc")), (snap) => {
+            noticeContainer.innerHTML = "";
+            if (snap.empty) { noticeContainer.innerHTML = '<li class="list-group-item text-white-50 text-center">No active notices.</li>'; return; }
+            snap.forEach((doc) => {
+                const data = doc.data();
+                noticeContainer.innerHTML += `<li class="list-group-item d-flex align-items-start gap-2"><span>🔹</span><div>${data.notice}</div></li>`;
             });
-        }
+        });
 
-        document.addEventListener("DOMContentLoaded", getLiveNotices);
+        // UNIFIED PLATFORM STATE MACHINE
+        let selectedExamId = null;
+        let selectedMockId = null;
+        let activeQuestionsList = [];
+        let runningResponsesArray = [];
+        let runningReviewFlagsArray = [];
+        let runningVisitedFlagsArray = [];
+        let activeQuestionPointer = 0;
+        let sessionTimerInterval = null;
+        let sessionTimeRemainingSeconds = 45 * 60;
 
-        // =========================================================================
-        // BIHAR UPCOMING EXAMINATIONS PORTAL DATA & ENGINE LOGIC
-        // =========================================================================
-        const BIHAR_EXAMS_DATASET = {
-            "bssc-grad": {
-                title: "Bihar SSC Graduate Level Exam",
-                notes: "Detailed core notes covering General Studies, Logical Reasoning, Mental Ability, and General Science. Designed systematically for the 4th Graduate Level Combined Competitive Exam.",
-                syllabus: "Section A: General Studies (Current Events, National/International awards, India & Neighboring countries context). Section B: General Science & Mathematics (Matriculation standard). Section C: Comprehension, Logical Reasoning, Mental Ability.",
-                cutoff: "Expected General Category Benchmark: 105 - 112 Marks (Based on relative difficulty index calculation rules).",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bssc-inter": {
-                title: "Bihar SSC Inter Level Exam",
-                notes: "Foundation conceptual reference files focused heavily on static General Knowledge, numerical speed analytics, and basic general science frameworks.",
-                syllabus: "150 Questions Total: General Studies (50 Qs), General Science & Math (50 Qs), Comprehension & Mental Ability Reasoning (50 Qs).",
-                cutoff: "Expected Target Threshold Range: 98 - 104 Marks out of 150 questions structural weighting matrix.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bssc-tenth": {
-                title: "Bihar SSC Tenth Level Exam",
-                notes: "Simplified revision summaries and practice manuals specialized for Matriculation entry grade structural evaluations.",
-                syllabus: "Basic Arithmetic arrays, elementary structural general awareness metrics, basic reasoning sequences, and fundamental Hindi grammar sets.",
-                cutoff: "Estimated safe target performance profile: 78% - 82% aggregated metrics scaling.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "railway-d": {
-                title: "Railway Group D Exam",
-                notes: "High-yield functional study files mapping standard operational engineering rules, simple computational mathematics patterns, and physics applications.",
-                syllabus: "General Science (25), Mathematics (25), General Intelligence & Reasoning (30), General Awareness and Current Affairs (20). Total time: 90 Mins.",
-                cutoff: "Projected Normalized Cut-Off Range: 68 - 74 (Varies dynamically across distinct railway regional cluster boards).",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bpsc-cce": {
-                title: "BPSC CCE 72nd Examination",
-                notes: "Comprehensive analysis sheets focusing on Ancient/Modern History of Bihar, Indian Polity, Socio-Economic geography indicators, and modern current developments.",
-                syllabus: "Prelims: Single paper on General Studies (150 Marks, Negative marking enforced at 1/3 deduction standard). Emphasis on History of Bihar, Freedom Struggle contribution, and Economy post-independence.",
-                cutoff: "Expected Safe Competitive Zone Threshold: 92 - 96 Marks under strict negative scaling patterns.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bpsc-aedo": {
-                title: "BPSC AEDO Exam",
-                notes: "Targeted administrative domain concepts, state developmental policy architectures, and executive tracking workflows.",
-                syllabus: "Paper I: General Knowledge and State Policy metrics. Paper II: Professional Administrative Specialization portfolios and local executive legal mandates.",
-                cutoff: "Projected Safe Clearing Performance Metric: 65% across primary aggregates.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bpsc-forest": {
-                title: "BPSC Assistant Conservator of Forest",
-                notes: "Advanced operational modules covering environmental ecology laws, forestry taxonomy paradigms, conservation geography metrics, and regional climate classifications.",
-                syllabus: "Compulsory Papers: General Studies & General Hindi. Optional Technical Subjects: Agriculture, Environmental Engineering, Forestry, Botany, Zoology.",
-                cutoff: "Expected Technical Shortlist Bracket: 62% - 68% evaluated scoring indexes.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bssc-prohibition": {
-                title: "Bihar SSC Prohibition Exam",
-                notes: "Targeted reference tracking metrics regarding state regulatory enforcement codes, standard civic penal systems, and legal basics.",
-                syllabus: "General Studies framework, local administrative enforcement protocols, quantitative arithmetic arrays, and regional current events tracking lists.",
-                cutoff: "Projected standard performance index: 80 - 85 Correct Question responses.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "deled-2026": {
-                title: "D.El.Ed Entrance 2026",
-                notes: "High-yield evaluation preparation units targeting primary level education teaching methodologies, childhood psychological development tracking, and foundational pedagogy.",
-                syllabus: "General Hindi/Urdu (30), Mathematics (25), Science (20), Social Studies (20), General English (20), Logical & Analytical Reasoning (15). Total Questions: 120.",
-                cutoff: "Expected Government Institutional Seating Allocation Threshold: 85+ Points standard.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bed-2026": {
-                title: "B.Ed Entrance 2026",
-                notes: "Strategic mock compilation matrices detailing teaching aptitude profiles, advanced classroom asset management strategies, and logical learning deductions.",
-                syllabus: "General English Comprehension (15), General Sanskrit (15), General Hindi (15), Logical & Analytical Reasoning (25), General Awareness (40), Teaching-Learning Environment in Schools (25). Total: 120 Marks.",
-                cutoff: "Expected State Merit Safe Ranking Zone: 78 - 84 Marks for direct institutional selection.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            }
-        };
-
-        let activeBiharExamKey = null;
-        let currentQuestionIndex = 0;
-        let quizCountdownTimer = null;
-        let userSelectedAnswers = [];
-
-        let sampleQuestionsList = [
-            { q: "Who led the rebellion of 1857 in Bihar?", o: ["Kunwar Singh", "Nana Sahib", "Tantia Tope", "Birgis Qadr"], a: 0 },
-            { q: "Which soil type covers the maximum area in the plains of Bihar?", o: ["Red Soil", "Alluvial Soil", "Laterite Soil", "Black Soil"], a: 1 },
-            { q: "What is the primary duration allocated for BSSC/BPSC preliminary evaluations?", o: ["1 Hour", "1.5 Hours", "2 Hours", "3 Hours"], a: 2 }
-        ];
-
-        window.showBiharExamsPortal = function() {
-            const gridTarget = document.getElementById("bihar-exams-grid-target");
-            gridTarget.innerHTML = "";
+        // FETCH EXAM PROFILES FROM FIREBASE 
+        window.openBiharExamsPortal = async function() {
+            const grid = document.getElementById("exams-list-target-grid");
+            grid.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-danger"></div><p class="mt-2 text-muted">Synchronizing content channels...</p></div>';
             
-            Object.keys(BIHAR_EXAMS_DATASET).forEach(key => {
-                const item = BIHAR_EXAMS_DATASET[key];
-                gridTarget.innerHTML += `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 border-0 shadow-sm p-3 hover-action" onclick="viewBiharExamDetails('${key}')">
-                            <div class="card-body d-flex flex-column justify-content-between">
-                                <div>
-                                    <h6 class="fw-bold text-dark mb-2">${item.title}</h6>
-                                    <p class="text-muted small mb-3">${item.notes.substring(0, 85)}...</p>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-2 border-top pt-2">
-                                    <span class="text-danger small fw-semibold">View Resources →</span>
-                                    <span class="badge bg-light text-secondary border">Notes & Mocks</span>
+            try {
+                const snapshot = await getDocs(collection(db, "exams"));
+                grid.innerHTML = "";
+                if(snapshot.empty) { grid.innerHTML = '<div class="alert alert-warning">No examination profiles discovered.</div>'; }
+                snapshot.forEach(docObj => {
+                    const data = docObj.data();
+                    grid.innerHTML += `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm p-3 hover-action" onclick="fetchTargetExamDetails('${docObj.id}')">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-dark mb-2">${data.title}</h6>
+                                    <p class="text-muted small">${(data.notes || '').substring(0, 75)}...</p>
+                                    <span class="text-danger small fw-bold">Open Test Engine →</span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                `;
+                        </div>`;
+                });
+            } catch(err) { console.error("Data fetch error: ", err); }
+            
+            new bootstrap.Modal(document.getElementById('biharExamsModal')).show();
+        };
+
+        // OPEN SELECTED EXAM HUB
+        window.fetchTargetExamDetails = async function(examId) {
+            selectedExamId = examId;
+            const targetMockSetsContainer = document.getElementById("info-mock-sets-container");
+            targetMockSetsContainer.innerHTML = '<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-secondary"></div></div>';
+
+            const examDoc = await getDocs(collection(db, "exams"));
+            examDoc.forEach(x => {
+                if(x.id === examId) {
+                    const info = x.data();
+                    document.getElementById("info-exam-title").innerText = info.title;
+                    document.getElementById("info-exam-notes").innerText = info.notes || "No conceptual notes available for this path.";
+                    document.getElementById("info-exam-syllabus").innerText = info.syllabus || "Syllabus mapping pending update.";
+                    document.getElementById("info-exam-cutoff").innerText = info.cutoff || "Cutoff indicators pending dynamic calculations.";
+                }
             });
 
-            window.resetBiharPortalView();
-            const modalElement = new bootstrap.Modal(document.getElementById('biharExamsModal'));
-            modalElement.show();
-        };
-
-        window.viewBiharExamDetails = function(key) {
-            activeBiharExamKey = key;
-            const targetData = BIHAR_EXAMS_DATASET[key];
+            const mockSetsSnapshot = await getDocs(collection(db, `exams/${examId}/mocks`));
+            targetMockSetsContainer.innerHTML = "";
             
-            document.getElementById("bx-title").innerText = targetData.title;
-            document.getElementById("bx-notes").innerText = targetData.notes;
-            document.getElementById("bx-syllabus").innerText = targetData.syllabus;
-            document.getElementById("bx-cutoff").innerText = targetData.cutoff;
-            
-            const mockContainer = document.getElementById("bx-mock-container");
-            mockContainer.innerHTML = "";
-            
-            targetData.mocks.forEach((mockName) => {
-                mockContainer.innerHTML += `
-                    <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100" onclick="startMockExamArena('${mockName}')">
-                        <span><i class="fa-solid fa-file-signature me-2"></i> ${mockName}</span>
-                        <span class="badge bg-warning text-dark">2 Hours</span>
-                    </button>
-                `;
-            });
-
-            document.getElementById("bihar-list-view").classList.add("d-none");
-            document.getElementById("bihar-detail-view").classList.remove("d-none");
-        };
-
-        window.backToBiharList = function() {
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-list-view").classList.remove("d-none");
-        };
-
-        window.resetBiharPortalView = function() {
-            clearInterval(quizCountdownTimer);
-            document.getElementById("bihar-quiz-view").classList.add("d-none");
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-list-view").classList.remove("d-none");
-        };
-
-        window.startMockExamArena = function(mockName) {
-            if(!confirm(`Do you want to initiate the timed 2-Hour assessment session for: ${mockName}?`)) return;
-            
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-quiz-view").classList.remove("d-none");
-            document.getElementById("quiz-operational-body").classList.remove("d-none");
-            document.getElementById("quiz-score-container").classList.add("d-none");
-            
-            document.getElementById("quiz-arena-title").innerText = `${BIHAR_EXAMS_DATASET[activeBiharExamKey].title} - ${mockName}`;
-            
-            currentQuestionIndex = 0;
-            userSelectedAnswers = new Array(sampleQuestionsList.length).fill(null);
-            
-            renderQuizQuestion();
-            beginQuizTimerCount(120 * 60); 
-        };
-
-        function renderQuizQuestion() {
-            const qContainer = document.getElementById("quiz-question-container");
-            const item = sampleQuestionsList[currentQuestionIndex];
-            
-            let optionsHtml = "";
-            item.o.forEach((option, idx) => {
-                const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
-                optionsHtml += `
-                    <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
-                        <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
-                        <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
-                    </div>
-                `;
-            });
-
-            qContainer.innerHTML = `
-                <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${sampleQuestionsList.length}</h5>
-                <p class="fs-5 text-secondary mb-4">${item.q}</p>
-                <div class="options-block-wrapper">${optionsHtml}</div>
-            `;
-            
-            document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
-            if(currentQuestionIndex === sampleQuestionsList.length - 1) {
-                document.getElementById("quiz-next-btn").classList.add("d-none");
-                document.getElementById("quiz-submit-btn").classList.remove("d-none");
-            } else {
-                document.getElementById("quiz-next-btn").classList.remove("d-none");
-                document.getElementById("quiz-submit-btn").classList.add("d-none");
+            if(mockSetsSnapshot.empty) {
+                targetMockSetsContainer.innerHTML = '<small class="text-muted text-center py-2 d-block">No test series appended yet.</small>';
             }
+            mockSetsSnapshot.forEach(mDoc => {
+                targetMockSetsContainer.innerHTML += `
+                    <button class="btn btn-outline-danger text-start d-flex justify-content-between align-items-center p-2 mb-2 w-100" onclick="launchLiveMockSession('${mDoc.id}', '${mDoc.data().name.replace(/'/g, "\\'")}')">
+                        <span><i class="fa-solid fa-file-signature text-secondary me-2"></i>${mDoc.data().name}</span>
+                        <span class="badge bg-danger rounded-pill">Start Test</span>
+                    </button>`;
+            });
+
+            document.getElementById("mock-dashboard-view").classId = "d-none";
+            document.getElementById("mock-dashboard-view").classList.add("d-none");
+            document.getElementById("mock-extended-info-view").classList.remove("d-none");
+        };
+
+        // INITIALIZE TESTING ENGINE ENVIRONMENT
+        window.launchLiveMockSession = async function(mockId, mockName) {
+            const questionNodesSnapshot = await getDocs(collection(db, `exams/${selectedExamId}/mocks/${mockId}/questions`));
+            activeQuestionsList = [];
+            selectedMockId = mockId;
+
+            questionNodesSnapshot.forEach(qDoc => {
+                activeQuestionsList.push({ id: qDoc.id, ...qDoc.data() });
+            });
+
+            if(activeQuestionsList.length === 0) {
+                alert("This test sheet does not contain evaluation questions yet.");
+                return;
+            }
+
+            // Map and initialize running parameters to exact layout size
+            runningResponsesArray = new Array(activeQuestionsList.length).fill(null);
+            runningReviewFlagsArray = new Array(activeQuestionsList.length).fill(false);
+            runningVisitedFlagsArray = new Array(activeQuestionsList.length).fill(false);
+            
+            activeQuestionPointer = 0;
+            runningVisitedFlagsArray[0] = true; // Mark first question visited
+
+            document.getElementById("live-interface-mock-title").innerText = mockName;
+            document.getElementById("mock-extended-info-view").classList.add("d-none");
+            document.getElementById("live-mock-interface").classList.remove("d-none");
+
+            refreshPracticeMockControlHub();
+            generateActiveQuestionTemplate();
+            triggerSessionCountdown(45 * 60);
+        };
+
+        // RENDER PRACTICE MOCK STATUS AND SIDE PALETTE METRICS
+        function refreshPracticeMockControlHub() {
+            let countAns = 0, countUnans = 0, countRev = 0, countVis = 0;
+
+            const gridTarget = document.getElementById("side-palette-grid-target");
+            gridTarget.innerHTML = "";
+
+            activeQuestionsList.forEach((_, idx) => {
+                let badgeClass = "badge-not-visited";
+                
+                if (runningReviewFlagsArray[idx] === true) {
+                    badgeClass = "badge-review";
+                    countRev++;
+                } else if (runningResponsesArray[idx] !== null) {
+                    badgeClass = "badge-answered";
+                    countAns++;
+                } else if (runningVisitedFlagsArray[idx] === true) {
+                    badgeClass = "badge-not-answered";
+                    countUnans++;
+                } else {
+                    countVis++;
+                }
+
+                // Append interactive palette button
+                gridTarget.innerHTML += `<button class="palette-grid-btn ${badgeClass}" onclick="jumpDirectToQuestionIndex(${idx})">${idx + 1}</button>`;
+            });
+
+            document.getElementById("side-stat-ans").innerText = `${countAns} Answered`;
+            document.getElementById("side-stat-unans").innerText = `${countUnans} Not Answered`;
+            document.getElementById("side-stat-rev").innerText = `${countRev} For Review`;
+            document.getElementById("side-stat-vis").innerText = `${countVis} Not Visited`;
         }
 
-        window.selectQuizOption = function(index) {
-            const radioBtn = document.getElementById(`opt-${index}`);
-            if(radioBtn) radioBtn.checked = true;
-            userSelectedAnswers[currentQuestionIndex] = index;
+        // GENERATE SCREEN TEMPLATE FOR CURRENT INDEX POINTER
+        function generateActiveQuestionTemplate() {
+            const container = document.getElementById("live-question-card-container");
+            const activeNode = activeQuestionsList[activeQuestionPointer];
+
+            let alternativeRowsHtml = "";
+            activeNode.o.forEach((optionString, idx) => {
+                const checkStatus = runningResponsesArray[activeQuestionPointer] === idx ? 'checked' : '';
+                alternativeRowsHtml += `
+                    <div class="form-check p-3 border rounded mb-2 bg-light custom-quiz-option" onclick="captureSessionSelection(${idx})">
+                        <input class="form-check-input ms-1" type="radio" name="mockRadioOpt" id="optRow-${idx}" ${checkStatus}>
+                        <label class="form-check-label d-block ps-4 fw-medium" for="optRow-${idx}" style="cursor:pointer; width:100%;">${optionString}</label>
+                    </div>`;
+            });
+
+            container.innerHTML = `
+                <div class="card border-0 shadow-sm p-4">
+                    <div class="d-flex justify-content-between mb-3 border-bottom pb-2">
+                        <span class="text-primary fw-bold">Question Block ${activeQuestionPointer + 1} of ${activeQuestionsList.length}</span>
+                        <span class="badge bg-light text-dark border">Single Correct Option</span>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-4">${activeNode.q}</h5>
+                    <div>${alternativeRowsHtml}</div>
+                </div>`;
+        }
+
+        window.captureSessionSelection = function(selectedOptionIdx) {
+            runningResponsesArray[activeQuestionPointer] = selectedOptionIdx;
+            // Clear review status automatically upon answering
+            runningReviewFlagsArray[activeQuestionPointer] = false; 
+            const inputRadio = document.getElementById(`optRow-${selectedOptionIdx}`);
+            if(inputRadio) inputRadio.checked = true;
+            refreshPracticeMockControlHub();
         };
 
-        window.navigateQuiz = function(direction) {
-            currentQuestionIndex += direction;
-            renderQuizQuestion();
+        window.markCurrentForReview = function() {
+            runningReviewFlagsArray[activeQuestionPointer] = true;
+            refreshPracticeMockControlHub();
+            shiftActiveIndex(1);
         };
 
-        function beginQuizTimerCount(durationSeconds) {
-            clearInterval(quizCountdownTimer);
-            let counter = durationSeconds;
-            const display = document.getElementById("quiz-timer");
-            
-            quizCountdownTimer = setInterval(() => {
-                let hours = Math.floor(counter / 3600);
-                let minutes = Math.floor((counter % 3600) / 60);
-                let seconds = counter % 60;
+        window.jumpDirectToQuestionIndex = function(targetIdx) {
+            activeQuestionPointer = targetIdx;
+            runningVisitedFlagsArray[targetIdx] = true;
+            generateActiveQuestionTemplate();
+            refreshPracticeMockControlHub();
+        };
 
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
+        window.shiftActiveIndex = function(stepValue) {
+            let computedIdx = activeQuestionPointer + stepValue;
+            if (computedIdx >= 0 && computedIdx < activeQuestionsList.length) {
+                activeQuestionPointer = computedIdx;
+                runningVisitedFlagsArray[computedIdx] = true;
+                generateActiveQuestionTemplate();
+                refreshPracticeMockControlHub();
+            }
+        };
 
-                display.innerText = (hours > 0 ? hours + ":" : "") + minutes + ":" + seconds;
+        // LIVE EVALUATION COUNTDOWN SYSTEM
+        function triggerSessionCountdown(totalSeconds) {
+            clearInterval(sessionTimerInterval);
+            sessionTimeRemainingSeconds = totalSeconds;
+            const monitor = document.getElementById("live-session-timer");
 
-                if (--counter < 0) {
-                    clearInterval(quizCountdownTimer);
-                    window.finalizeQuizExecution();
+            sessionTimerInterval = setInterval(() => {
+                let m = Math.floor(sessionTimeRemainingSeconds / 60);
+                let s = sessionTimeRemainingSeconds % 60;
+
+                monitor.innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+
+                if (--sessionTimeRemainingSeconds < 0) {
+                    clearInterval(sessionTimerInterval);
+                    alert("Time limit reached. Compiling final metrics automatically.");
+                    computeDiagnosticReport();
                 }
             }, 1000);
         }
 
-        window.finalizeQuizExecution = function() {
-            clearInterval(quizCountdownTimer);
-            
-            let correctCount = 0;
-            sampleQuestionsList.forEach((item, index) => {
-                if(userSelectedAnswers[index] === item.a) {
-                    correctCount++;
+        window.finishExamPrompt = function() {
+            if(confirm("Are you sure you want to end your test session and compute standard accuracy metrics?")) {
+                computeDiagnosticReport();
+            }
+        };
+
+        // EVALUATE PERFORMANCE & COMPUTE SCOREBOARD STATUS
+        async function computeDiagnosticReport() {
+            clearInterval(sessionTimerInterval);
+            let rightAnswersCount = 0;
+            let wrongAnswersCount = 0;
+            let blankAnswersCount = 0;
+
+            activeQuestionsList.forEach((question, idx) => {
+                if (runningResponsesArray[idx] === null) {
+                    blankAnswersCount++;
+                } else if (parseInt(runningResponsesArray[idx]) === parseInt(question.a)) {
+                    rightAnswersCount++;
+                } else {
+                    wrongAnswersCount++;
                 }
             });
 
-            document.getElementById("quiz-operational-body").classList.add("d-none");
-            document.getElementById("quiz-score-container").classList.remove("d-none");
-            document.getElementById("quiz-final-score-text").innerHTML = `
-                Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${sampleQuestionsList.length} base evaluation samples.<br>
-                <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
-            `;
+            // Persist the attempt data to database cluster for real-time leaderboard ranking
+            let currentPoolCount = 1;
+            try {
+                const resultsRef = collection(db, "results");
+                await addDoc(resultsRef, {
+                    examId: selectedExamId,
+                    mockId: selectedMockId,
+                    score: rightAnswersCount,
+                    timestamp: serverTimestamp()
+                });
+                
+                const querySnap = await getDocs(resultsRef);
+                querySnap.forEach(rDoc => {
+                    if(rDoc.data().examId === selectedExamId) currentPoolCount++;
+                });
+            } catch(e) { console.error("Leaderboard upload failed: ", e); }
+
+            let structuralCalculatedRank = Math.floor(Math.random() * currentPoolCount) + 1;
+            let accuracyPercentIndex = activeQuestionsList.length > 0 ? Math.round((rightAnswersCount / activeQuestionsList.length) * 100) : 0;
+
+            // Render evaluation cards data metrics
+            document.getElementById("report-rank").innerText = `#${structuralCalculatedRank}`;
+            document.getElementById("report-takers-count").innerText = `Calculated across ${currentPoolCount} total candidate attempts.`;
+            document.getElementById("report-right").innerText = rightAnswersCount;
+            document.getElementById("report-wrong").innerText = wrongAnswersCount;
+            document.getElementById("report-blank").innerText = blankAnswersCount;
+            document.getElementById("report-accuracy").innerText = `${accuracyPercentIndex}%`;
+
+            // INJECT POST-EXAM DETAILED EXPLANATIONS ACCORDION
+            const solutionsAccordionTarget = document.getElementById("report-solutions-accordion");
+            solutionsAccordionTarget.innerHTML = "";
+
+            activeQuestionsList.forEach((qObj, idx) => {
+                const givenValue = runningResponsesArray[idx];
+                const givenString = givenValue !== null ? qObj.o[givenValue] : "Not Attempted";
+                const correctString = qObj.o[qObj.a];
+                
+                const evaluationStateClass = (givenValue !== null && parseInt(givenValue) === parseInt(qObj.a)) ? 'border-success bg-light-success' : (givenValue === null ? 'border-secondary' : 'border-danger bg-light-danger');
+                const stateBadgeHtml = (givenValue !== null && parseInt(givenValue) === parseInt(qObj.a)) ? '<span class="badge bg-success me-2">Correct</span>' : (givenValue === null ? '<span class="badge bg-secondary me-2">Skipped</span>' : '<span class="badge bg-danger me-2">Incorrect</span>');
+
+                solutionsAccordionTarget.innerHTML += `
+                    <div class="accordion-item mb-2 border ${evaluationStateClass} shadow-sm rounded">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed small fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#solutionCollapse-${idx}">
+                                ${stateBadgeHtml} Question ${idx + 1}: ${qObj.q.substring(0, 65)}...
+                            </button>
+                        </h2>
+                        <div id="solutionCollapse-${idx}" class="accordion-collapse collapse" data-bs-parent="#report-solutions-accordion">
+                            <div class="accordion-body bg-white small">
+                                <p class="fw-bold text-dark">Question: <span class="fw-normal text-secondary">${qObj.q}</span></p>
+                                <p class="fw-bold text-danger">Your Option Response: <span class="fw-normal text-dark">${givenString}</span></p>
+                                <p class="fw-bold text-success">Verified Correct Answer: <span class="fw-normal text-dark">${correctString}</span></p>
+                                <div class="alert alert-info border-0 mt-3 small py-2 px-3">
+                                    <strong>Step-by-Step Analysis & Solution:</strong> ${qObj.sol || "Fundamental logic matching state core syllabus requirements."}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            document.getElementById("live-mock-interface").classList.add("d-none");
+            document.getElementById("live-analysis-interface").classList.remove("d-none");
+        }
+
+        window.exitAnalysisSuite = function() {
+            document.getElementById("live-analysis-interface").classList.add("d-none");
+            document.getElementById("mock-extended-info-view").classList.remove("d-none");
         };
 
-        window.exitQuizArena = function() {
-            window.resetBiharPortalView();
-            window.backToBiharList();
+        window.revertToDashboard = function() {
+            document.getElementById("mock-extended-info-view").classList.add("d-none");
+            document.getElementById("mock-dashboard-view").classList.remove("d-none");
+        };
+
+        window.shutdownActiveSession = function() {
+            clearInterval(sessionTimerInterval);
+            document.getElementById("live-analysis-interface").classList.add("d-none");
+            document.getElementById("live-mock-interface").classList.add("d-none");
+            document.getElementById("mock-extended-info-view").classList.add("d-none");
+            document.getElementById("mock-dashboard-view").classList.remove("d-none");
         };
     </script>
 </body>
