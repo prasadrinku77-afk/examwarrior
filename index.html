@@ -942,6 +942,39 @@ window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
         qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
     }
 };
+        function renderCloudQuestionItem() {
+    const qContainer = document.getElementById("quiz-question-container");
+    const item = cloudQuestionsList[currentQuestionIndex];
+    
+    // Generate the HTML for the options dynamically based on what is in the database
+    let optionsHtml = "";
+    item.o.forEach((option, idx) => {
+        const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
+        optionsHtml += `
+            <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
+                <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
+                <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
+            </div>
+        `;
+    });
+
+    // Inject the structured Question template text content into the UI container window
+    qContainer.innerHTML = `
+        <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
+        <p class="fs-5 text-secondary mb-4">${item.q}</p>
+        <div class="options-block-wrapper">${optionsHtml}</div>
+    `;
+    
+    // Manage action navigation button states (Prev/Next/Submit) dynamically
+    document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
+    if(currentQuestionIndex === cloudQuestionsList.length - 1) {
+        document.getElementById("quiz-next-btn").classList.add("d-none");
+        document.getElementById("quiz-submit-btn").classList.remove("d-none");
+    } else {
+        document.getElementById("quiz-next-btn").classList.remove("d-none");
+        document.getElementById("quiz-submit-btn").classList.add("d-none");
+    }
+}
         window.exitQuizArena = function() {
             window.resetBiharPortalView();
             window.backToBiharList();
