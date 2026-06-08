@@ -2,799 +2,409 @@
 <html lang="en">
 
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>MK School Admin Dashboard</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MK School Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark bg-primary">
-
-<div class="container d-flex justify-content-between">
-
-<span class="navbar-brand">
-
-MK School Admin Panel
-
-</span>
-
-<button
-id="logoutBtn"
-class="btn btn-light btn-sm">
-
-Logout
-
-</button>
-
-</div>
-
-</nav>
-
-<div class="container mt-5">
-
-<!-- STATISTICS -->
-
-<div class="row mb-4">
-
-<div class="col-md-4 mb-3">
-
-<div class="card shadow text-center">
-
-<div class="card-body">
-
-<h5>Total Admissions</h5>
-
-<h2 id="totalAdmissions">0</h2>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-4 mb-3">
-
-<div class="card shadow text-center">
-
-<div class="card-body">
-
-<h5>Total Notices</h5>
-
-<h2 id="totalNotices">0</h2>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-4 mb-3">
-
-<div class="card shadow text-center">
-
-<div class="card-body">
-
-<h5>Today's Admissions</h5>
-
-<h2 id="todayAdmissions">0</h2>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ADD NOTICE -->
-
-<div class="row">
-
-<div class="col-md-6">
-
-<div class="card shadow p-4">
-
-<h4>Add Notice</h4>
-
-<input
-id="notice"
-class="form-control mb-3"
-placeholder="Write Notice">
-
-<button
-id="saveNotice"
-class="btn btn-success">
-
-Save Notice
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ADMISSIONS & NOTICES -->
-
-<hr class="my-5">
-
-<!-- ADMISSIONS -->
-
-<hr class="my-5">
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-
-    <h2>Admission Enquiries</h2>
-
-    <button
-        id="exportExcel"
-        class="btn btn-success">
-        Export Excel
-    </button>
-
-</div>
-
-<div class="mb-3">
-
-    <input
-        type="text"
-        id="searchAdmission"
-        class="form-control"
-        placeholder="Search by Name, Mobile, Email or Course">
-
-</div>
-
-<div class="table-responsive">
-
-    <table class="table table-bordered table-striped">
-
-        <thead>
-
-            <tr>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Email</th>
-                <th>Course</th>
-                <th>Query</th>
-                <th>Action</th>
-            </tr>
-
-        </thead>
-
-        <tbody id="admissionsTable">
-
-            <tr>
-                <td colspan="6">
-                    Loading Admissions...
-                </td>
-            </tr>
-
-        </tbody>
-
-    </table>
-
-</div>
-
-<!-- NOTICES -->
-
-<hr class="my-5">
-
-<h2 class="mb-3">Manage Notices</h2>
-
-<div class="table-responsive">
-
-    <table class="table table-bordered table-striped">
-
-        <thead>
-
-            <tr>
-                <th>Notice</th>
-                <th>Action</th>
-            </tr>
-
-        </thead>
-
-        <tbody id="noticesTable">
-
-            <tr>
-                <td colspan="2">
-                    Loading Notices...
-                </td>
-            </tr>
-
-        </tbody>
-
-    </table>
-
-</div>
-<script type="module">
-
-import { db, auth }
-from "../js/firebase-config.js";
-
-import {
-collection,
-addDoc,
-getDocs,
-query,
-orderBy,
-deleteDoc,
-doc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-signOut,
-onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  
-  let allAdmissions = [];
-
-// ======================================
-// DASHBOARD PROTECTION
-// ======================================
-
-onAuthStateChanged(auth, (user)=>{
-
-if(!user){
-
-window.location.href =
-"login.html";
-
-}
-
-});
-
-// ======================================
-// SAVE NOTICE
-// ======================================
-
-document
-.getElementById("saveNotice")
-.addEventListener("click", async ()=>{
-
-const notice =
-document.getElementById("notice").value.trim();
-
-if(!notice){
-
-alert("Please enter a notice");
-
-return;
-
-}
-
-try{
-
-await addDoc(
-collection(db,"notices"),
-{
-notice,
-createdAt:new Date()
-}
-);
-
-document.getElementById("notice").value="";
-
-alert("Notice Saved");
-
-loadNotices();
-loadStats();
-
-}catch(error){
-
-console.error(error);
-
-alert("Failed to save notice");
-
-}
-
-});
-
-// ======================================
-// LOAD ADMISSIONS
-// ======================================
-
-async function loadAdmissions(){
-
-const table =
-document.getElementById("admissionsTable");
-
-table.innerHTML =
-"<tr><td colspan='6'>Loading...</td></tr>";
-
-try{
-
-const q =
-query(
-collection(db,"admissions"),
-orderBy("createdAt","desc")
-);
-
-const snapshot =
-await getDocs(q);
-
-  allAdmissions = [];
-  
-table.innerHTML = "";
-
-if(snapshot.empty){
-
-table.innerHTML =
-"<tr><td colspan='6'>No Admissions Found</td></tr>";
-
-return;
-
-}
-
-snapshot.forEach((admissionDoc)=>{
-
-const data =
-admissionDoc.data();
-
-allAdmissions.push({
-id: admissionDoc.id,
-...data
-});
-
-table.innerHTML += `
-<tr>
-<td>${data.studentName || ""}</td>
-<td>${data.mobileNumber || ""}</td>
-<td>${data.emailAddress || ""}</td>
-<td>${data.course || ""}</td>
-<td>${data.studentQuery || ""}</td>
-<td>
-
-<button
-class="btn btn-success btn-sm me-2 whatsappBtn"
-data-mobile="${data.mobileNumber || ""}">
-
-WhatsApp
-
-</button>
-
-<button
-class="btn btn-danger btn-sm deleteAdmission"
-data-id="${admissionDoc.id}">
-
-Delete
-
-</button>
-
-</td>
-</tr>
-`;
-
-});
-
-}catch(error){
-
-console.error(error);
-
-table.innerHTML =
-"<tr><td colspan='6'>Error Loading Admissions</td></tr>";
-
-}
-
-}
-
-// ======================================
-// LOAD NOTICES
-// ======================================
-
-async function loadNotices(){
-
-const table =
-document.getElementById("noticesTable");
-
-table.innerHTML =
-"<tr><td colspan='2'>Loading...</td></tr>";
-
-try{
-
-const q =
-query(
-collection(db,"notices"),
-orderBy("createdAt","desc")
-);
-
-const snapshot =
-await getDocs(q);
-
-table.innerHTML = "";
-
-if(snapshot.empty){
-
-table.innerHTML =
-"<tr><td colspan='2'>No Notices Found</td></tr>";
-
-return;
-
-}
-
-snapshot.forEach((noticeDoc)=>{
-
-const data =
-noticeDoc.data();
-
-table.innerHTML += `
-<tr>
-<td>${data.notice || ""}</td>
-<td>
-<button
-class="btn btn-danger btn-sm deleteNotice"
-data-id="${noticeDoc.id}">
-Delete
-</button>
-</td>
-</tr>
-`;
-
-});
-
-}catch(error){
-
-console.error(error);
-
-table.innerHTML =
-"<tr><td colspan='2'>Error Loading Notices</td></tr>";
-
-}
-
-}
-
-// ======================================
-// LOAD STATS
-// ======================================
-
-async function loadStats(){
-
-try{
-
-const admissionsSnapshot =
-await getDocs(
-collection(db,"admissions")
-);
-
-const noticesSnapshot =
-await getDocs(
-collection(db,"notices")
-);
-
-document.getElementById(
-"totalAdmissions"
-).innerText =
-admissionsSnapshot.size;
-
-document.getElementById(
-"totalNotices"
-).innerText =
-noticesSnapshot.size;
-
-let todayCount = 0;
-
-const today = new Date();
-
-admissionsSnapshot.forEach((docItem)=>{
-
-const data = docItem.data();
-
-if(data.createdAt){
-
-const admissionDate =
-data.createdAt.toDate
-? data.createdAt.toDate()
-: new Date(data.createdAt);
-
-if(
-admissionDate.toDateString()
-=== today.toDateString()
-){
-
-todayCount++;
-
-}
-
-}
-
-});
-
-document.getElementById(
-"todayAdmissions"
-).innerText =
-todayCount;
-
-}catch(error){
-
-console.error(error);
-
-}
-
-}
-
-// ======================================
-  // ======================================
-// WHATSAPP CONTACT
-// ======================================
-
-document.addEventListener("click",(e)=>{
-
-if(e.target.classList.contains("whatsappBtn")){
-
-const mobile =
-e.target.getAttribute("data-mobile");
-
-if(!mobile){
-
-alert("Mobile Number Not Found");
-
-return;
-
-}
-
-window.open(
-`https://wa.me/91${mobile}`,
-"_blank"
-);
-
-}
-
-});
-// DELETE ADMISSION
-// ======================================
-
-document.addEventListener("click", async (e)=>{
-
-if(e.target.classList.contains("deleteAdmission")){
-
-const id =
-e.target.getAttribute("data-id");
-
-if(!confirm("Delete this admission enquiry?")) return;
-
-try{
-
-await deleteDoc(
-doc(db,"admissions",id)
-);
-
-alert("Admission Deleted");
-
-loadAdmissions();
-loadStats();
-
-}catch(error){
-
-console.error(error);
-
-alert("Delete Failed");
-
-}
-
-}
-
-});
-
-// ======================================
-// DELETE NOTICE
-// ======================================
-
-document.addEventListener("click", async (e)=>{
-
-if(e.target.classList.contains("deleteNotice")){
-
-const id =
-e.target.getAttribute("data-id");
-
-if(!confirm("Delete this notice?")) return;
-
-try{
-
-await deleteDoc(
-doc(db,"notices",id)
-);
-
-alert("Notice Deleted");
-
-loadNotices();
-loadStats();
-
-}catch(error){
-
-console.error(error);
-
-alert("Delete Failed");
-
-}
-
-}
-
-});
-
-// ======================================
-// LOGOUT
-// ======================================
-
-document
-.getElementById("logoutBtn")
-.addEventListener("click", async ()=>{
-
-try{
-
-await signOut(auth);
-
-alert("Logged Out Successfully");
-
-window.location.href =
-"login.html";
-
-}catch(error){
-
-console.error(error);
-
-alert("Logout Failed");
-
-}
-
-});
-
-// ======================================
-// ======================================
-// EXPORT ADMISSIONS TO EXCEL
-// ======================================
-
-document
-.getElementById("exportExcel")
-.addEventListener("click", async ()=>{
-
-try{
-
-const snapshot =
-await getDocs(
-collection(db,"admissions")
-);
-
-const data = [];
-
-snapshot.forEach((docItem)=>{
-
-const item =
-docItem.data();
-
-data.push({
-
-Name:
-item.studentName || "",
-
-Mobile:
-item.mobileNumber || "",
-
-Email:
-item.emailAddress || "",
-
-Course:
-item.course || "",
-
-Query:
-item.studentQuery || ""
-
-});
-
-});
-
-const worksheet =
-XLSX.utils.json_to_sheet(data);
-
-const workbook =
-XLSX.utils.book_new();
-
-XLSX.utils.book_append_sheet(
-workbook,
-worksheet,
-"Admissions"
-);
-
-XLSX.writeFile(
-workbook,
-"Admissions.xlsx"
-);
-
-}catch(error){
-
-console.error(error);
-
-alert("Export Failed");
-
-}
-
-});
-  // ======================================
-// SEARCH ADMISSIONS
-// ======================================
-
-document
-.getElementById("searchAdmission")
-.addEventListener("keyup", function(){
-
-const search =
-this.value.toLowerCase();
-
-const table =
-document.getElementById("admissionsTable");
-
-table.innerHTML = "";
-
-const filtered =
-allAdmissions.filter(item =>
-
-(item.studentName || "")
-.toLowerCase()
-.includes(search)
-
-||
-
-(item.mobileNumber || "")
-.toLowerCase()
-.includes(search)
-
-||
-
-(item.emailAddress || "")
-.toLowerCase()
-.includes(search)
-
-||
-
-(item.course || "")
-.toLowerCase()
-.includes(search)
-
-);
-
-if(filtered.length === 0){
-
-table.innerHTML =
-"<tr><td colspan='6'>No Records Found</td></tr>";
-
-return;
-
-}
-
-filtered.forEach(data => {
-
-table.innerHTML += `
-<tr>
-<td>${data.studentName || ""}</td>
-<td>${data.mobileNumber || ""}</td>
-<td>${data.emailAddress || ""}</td>
-<td>${data.course || ""}</td>
-<td>${data.studentQuery || ""}</td>
-<td>Search Result</td>
-</tr>
-`;
-
-});
-
-});
-loadAdmissions();
-loadNotices();
-loadStats();
-
-// ======================================
-
-</script>
-
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container d-flex justify-content-between">
+            <span class="navbar-brand">MK School Admin Panel</span>
+            <button id="logoutBtn" class="btn btn-light btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h5>Total Admissions</h5>
+                        <h2 id="totalAdmissions">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h5>Total Notices</h5>
+                        <h2 id="totalNotices">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h5>Today's Admissions</h5>
+                        <h2 id="todayAdmissions">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow p-4">
+                    <h4>Add Notice</h4>
+                    <input id="notice" class="form-control mb-3" placeholder="Write Notice">
+                    <button id="saveNotice" class="btn btn-success">Save Notice</button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Admission Enquiries</h2>
+            <button id="exportExcel" class="btn btn-success">Export Excel</button>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" id="searchAdmission" class="form-control" placeholder="Search by Name, Mobile, Email or Course">
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Query</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="admissionsTable">
+                    <tr>
+                        <td colspan="6">Loading Admissions...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr class="my-5">
+        <h2 class="mb-3">Manage Notices</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Notice</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="noticesTable">
+                    <tr>
+                        <td colspan="2">Loading Notices...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, auth } from "../js/firebase-config.js";
+        import {
+            collection,
+            addDoc,
+            getDocs,
+            query,
+            orderBy,
+            deleteDoc,
+            doc,
+            serverTimestamp // Added Firebase Server Timestamp utility
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        import {
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        let allAdmissions = [];
+
+        // ======================================
+        // DASHBOARD PROTECTION
+        // ======================================
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            }
+        });
+
+        // ======================================
+        // SAVE NOTICE
+        // ======================================
+        document.getElementById("saveNotice").addEventListener("click", async () => {
+            const notice = document.getElementById("notice").value.trim();
+
+            if (!notice) {
+                alert("Please enter a notice");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "notices"), {
+                    notice: notice,
+                    createdAt: serverTimestamp() // Fixed: Using serverTimestamp instead of new Date()
+                });
+
+                document.getElementById("notice").value = "";
+                alert("Notice Saved");
+
+                loadNotices();
+                loadStats();
+            } catch (error) {
+                console.error(error);
+                alert("Failed to save notice");
+            }
+        });
+
+        // ======================================
+        // LOAD ADMISSIONS
+        // ======================================
+        async function loadAdmissions() {
+            const table = document.getElementById("admissionsTable");
+            table.innerHTML = "<tr><td colspan='6'>Loading...</td></tr>";
+
+            try {
+                const q = query(collection(db, "admissions"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                allAdmissions = [];
+                table.innerHTML = "";
+
+                if (snapshot.empty) {
+                    table.innerHTML = "<tr><td colspan='6'>No Admissions Found</td></tr>";
+                    return;
+                }
+
+                snapshot.forEach((admissionDoc) => {
+                    const data = admissionDoc.data();
+                    allAdmissions.push({
+                        id: admissionDoc.id,
+                        ...data
+                    });
+
+                    table.innerHTML += `
+                    <tr>
+                        <td>${data.studentName || ""}</td>
+                        <td>${data.mobileNumber || ""}</td>
+                        <td>${data.emailAddress || ""}</td>
+                        <td>${data.course || ""}</td>
+                        <td>${data.studentQuery || ""}</td>
+                        <td>
+                            <button class="btn btn-success btn-sm me-2 whatsappBtn" data-mobile="${data.mobileNumber || ""}">WhatsApp</button>
+                            <button class="btn btn-danger btn-sm deleteAdmission" data-id="${admissionDoc.id}">Delete</button>
+                        </td>
+                    </tr>`;
+                });
+            } catch (error) {
+                console.error(error);
+                table.innerHTML = "<tr><td colspan='6'>Error Loading Admissions</td></tr>";
+            }
+        }
+
+        // ======================================
+        // LOAD NOTICES
+        // ======================================
+        async function loadNotices() {
+            const table = document.getElementById("noticesTable");
+            table.innerHTML = "<tr><td colspan='2'>Loading...</td></tr>";
+
+            try {
+                const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                table.innerHTML = "";
+
+                if (snapshot.empty) {
+                    table.innerHTML = "<tr><td colspan='2'>No Notices Found</td></tr>";
+                    return;
+                }
+
+                snapshot.forEach((noticeDoc) => {
+                    const data = noticeDoc.data();
+                    table.innerHTML += `
+                    <tr>
+                        <td>${data.notice || ""}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm deleteNotice" data-id="${noticeDoc.id}">Delete</button>
+                        </td>
+                    </tr>`;
+                });
+            } catch (error) {
+                console.error(error);
+                table.innerHTML = "<tr><td colspan='2'>Error Loading Notices</td></tr>";
+            }
+        }
+
+        // ======================================
+        // LOAD STATS
+        // ======================================
+        async function loadStats() {
+            try {
+                const admissionsSnapshot = await getDocs(collection(db, "admissions"));
+                const noticesSnapshot = await getDocs(collection(db, "notices"));
+
+                document.getElementById("totalAdmissions").innerText = admissionsSnapshot.size;
+                document.getElementById("totalNotices").innerText = noticesSnapshot.size;
+
+                let todayCount = 0;
+                const today = new Date();
+
+                admissionsSnapshot.forEach((docItem) => {
+                    const data = docItem.data();
+                    if (data.createdAt) {
+                        const admissionDate = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+                        if (admissionDate.toDateString() === today.toDateString()) {
+                            todayCount++;
+                        }
+                    }
+                });
+
+                document.getElementById("todayAdmissions").innerText = todayCount;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // ======================================
+        // WHATSAPP CONTACT
+        // ======================================
+        document.addEventListener("click", (e) => {
+            if (e.target.classList.contains("whatsappBtn")) {
+                const mobile = e.target.getAttribute("data-mobile");
+                if (!mobile) {
+                    alert("Mobile Number Not Found");
+                    return;
+                }
+                window.open(`https://wa.me/91${mobile}`, "_blank");
+            }
+        });
+
+        // ======================================
+        // DELETE ADMISSION
+        // ======================================
+        document.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("deleteAdmission")) {
+                const id = e.target.getAttribute("data-id");
+                if (!confirm("Delete this admission enquiry?")) return;
+
+                try {
+                    await deleteDoc(doc(db, "admissions", id));
+                    alert("Admission Deleted");
+                    loadAdmissions();
+                    loadStats();
+                } catch (error) {
+                    console.error(error);
+                    alert("Delete Failed");
+                }
+            }
+        });
+
+        // ======================================
+        // DELETE NOTICE
+        // ======================================
+        document.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("deleteNotice")) {
+                const id = e.target.getAttribute("data-id");
+                if (!confirm("Delete this notice?")) return;
+
+                try {
+                    await deleteDoc(doc(db, "notices", id));
+                    alert("Notice Deleted");
+                    loadNotices();
+                    loadStats();
+                } catch (error) {
+                    console.error(error);
+                    alert("Delete Failed");
+                }
+            }
+        });
+
+        // ======================================
+        // LOGOUT
+        // ======================================
+        document.getElementById("logoutBtn").addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                alert("Logged Out Successfully");
+                window.location.href = "login.html";
+            } catch (error) {
+                console.error(error);
+                alert("Logout Failed");
+            }
+        });
+
+        // ======================================
+        // EXPORT ADMISSIONS TO EXCEL
+        // ======================================
+        document.getElementById("exportExcel").addEventListener("click", async () => {
+            try {
+                const snapshot = await getDocs(collection(db, "admissions"));
+                const data = [];
+
+                snapshot.forEach((docItem) => {
+                    const item = docItem.data();
+                    data.push({
+                        Name: item.studentName || "",
+                        Mobile: item.mobileNumber || "",
+                        Email: item.emailAddress || "",
+                        Course: item.course || "",
+                        Query: item.studentQuery || ""
+                    });
+                });
+
+                const worksheet = XLSX.utils.json_to_sheet(data);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Admissions");
+                XLSX.writeFile(workbook, "Admissions.xlsx");
+            } catch (error) {
+                console.error(error);
+                alert("Export Failed");
+            }
+        });
+
+        // ======================================
+        // SEARCH ADMISSIONS
+        // ======================================
+        document.getElementById("searchAdmission").addEventListener("keyup", function () {
+            const search = this.value.toLowerCase();
+            const table = document.getElementById("admissionsTable");
+            table.innerHTML = "";
+
+            const filtered = allAdmissions.filter(item =>
+                (item.studentName || "").toLowerCase().includes(search) ||
+                (item.mobileNumber || "").toLowerCase().includes(search) ||
+                (item.emailAddress || "").toLowerCase().includes(search) ||
+                (item.course || "").toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                table.innerHTML = "<tr><td colspan='6'>No Records Found</td></tr>";
+                return;
+            }
+
+            filtered.forEach(data => {
+                table.innerHTML += `
+                <tr>
+                    <td>${data.studentName || ""}</td>
+                    <td>${data.mobileNumber || ""}</td>
+                    <td>${data.emailAddress || ""}</td>
+                    <td>${data.course || ""}</td>
+                    <td>${data.studentQuery || ""}</td>
+                    <td>Search Result</td>
+                </tr>`;
+            });
+        });
+
+        // Initial Data Fetch
+        loadAdmissions();
+        loadNotices();
+        loadStats();
+    </script>
 </body>
 
 </html>
