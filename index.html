@@ -60,7 +60,6 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#upcoming-exams">Bihar Upcoming Examination</a></li>
                     <li class="nav-item"><a class="nav-link" href="#bihar-mock">Bihar Exam Mock Test</a></li>
                     <li class="nav-item"><a class="nav-link" href="#bihar-current">Bihar Exam Current Affairs</a></li>
                     <li class="nav-item"><a class="nav-link" href="#competitive">Competitive Exams</a></li>
@@ -403,12 +402,10 @@
                     </button>
                 </div>
                 <div class="card-body p-4 bg-white rounded-bottom">
-
                     <div id="tier-toggle-container" class="mb-4 text-center d-none">
                         <div class="btn-group" role="group" aria-label="Tier selection">
                             <input type="radio" class="btn-check" name="examTier" id="tierPT" checked onclick="switchTier('PT')">
                             <label class="btn btn-outline-primary px-4 fw-semibold" for="tierPT">Preliminary Test (PT)</label>
-
                             <input type="radio" class="btn-check" name="examTier" id="tierMains" onclick="switchTier('Mains')">
                             <label class="btn btn-outline-primary px-4 fw-semibold" for="tierMains">Mains Examination</label>
                         </div>
@@ -431,12 +428,10 @@
                         <div class="tab-pane fade show active" id="panel-notes" role="tabpanel" aria-labelledby="notes-tab">
                             <div class="row g-4" id="download-links-grid"></div>
                         </div>
-                        
                         <div class="tab-pane fade" id="panel-videos" role="tabpanel" aria-labelledby="videos-tab">
                             <div class="row g-3" id="video-links-grid"></div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -548,61 +543,189 @@
     <a href="https://wa.me/917909003467" class="whatsapp-btn">WhatsApp</a>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script type="module" src="js/app.js"></script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <script>
+        const mockQuestions = [
+            {
+                question: "Which soil cover dominates the largest geographical surface plain area across Bihar?",
+                options: ["Alluvial Soil", "Red and Yellow Soil", "Laterite Soil", "Marshy Soil"],
+                correct: 0
+            },
+            {
+                question: "The ancient historical site of Nalanda Mahavihara was built during the reign of which dynasty?",
+                options: ["Maurya Dynasty", "Gupta Dynasty", "Pala Dynasty", "Kushan Dynasty"],
+                correct: 1
+            },
+            {
+                question: "Which of the following rivers forms the boundary line between Bihar and Uttar Pradesh?",
+                options: ["Kosi River", "Gandak River", "Karmanasa River", "Bagmati River"],
+                correct: 2
+            },
+            {
+                question: "What pigment captures solar photons within cell plastids during plant photosynthesis?",
+                options: ["Carotenoid", "Anthocyanin", "Chlorophyll a", "Phycobilin"],
+                correct: 2
+            },
+            {
+                question: "The First Buddhist Council was convened immediately after the Mahaparinirvana of Buddha at which location?",
+                options: ["Rajgriha", "Vaishali", "Pataliputra", "Kashmir"],
+                correct: 0
+            }
+        ];
 
-        // Firebase Configuration Core Sync Data
-        const firebaseConfig = {
-            apiKey: "AIzaSyA8uZDSlXt9Jfglhh47zyo0wjdRxHuFMRc",
-            authDomain: "mk-school-300b3.firebaseapp.com",
-            projectId: "mk-school-300b3",
-            storageBucket: "mk-school-300b3.firebasestorage.app",
-            messagingSenderId: "153218908826",
-            appId: "1:153218908826:web:c71655455007f525431523",
-            measurementId: "G-6959G49TVX"
-        };
+        let currentIndex = 0;
+        let userResponses = new Array(mockQuestions.length).fill(null);
+        let reviewStatus = new Array(mockQuestions.length).fill(false);
+        let examTimeSeconds = 45 * 60; 
+        let timerInterval = null;
 
-        // Initialize App & DB Connection
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        
-        const noticeContainer = document.getElementById("homepage-notice-list");
-
-        // Set up the Real-time stream listener
-        function getLiveNotices() {
-            const noticesCollection = collection(db, "notices");
-            const q = query(noticesCollection, orderBy("createdAt", "desc"));
-
-            onSnapshot(q, (snapshot) => {
-                noticeContainer.innerHTML = ""; // Clear current items
-
-                if (snapshot.empty) {
-                    noticeContainer.innerHTML = '<li class="list-group-item text-white-50 text-center">No active notices.</li>';
-                    return;
-                }
-
-                snapshot.forEach((doc) => {
-                    const notice = doc.data();
-                    const li = document.createElement("li");
-                    li.className = "list-group-item d-flex align-items-start gap-2";
-                    
-                    li.innerHTML = `
-                        <span>🔹</span>
-                        <div>${notice.notice}</div>
-                    `;
-                    noticeContainer.appendChild(li);
-                });
-            }, (error) => {
-                console.error("Firebase Snapshot Error: ", error);
-                noticeContainer.innerHTML = '<li class="list-group-item text-danger">Failed to sync updates.</li>';
-            });
+        function startActiveMockWorkspace() {
+            document.getElementById("mock-dashboard-view").classList.add("d-none");
+            document.getElementById("live-mock-interface").classList.remove("d-none");
+            
+            initPaletteGrid();
+            loadQuestion(0);
+            startExamCountdownTimer();
         }
 
-        document.addEventListener("DOMContentLoaded", getLiveNotices);
+        function initPaletteGrid() {
+            const grid = document.getElementById("palette-grid");
+            grid.innerHTML = "";
+            for (let i = 0; i < mockQuestions.length; i++) {
+                const btn = document.createElement("button");
+                btn.className = "palette-btn";
+                btn.id = `palette-btn-${i}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => loadQuestion(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function loadQuestion(index) {
+            // Update previous step classes on old current button
+            document.getElementById(`palette-btn-${currentIndex}`).classList.remove("current");
+            
+            currentIndex = index;
+            const currentQuestion = mockQuestions[currentIndex];
+            
+            // Setup active question tracking highlights
+            const currentBtn = document.getElementById(`palette-btn-${currentIndex}`);
+            currentBtn.classList.add("current");
+            if(userResponses[currentIndex] === null && !reviewStatus[currentIndex]) {
+                currentBtn.classList.add("bg-secondary", "text-white"); // Marked as skipped/visited
+            }
+
+            document.getElementById("current-q-num").innerText = currentIndex + 1;
+            document.getElementById("total-q-num").innerText = mockQuestions.length;
+            document.getElementById("question-text").innerText = currentQuestion.question;
+
+            // Generate structural options markup
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+            currentQuestion.options.forEach((option, idx) => {
+                const card = document.createElement("div");
+                card.className = "option-card";
+                if (userResponses[currentIndex] === idx) {
+                    card.className += " selected";
+                }
+                card.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${option}`;
+                card.onclick = () => selectOptionElement(idx);
+                optionsContainer.appendChild(card);
+            });
+
+            // Toggle active back/prev control states
+            document.getElementById("btn-prev").disabled = (currentIndex === 0);
+            document.getElementById("btn-next").innerHTML = (currentIndex === mockQuestions.length - 1) ? 
+                'Review Workspace <i class="fa-solid fa-calculator ms-1"></i>' : 
+                'Save & Next <i class="fa-solid fa-chevron-right ms-1"></i>';
+        }
+
+        function selectOptionElement(optionIdx) {
+            userResponses[currentIndex] = optionIdx;
+            reviewStatus[currentIndex] = false; // Answering overrides review status
+            
+            // Clean custom palette layouts
+            const paletteBtn = document.getElementById(`palette-btn-${currentIndex}`);
+            paletteBtn.className = "palette-btn current answered";
+            
+            // Refresh options window
+            loadQuestion(currentIndex);
+        }
+
+        function navigateQuestion(direction) {
+            let targetedIndex = currentIndex + direction;
+            if (targetedIndex >= 0 && targetedIndex < mockQuestions.length) {
+                loadQuestion(targetedIndex);
+            }
+        }
+
+        function markForReview() {
+            reviewStatus[currentIndex] = true;
+            userResponses[currentIndex] = null; // Clear answer if marked for review purely
+            
+            const paletteBtn = document.getElementById(`palette-btn-${currentIndex}`);
+            paletteBtn.className = "palette-btn current marked";
+            navigateQuestion(1);
+        }
+
+        function clearResponse() {
+            userResponses[currentIndex] = null;
+            reviewStatus[currentIndex] = false;
+            
+            const paletteBtn = document.getElementById(`palette-btn-${currentIndex}`);
+            paletteBtn.className = "palette-btn current bg-secondary text-white";
+            loadQuestion(currentIndex);
+        }
+
+        function startExamCountdownTimer() {
+            timerInterval = setInterval(() => {
+                if (examTimeSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitExamination();
+                    return;
+                }
+                examTimeSeconds--;
+                let mins = Math.floor(examTimeSeconds / 60);
+                let secs = examTimeSeconds % 60;
+                document.getElementById("exam-timer").innerText = 
+                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function finishExamPrompt() {
+            if(confirm("Are you sure you want to end your test session and compute standard accuracy metrics?")) {
+                autoSubmitExamination();
+            }
+        }
+
+        function autoSubmitExamination() {
+            clearInterval(timerInterval);
+            let score = 0;
+            let answeredCount = 0;
+
+            userResponses.forEach((resp, idx) => {
+                if(resp !== null) {
+                    answeredCount++;
+                    if(resp === mockQuestions[idx].correct) {
+                        score++;
+                    }
+                }
+            });
+
+            // Display instantaneous evaluation window matrix
+            alert(`=== EXAMINATION REPORT ===\n\nTotal Questions: ${mockQuestions.length}\nAnswered: ${answeredCount}\nCorrect Answers: ${score}\nFinal Score: ${score} / ${mockQuestions.length}`);
+            
+            // Reset visibility toggles
+            document.getElementById("live-mock-interface").classList.add("d-none");
+            document.getElementById("mock-dashboard-view").classList.remove("d-none");
+            
+            // Flush localized session configurations
+            currentIndex = 0;
+            userResponses = new Array(mockQuestions.length).fill(null);
+            reviewStatus = new Array(mockQuestions.length).fill(false);
+            examTimeSeconds = 45 * 60;
+        }
     </script>
 </body>
 </html>
