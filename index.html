@@ -568,79 +568,270 @@
         document.addEventListener("DOMContentLoaded", getLiveNotices);
 
         // =========================================================================
-        // BIHAR UPCOMING EXAMINATIONS PORTAL DATA & ENGINE LOGIC
+        // BIHAR UPCOMING EXAMINATIONS PORTAL DATA & LIVE ENGINE LOGIC
         // =========================================================================
-        const BIHAR_EXAMS_DATASET = {
-            "bssc-grad": {
-                title: "Bihar SSC Graduate Level Exam",
-                notes: "Detailed core notes covering General Studies, Logical Reasoning, Mental Ability, and General Science. Designed systematically for the 4th Graduate Level Combined Competitive Exam.",
-                syllabus: "Section A: General Studies (Current Events, National/International awards, India & Neighboring countries context). Section B: General Science & Mathematics (Matriculation standard). Section C: Comprehension, Logical Reasoning, Mental Ability.",
-                cutoff: "Expected General Category Benchmark: 105 - 112 Marks (Based on relative difficulty index calculation rules).",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bssc-inter": {
-                title: "Bihar SSC Inter Level Exam",
-                notes: "Foundation conceptual reference files focused heavily on static General Knowledge, numerical speed analytics, and basic general science frameworks.",
-                syllabus: "150 Questions Total: General Studies (50 Qs), General Science & Math (50 Qs), Comprehension & Mental Ability Reasoning (50 Qs).",
-                cutoff: "Expected Target Threshold Range: 98 - 104 Marks out of 150 questions structural weighting matrix.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bssc-tenth": {
-                title: "Bihar SSC Tenth Level Exam",
-                notes: "Simplified revision summaries and practice manuals specialized for Matriculation entry grade structural evaluations.",
-                syllabus: "Basic Arithmetic arrays, elementary structural general awareness metrics, basic reasoning sequences, and fundamental Hindi grammar sets.",
-                cutoff: "Estimated safe target performance profile: 78% - 82% aggregated metrics scaling.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "railway-d": {
-                title: "Railway Group D Exam",
-                notes: "High-yield functional study files mapping standard operational engineering rules, simple computational mathematics patterns, and physics applications.",
-                syllabus: "General Science (25), Mathematics (25), General Intelligence & Reasoning (30), General Awareness and Current Affairs (20). Total time: 90 Mins.",
-                cutoff: "Projected Normalized Cut-Off Range: 68 - 74 (Varies dynamically across distinct railway regional cluster boards).",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bpsc-cce": {
-                title: "BPSC CCE 72nd Examination",
-                notes: "Comprehensive analysis sheets focusing on Ancient/Modern History of Bihar, Indian Polity, Socio-Economic geography indicators, and modern current developments.",
-                syllabus: "Prelims: Single paper on General Studies (150 Marks, Negative marking enforced at 1/3 deduction standard). Emphasis on History of Bihar, Freedom Struggle contribution, and Economy post-independence.",
-                cutoff: "Expected Safe Competitive Zone Threshold: 92 - 96 Marks under strict negative scaling patterns.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bpsc-aedo": {
-                title: "BPSC AEDO Exam",
-                notes: "Targeted administrative domain concepts, state developmental policy architectures, and executive tracking workflows.",
-                syllabus: "Paper I: General Knowledge and State Policy metrics. Paper II: Professional Administrative Specialization portfolios and local executive legal mandates.",
-                cutoff: "Projected Safe Clearing Performance Metric: 65% across primary aggregates.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bpsc-forest": {
-                title: "BPSC Assistant Conservator of Forest",
-                notes: "Advanced operational modules covering environmental ecology laws, forestry taxonomy paradigms, conservation geography metrics, and regional climate classifications.",
-                syllabus: "Compulsory Papers: General Studies & General Hindi. Optional Technical Subjects: Agriculture, Environmental Engineering, Forestry, Botany, Zoology.",
-                cutoff: "Expected Technical Shortlist Bracket: 62% - 68% evaluated scoring indexes.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bssc-prohibition": {
-                title: "Bihar SSC Prohibition Exam",
-                notes: "Targeted reference tracking metrics regarding state regulatory enforcement codes, standard civic penal systems, and legal basics.",
-                syllabus: "General Studies framework, local administrative enforcement protocols, quantitative arithmetic arrays, and regional current events tracking lists.",
-                cutoff: "Projected standard performance index: 80 - 85 Correct Question responses.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "deled-2026": {
-                title: "D.El.Ed Entrance 2026",
-                notes: "High-yield evaluation preparation units targeting primary level education teaching methodologies, childhood psychological development tracking, and foundational pedagogy.",
-                syllabus: "General Hindi/Urdu (30), Mathematics (25), Science (20), Social Studies (20), General English (20), Logical & Analytical Reasoning (15). Total Questions: 120.",
-                cutoff: "Expected Government Institutional Seating Allocation Threshold: 85+ Points standard.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
-            },
-            "bed-2026": {
-                title: "B.Ed Entrance 2026",
-                notes: "Strategic mock compilation matrices detailing teaching aptitude profiles, advanced classroom asset management strategies, and logical learning deductions.",
-                syllabus: "General English Comprehension (15), General Sanskrit (15), General Hindi (15), Logical & Analytical Reasoning (25), General Awareness (40), Teaching-Learning Environment in Schools (25). Total: 120 Marks.",
-                cutoff: "Expected State Merit Safe Ranking Zone: 78 - 84 Marks for direct institutional selection.",
-                mocks: ["Previous Year Paper", "Mock Test 1", "Mock Test 2"]
+        let activeBiharExamKey = null;
+        let currentQuestionIndex = 0;
+        let quizCountdownTimer = null;
+        let userSelectedAnswers = [];
+        let cloudQuestionsList = []; 
+
+        // 100% Live Engine: Pulls all exams directly out of your Firebase Firestore
+        window.showBiharExamsPortal = async function() {
+            const gridTarget = document.getElementById("bihar-exams-grid-target");
+            gridTarget.innerHTML = `
+                <div class="text-center py-4 w-100">
+                    <div class="spinner-border text-danger" role="status"></div>
+                    <p class="text-muted mt-2">Streaming real-time exam notifications from database registry...</p>
+                </div>`;
+            
+            window.resetBiharPortalView();
+            const modalElement = new bootstrap.Modal(document.getElementById('biharExamsModal'));
+            modalElement.show();
+
+            try {
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                const examsColRef = collection(db, "exams");
+                const snapshot = await getDocs(examsColRef);
+                
+                gridTarget.innerHTML = "";
+                
+                if (snapshot.empty) {
+                    gridTarget.innerHTML = `<div class="alert alert-warning text-center w-100">No active examinations published in database.</div>`;
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const key = doc.id;
+                    const item = doc.data();
+                    const cleanNotes = item.notes ? item.notes.substring(0, 85) : "No description notes available...";
+                    
+                    gridTarget.innerHTML += `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm p-3 hover-action" onclick="viewBiharExamDetails('${key}')">
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <div>
+                                        <h6 class="fw-bold text-dark mb-2">${item.title || key.toUpperCase()}</h6>
+                                        <p class="text-muted small mb-3">${cleanNotes}...</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-2 border-top pt-2">
+                                        <span class="text-danger small fw-semibold">View Resources →</span>
+                                        <span class="badge bg-light text-secondary border">Live Connected</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("Failed to stream exams: ", err);
+                gridTarget.innerHTML = `<div class="alert alert-danger w-100">Database Sync Error: ${err.message}</div>`;
             }
+        };
+
+        window.viewBiharExamDetails = async function(key) {
+            activeBiharExamKey = key;
+            
+            document.getElementById("bx-title").innerText = "Connecting to Cloud...";
+            document.getElementById("bx-notes").innerText = "Syncing descriptions...";
+            document.getElementById("bx-syllabus").innerText = "Mapping curriculum structure...";
+            document.getElementById("bx-cutoff").innerText = "Analyzing threshold patterns...";
+            
+            const mockContainer = document.getElementById("bx-mock-container");
+            mockContainer.innerHTML = `<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-warning"></div> Loading tests...</div>`;
+
+            try {
+                const { doc, getDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                
+                const docRef = doc(db, "exams", key);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    document.getElementById("bx-title").innerText = cloudData.title || "Exam Information Track";
+                    document.getElementById("bx-notes").innerText = cloudData.notes || "No extra reference notes published yet.";
+                    document.getElementById("bx-syllabus").innerText = cloudData.syllabus || "Syllabus details pending upload.";
+                    document.getElementById("bx-cutoff").innerText = cloudData.cutoff || "Cutoff parameters not registered.";
+                }
+
+                const mocksColRef = collection(db, "exams", key, "mocks");
+                const querySnapshot = await getDocs(mocksColRef);
+                mockContainer.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    mockContainer.innerHTML = `<p class="small text-white-50 text-center py-3">No evaluation mock papers created for this track yet.</p>`;
+                } else {
+                    querySnapshot.forEach((mockDoc) => {
+                        const mockData = mockDoc.data();
+                        mockContainer.innerHTML += `
+                            <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100 mb-2" onclick="startLiveCloudMockSession('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')">
+                                <span><i class="fa-solid fa-file-signature me-2"></i> ${mockData.name || 'Evaluation Paper'}</span>
+                                <span class="badge bg-warning text-dark">${mockData.duration || '2 hours'}</span>
+                            </button>
+                        `;
+                    });
+                }
+
+            } catch (err) {
+                console.error("Cloud Retrieval Failure: ", err);
+                mockContainer.innerHTML = `<p class="text-danger small">Failed to load real-time cloud items.</p>`;
+            }
+
+            document.getElementById("bihar-list-view").classList.add("d-none");
+            document.getElementById("bihar-detail-view").classList.remove("d-none");
+        };
+
+        window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
+            if(!confirm(`Do you want to initiate the timed assessment session for: ${paperName}?`)) return;
+            
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-quiz-view").classList.remove("d-none");
+            document.getElementById("quiz-operational-body").classList.add("d-none");
+            
+            const qContainer = document.getElementById("quiz-question-container");
+            qContainer.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted mt-2">Generating personalized question sheets from cloud database records...</p>
+                </div>`;
+            
+            try {
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                
+                const questionsColRef = collection(db, "exams", examId, "mocks", mockId, "questions");
+                const snapshot = await getDocs(questionsColRef);
+                
+                cloudQuestionsList = [];
+                snapshot.forEach(doc => {
+                    cloudQuestionsList.push(doc.data());
+                });
+                
+                if(cloudQuestionsList.length === 0) {
+                    qContainer.innerHTML = `
+                        <div class="alert alert-warning border-0 shadow-sm text-dark">
+                            <h5>⚠️ Empty Mock Paper Profile</h5>
+                            <p class="mb-0">This paper has been created, but no questions have been uploaded yet into the database.</p>
+                        </div>`;
+                    return;
+                }
+                
+                document.getElementById("quiz-arena-title").innerText = paperName;
+                document.getElementById("quiz-operational-body").classList.remove("d-none"); 
+                document.getElementById("quiz-score-container").classList.add("d-none"); 
+                
+                currentQuestionIndex = 0;
+                userSelectedAnswers = new Array(cloudQuestionsList.length).fill(null);
+                
+                renderCloudQuestionItem();
+                beginQuizTimerCount(120 * 60); 
+                
+            } catch(err) {
+                console.error(err);
+                qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
+            }
+        };
+
+        window.renderCloudQuestionItem = function() {
+            const qContainer = document.getElementById("quiz-question-container");
+            const item = cloudQuestionsList[currentQuestionIndex];
+            
+            let optionsHtml = "";
+            if (item.o && Array.isArray(item.o)) {
+                item.o.forEach((option, idx) => {
+                    const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
+                    optionsHtml += `
+                        <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
+                            <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
+                            <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
+                        </div>
+                    `;
+                });
+            } else {
+                optionsHtml = `<div class="text-danger small">Error: Question options format invalid in database document.</div>`;
+            }
+
+            qContainer.innerHTML = `
+                <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
+                <p class="fs-5 text-secondary mb-4">${item.q || "No question statement text provided."}</p>
+                <div class="options-block-wrapper">${optionsHtml}</div>
+            `;
+            
+            document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
+            if(currentQuestionIndex === cloudQuestionsList.length - 1) {
+                document.getElementById("quiz-next-btn").classList.add("d-none");
+                document.getElementById("quiz-submit-btn").classList.remove("d-none");
+            } else {
+                document.getElementById("quiz-next-btn").classList.remove("d-none");
+                document.getElementById("quiz-submit-btn").classList.add("d-none");
+            }
+        };
+
+        window.selectQuizOption = function(index) {
+            const radioBtn = document.getElementById(`opt-${index}`);
+            if(radioBtn) radioBtn.checked = true;
+            userSelectedAnswers[currentQuestionIndex] = index;
+        };
+
+        window.navigateQuiz = function(direction) {
+            currentQuestionIndex += direction;
+            renderCloudQuestionItem();
+        };
+
+        window.finalizeQuizExecution = function() {
+            clearInterval(quizCountdownTimer);
+            
+            let correctCount = 0;
+            cloudQuestionsList.forEach((item, index) => {
+                if(userSelectedAnswers[index] === item.a) {
+                    correctCount++;
+                }
+            });
+
+            document.getElementById("quiz-operational-body").classList.add("d-none");
+            document.getElementById("quiz-score-container").classList.remove("d-none");
+            document.getElementById("quiz-final-score-text").innerHTML = `
+                Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${cloudQuestionsList.length} base evaluation samples.<br>
+                <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
+            `;
+        };
+
+        function beginQuizTimerCount(durationSeconds) {
+            clearInterval(quizCountdownTimer);
+            let counter = durationSeconds;
+            const display = document.getElementById("quiz-timer");
+            
+            quizCountdownTimer = setInterval(() => {
+                let hours = Math.floor(counter / 3600);
+                let minutes = Math.floor((counter % 3600) / 60);
+                let seconds = counter % 60;
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.innerText = (hours > 0 ? hours + ":" : "") + minutes + ":" + seconds;
+
+                if (--counter < 0) {
+                    clearInterval(quizCountdownTimer);
+                    window.finalizeQuizExecution();
+                }
+            }, 1000);
+        }
+
+        window.backToBiharList = function() {
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-list-view").classList.remove("d-none");
+        };
+
+        window.resetBiharPortalView = function() {
+            clearInterval(quizCountdownTimer);
+            document.getElementById("bihar-quiz-view").classList.add("d-none");
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-list-view").classList.remove("d-none");
+        };
+
+        window.exitQuizArena = function() {
+            window.resetBiharPortalView();
+            window.backToBiharList();
         };
 
         let activeBiharExamKey = null;
