@@ -3,959 +3,780 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MANISH KUMAR SCHOOL OF ELEMENTARY AND HIGHER EDUCATION</title>
-    <meta name="description" content="School Coaching, Competitive Exam Preparation, Admission Guidance, NET, JRF, Ph.D, B.Ed, D.El.Ed, Banking, SSC, BPSC and more.">
+    <title>MANISH KUMAR SCHOOL - EXAM WARRIOR</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/mixins/_grid.scss" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        .notice-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        /* ======================================================== */
+        /* 1. MAIN GLOBAL WEBSITE BASE BRAND STYLING                */
+        /* ======================================================== */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-custom {
+            background-color: #0f2c59;
+        }
+        .course-card {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
             border-radius: 12px;
-            max-height: 250px;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* ======================================================== */
+        /* 2. CBT ARCHITECTURE INTERFACE SYSTEM STYLES              */
+        /* ======================================================== */
+        .cbt-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .instruction-container {
+            background: white;
+            width: 90%;
+            max-width: 750px;
+            max-height: 85vh;
+            border-radius: 8px;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .cbt-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+        }
+        .cbt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0f2c59;
+            color: white;
+            padding: 12px 25px;
+            border-bottom: 4px solid #dac0a3;
+        }
+        .timer-pane-wrapper {
+            display: flex;
+            gap: 15px;
+        }
+        .timer-card {
+            background: #ffffff;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            font-family: monospace;
+        }
+        .cbt-split-workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .cbt-left-viewport {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+        .cbt-right-sidebar {
+            flex: 1;
+            background-color: #f1f3f5;
+            display: flex;
+            flex-direction: column;
+            min-width: 330px;
+            max-width: 360px;
+        }
+        .viewport-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 10px 25px;
+        }
+        .question-body-card {
+            flex: 1;
             overflow-y: auto;
         }
-        .notice-list-group .list-group-item {
-            background: transparent;
-            color: #ffffff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.95rem;
+        .question-prompt {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #212529;
+            line-height: 1.6;
         }
-        .notice-list-group .list-group-item:last-child {
-            border-bottom: none;
+        .options-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
         }
-        .hover-action {
+        .option-item-btn {
+            text-align: left;
+            padding: 15px 20px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 1.05rem;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.2s ease;
         }
-        .hover-action:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+        .option-item-btn:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
         }
-        .custom-quiz-option:hover {
-            background-color: #e9ecef !important;
-            border-color: #0d6efd !important;
+        .option-item-btn.selected {
+            background-color: #d1e7dd !important;
+            border-color: #0f5132 !important;
+            color: #0f5132 !important;
+            font-weight: bold;
         }
-        @keyframes pulse {
-            0 { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .cbt-control-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .animate-pulse {
-            animation: pulse 2s infinite;
+        .cbt-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            overflow-y: auto;
+            flex: 1;
+            align-content: start;
         }
+        .matrix-cell {
+            height: 42px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .matrix-cell:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Palette States Mapping Rules */
+        .cell-unseen { background-color: #e9ecef; color: #495057; border: 1px solid #ccc; }
+        .cell-not-answered { background-color: #dc3545; color: white; }
+        .cell-answered { background-color: #198754; color: white; }
+        .cell-marked { background-color: #6f42c1; color: white; }
+
+        .status-summary-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 15px;
+        }
+        .status-item {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        .box-indicator {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .indicator-answered { background: #198754; }
+        .indicator-not-answered { background: #dc3545; }
+        .indicator-unseen { background: #e9ecef; color: #495057; border: 1px solid #ccc; }
+        .indicator-marked { background: #6f42c1; }
+
+        .analytics-overlay-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.75);
+            z-index: 10005;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .scorecard-wrapper-card {
+            background: #ffffff;
+            width: 92%;
+            max-width: 900px;
+            height: 88vh;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        .metric-grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .metric-card {
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        .solutions-explorer-workspace {
+            flex: 1;
+            overflow: hidden;
+        }
+        .review-scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 38vh;
+        }
+        .btn-purple { background-color: #6f42c1; }
+        .btn-purple:hover { background-color: #5931a4; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">MANISH KUMAR SCHOOL</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navmenu">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#competitive">Competitive Exams</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#materials">PDF Notes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#admission">Admission</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#branches">Branches</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-            </div>
+            <a class="navbar-brand fw-bold tracking-wide" href="#">MANISH KUMAR SCHOOL</a>
         </div>
     </nav>
 
-    <section id="home" class="hero bg-primary text-white py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-3 text-center">
-                    <img src="director.jpeg" alt="Director Manish Kumar" class="director-img img-fluid rounded-circle shadow" style="max-width: 200px;">
-                </div>
-                
-                <div class="col-lg-5">
-                    <span class="badge bg-warning text-dark mb-3">ADMISSION OPEN 2026</span>
-                    <h1 class="display-6 fw-bold">MANISH KUMAR SCHOOL OF ELEMENTARY AND HIGHER EDUCATION</h1>
-                    <h3 class="h5 mt-3 text-warning">A Step Towards A Bright Future</h3>
-                    <p class="lead mt-3 mb-1">Director: Manish Kumar</p>
-                    <small class="d-block text-white-50 mb-3">
-                        ✔ 5+ Years Banking Industry | ✔ 15+ Years Competitive Exam Guidance
-                    </small>
-                    <div class="d-flex gap-2">
-                        <a href="#admission" class="btn btn-warning btn-md">Apply Now</a>
-                        <a href="#contact" class="btn btn-outline-light btn-md">Contact Us</a>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card notice-card shadow p-3">
-                        <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2 border-secondary">
-                            <h5 class="m-0 text-warning fw-bold">📢 LATEST NOTICES</h5>
-                            <span class="spinner-grow spinner-grow-sm text-warning" role="status" id="live-indicator"></span>
-                        </div>
-                        <ul class="list-group notice-list-group list-group-flush" id="homepage-notice-list">
-                            <li class="list-group-item text-white-50">Connecting to live feed...</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="courses" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">School Coaching</h2>
-            <div class="row text-center">
-                <div class="col-md-4 mb-3"><div class="card p-4 fw-bold shadow-sm">CBSE</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 fw-bold shadow-sm">BSEB</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 fw-bold shadow-sm">ICSE</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 shadow-sm">Science</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 shadow-sm">Mathematics</div></div>
-                <div class="col-md-4 mb-3"><div class="card p-4 shadow-sm">English</div></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="competitive" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Competitive Exam Preparation</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <ul class="list-group shadow-sm">
-                        <li class="list-group-item">BPSC</li>
-                        <li class="list-group-item">SSC CGL</li>
-                        <li class="list-group-item">SSC CHSL</li>
-                        <li class="list-group-item">Banking (IBPS / SBI / RBI)</li>
-                        <li class="list-group-item">Railway</li>
-                        <li class="list-group-item">Bihar SI</li>
-                    </ul>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <ul class="list-group shadow-sm">
-                        <li class="list-group-item">CUET</li>
-                        <li class="list-group-item">NDA</li>
-                        <li class="list-group-item">NET</li>
-                        <li class="list-group-item">JRF</li>
-                        <li class="list-group-item">Ph.D Entrance</li>
-                        <li class="list-group-item">Other Government Exams</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="materials" class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold text-dark"><i class="fa-solid fa-file-pdf text-danger me-2"></i> PDF Notes Portal</h2>
-                <p class="text-muted">Select your target competitive exam course below to access folders of reference notes and mock papers.</p>
-            </div>
-
-            <div class="row g-4 justify-content-center" id="exam-cards-container">
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" style="border-left: 4px solid #dc3545 !important;" onclick="showBiharExamsPortal()">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #ffebee;">
-                                <i class="fa-solid fa-star fa-lg text-danger animate-pulse"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1 text-danger">Bihar Upcoming Exams</h5>
-                            <small class="text-muted">2026 Notifications</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('upsc', 'UPSC CSE Materials')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #e3f2fd;">
-                                <i class="fa-solid fa-building-columns fa-lg text-primary"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">UPSC</h5>
-                            <small class="text-muted">Civil Services</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('bpsc', 'BPSC State Exam Materials')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #e8f5e9;">
-                                <i class="fa-solid fa-gavel fa-lg text-success"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">BPSC</h5>
-                            <small class="text-muted">Bihar Civil Services</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('bssc', 'BSSC Exam Resources')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #e0f7fa;">
-                                <i class="fa-solid fa-map-location-dot fa-lg text-info"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">BSSC</h5>
-                            <small class="text-muted">Bihar Staff Selection</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('bpsc-teacher', 'BPSC Teacher Recruitment')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #fff3e0;">
-                                <i class="fa-solid fa-chalkboard-user fa-lg text-warning"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">BPSC Teacher</h5>
-                            <small class="text-muted">TRE Resources</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('ssc', 'SSC Central Exam Materials')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #ffebee;">
-                                <i class="fa-solid fa-id-card fa-lg text-danger"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">SSC</h5>
-                            <small class="text-muted">CGL, CHSL, MTS</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('railway', 'RRB Railway Resources')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #f5f5f5;">
-                                <i class="fa-solid fa-train fa-lg text-secondary"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">Railway</h5>
-                            <small class="text-muted">RRB NTPC, Group D</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0 text-center p-3 hover-action" onclick="showExamOptions('banking', 'Banking Exam Resources')">
-                        <div class="card-body">
-                            <div class="icon-box rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #eceff1;">
-                                <i class="fa-solid fa-piggy-bank fa-lg text-dark"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">Banking</h5>
-                            <small class="text-muted">IBPS, SBI PO/Clerk</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="resource-detail-view" class="card shadow-sm border-0 d-none mt-4">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
-                    <h4 class="fw-bold text-primary mb-0" id="selected-exam-title">Exam Materials</h4>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="closeResourceView()">
-                        <i class="fa-solid fa-arrow-left me-1"></i> Back to All Exams
-                    </button>
-                </div>
-                <div class="card-body p-4 bg-white rounded-bottom">
-
-                    <div id="tier-toggle-container" class="mb-4 text-center d-none">
-                        <div class="btn-group" role="group" aria-label="Tier selection">
-                            <input type="radio" class="btn-check" name="examTier" id="tierPT" checked onclick="switchTier('PT')">
-                            <label class="btn btn-outline-primary px-4 fw-semibold" for="tierPT">Preliminary Test (PT)</label>
-
-                            <input type="radio" class="btn-check" name="examTier" id="tierMains" onclick="switchTier('Mains')">
-                            <label class="btn btn-outline-primary px-4 fw-semibold" for="tierMains">Mains Examination</label>
-                        </div>
-                    </div>
-
-                    <ul class="nav nav-pills mb-4 bg-light p-2 rounded" id="resourceContentTypeTabs" role="tablist">
-                        <li class="nav-item flex-fill text-center" role="presentation">
-                            <button class="nav-link active w-100 fw-bold" id="notes-tab" data-bs-toggle="pill" data-bs-target="#panel-notes" type="button" role="tab" aria-controls="panel-notes" aria-selected="true">
-                                <i class="fa-solid fa-file-pdf me-2"></i>PDF Notes
-                            </button>
-                        </li>
-                        <li class="nav-item flex-fill text-center" role="presentation">
-                            <button class="nav-link w-100 fw-bold" id="videos-tab" data-bs-toggle="pill" data-bs-target="#panel-videos" type="button" role="tab" aria-controls="panel-videos" aria-selected="false">
-                                <i class="fa-solid fa-video me-2"></i>Video Classes
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content" id="resourceTabContent">
-                        <div class="tab-pane fade show active" id="panel-notes" role="tabpanel" aria-labelledby="notes-tab">
-                            <div class="row g-4" id="download-links-grid"></div>
-                        </div>
-                        
-                        <div class="tab-pane fade" id="panel-videos" role="tabpanel" aria-labelledby="videos-tab">
-                            <div class="row g-3" id="video-links-grid"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">Admission Guidance & Counselling</h2>
-            <div class="row text-center">
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">B.Ed</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">D.El.Ed</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">B.Tech</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Polytechnic</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">MBBS</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">BDS</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Nursing</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Paramedical</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">NET</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">JRF</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">Ph.D</div></div>
-                <div class="col-md-3 mb-3"><div class="card p-3 shadow-sm">PG Courses</div></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="admission" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Online Admission Form</h2>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="card shadow p-4">
-                        <form id="admissionForm">
-                            <input type="text" id="studentName" class="form-control mb-3" placeholder="Student Name" required>
-                            <input type="tel" id="mobileNumber" class="form-control mb-3" placeholder="Mobile Number" required>
-                            <input type="email" id="emailAddress" class="form-control mb-3" placeholder="Email Address">
-                            <select id="course" class="form-control mb-3" required>
-                                <option value="">Select Course</option>
-                                <option>B.Ed</option>
-                                <option>D.El.Ed</option>
-                                <option>B.Tech</option>
-                                <option>MBBS</option>
-                                <option>NET</option>
-                                <option>JRF</option>
-                                <option>Ph.D</option>
-                            </select>
-                            <textarea id="studentQuery" class="form-control mb-3" rows="4" placeholder="Write Your Query"></textarea>
-                            <button type="submit" class="btn btn-primary w-100">Submit Application</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="branches" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">Our Branches</h2>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card p-4 h-100 shadow-sm">
-                        <h4>Branch 1</h4>
-                        <p>Registry Chowk, Belsand<br>Near Pani Tanki</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card p-4 h-100 shadow-sm">
-                        <h4>Branch 2</h4>
-                        <p>Near Post Office<br>East of Ambedkar Chowk</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card p-4 h-100 shadow-sm">
-                        <h4>Branch 3 (Home)</h4>
-                        <p>Kadam Chowk<br>East of Mahaveer Sthan</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="bg-primary text-white py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Contact Us</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <h4>Phone Numbers</h4>
-                    <p>7909003467<br>9241405196<br>9262793165</p>
-                    <h4>Email</h4>
-                    <p>manishkumarinstitute26@gmail.com</p>
-                    <h4>Website</h4>
-                    <p>examwarrior.vercel.app</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <h4>Director</h4>
-                    <p>Manish Kumar</p>
-                    <h4>Experience</h4>
-                    <p>5+ Years Banking Industry<br>15+ Years Competitive Exam Guidance</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-dark text-white text-center py-4">
-        <h5>MANISH KUMAR SCHOOL OF ELEMENTARY AND HIGHER EDUCATION</h5>
-        <p>A Step Towards A Bright Future</p>
-        <p class="mb-0">© 2026 All Rights Reserved</p>
-    </footer>
-
-    <a href="https://wa.me/917909003467" class="whatsapp-btn">WhatsApp</a>
-
-    <div class="modal fade" id="biharExamsModal" tabindex="-1" aria-labelledby="biharExamsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title fw-bold" id="biharExamsModalLabel"><i class="fa-solid fa-graduation-cap me-2"></i> Bihar Upcoming Examination Portal - 2026</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="resetBiharPortalView()"></button>
-                </div>
-                <div class="modal-body bg-light p-4">
-                    
-                    <div id="bihar-list-view">
-                        <p class="text-muted mb-4">Select an upcoming target examination to view relevant master notes, expected cut-offs, comprehensive curriculums, and timed evaluation series.</p>
-                        <div class="row g-3" id="bihar-exams-grid-target"></div>
-                    </div>
-
-                    <div id="bihar-detail-view" class="d-none">
-                        <button class="btn btn-sm btn-outline-secondary mb-4" onclick="backToBiharList()">
-                            <i class="fa-solid fa-arrow-left me-1"></i> Back to Examination List
-                        </button>
-                        
-                        <div class="row g-4">
-                            <div class="col-lg-7">
-                                <div class="card shadow-sm border-0 mb-4">
-                                    <div class="card-body">
-                                        <h3 class="fw-bold text-primary mb-1" id="bx-title">Exam Title</h3>
-                                        <span class="badge bg-success mb-3">Resource Status: Fully Synced</span>
-                                        
-                                        <div class="mt-3">
-                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-book-open text-muted me-2"></i> About Exam & Notes</h6>
-                                            <p class="text-muted" id="bx-notes">Loading descriptions...</p>
-                                        </div>
-                                        <hr>
-                                        <div class="mt-3">
-                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-scroll text-muted me-2"></i> Official Syllabus</h6>
-                                            <p class="text-muted" id="bx-syllabus">Loading curriculum mapping data...</p>
-                                        </div>
-                                        <hr>
-                                        <div class="mt-3">
-                                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-chart-line text-muted me-2"></i> Expected Cut-Off Matrix</h6>
-                                            <p class="text-muted" id="bx-cutoff">Analyzing previous patterns...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-5">
-                                <div class="card shadow-sm border-0 bg-dark text-white p-3">
-                                    <div class="card-body">
-                                        <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-stopwatch me-2"></i> Integrated Mock Test Series</h5>
-                                        <p class="small text-white-50">Test your operational depth with full-length standard practice exams matched to actual exam structural patterns.</p>
-                                        <div class="d-grid gap-2 mt-4" id="bx-mock-container"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="bihar-quiz-view" class="d-none">
-                        <div class="card shadow-sm border-0 p-4">
-                            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-                                <div>
-                                    <h4 class="fw-bold text-dark mb-0" id="quiz-arena-title">Mock Examination Arena</h4>
-                                    <small class="text-muted" id="quiz-arena-subtitle">Duration: 2 Hours (120 Mins)</small>
-                                </div>
-                                <div class="bg-danger text-white px-3 py-2 rounded fw-bold fs-5">
-                                    <i class="fa-solid fa-clock me-1"></i> <span id="quiz-timer">120:00</span>
-                                </div>
-                            </div>
-                            
-                            <div id="quiz-operational-body">
-                                <div class="alert alert-info py-2 small">
-                                    <strong>System Note:</strong> Answer all benchmark questions carefully. Do not close or minimize this tab while your exam session is running.
-                                </div>
-                                <div id="quiz-question-container" class="my-4"></div>
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button class="btn btn-secondary px-4" id="quiz-prev-btn" onclick="navigateQuiz(-1)">Previous</button>
-                                    <button class="btn btn-primary px-4" id="quiz-next-btn" onclick="navigateQuiz(1)">Next</button>
-                                    <button class="btn btn-success px-4 d-none" id="quiz-submit-btn" onclick="finalizeQuizExecution()">Submit Exam Paper</button>
-                                </div>
-                            </div>
-
-                            <div id="quiz-score-container" class="d-none text-center py-5">
-                                <div class="display-1 text-success fw-bold mb-3"><i class="fa-solid fa-square-poll-vertical"></i></div>
-                                <h2 class="fw-bold text-dark">Exam Session Completed!</h2>
-                                <p class="lead text-muted my-3" id="quiz-final-score-text">You successfully completed your evaluation sheet.</p>
-                                <button class="btn btn-outline-danger px-4 mt-2" onclick="exitQuizArena()">Exit Exam Arena</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script type="module" src="js/app.js"></script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // Firebase Configuration Core Sync Data
-        const firebaseConfig = {
-            apiKey: "AIzaSyA8uZDSlXt9Jfglhh47zyo0wjdRxHuFMRc",
-            authDomain: "mk-school-300b3.firebaseapp.com",
-            projectId: "mk-school-300b3",
-            storageBucket: "mk-school-300b3.firebasestorage.app",
-            messagingSenderId: "153218908826",
-            appId: "1:153218908826:web:c71655455007f525431523",
-            measurementId: "G-6959G49TVX"
-        };
-
-        // Initialize App & DB Connection
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    <div id="main-landing-content">
         
-        const noticeContainer = document.getElementById("homepage-notice-list");
-
-        // Set up the Real-time stream listener
-        function getLiveNotices() {
-            const noticesCollection = collection(db, "notices");
-            const q = query(noticesCollection, orderBy("createdAt", "desc"));
-
-            onSnapshot(q, (snapshot) => {
-                noticeContainer.innerHTML = ""; 
-
-                if (snapshot.empty) {
-                    noticeContainer.innerHTML = '<li class="list-group-item text-white-50 text-center">No active notices.</li>';
-                    return;
-                }
-
-                snapshot.forEach((doc) => {
-                    const notice = doc.data();
-                    const li = document.createElement("li");
-                    li.className = "list-group-item d-flex align-items-start gap-2";
-                    
-                    li.innerHTML = `
-                        <span>🔹</span>
-                        <div>${notice.notice}</div>
-                    `;
-                    noticeContainer.appendChild(li);
-                });
-            }, (error) => {
-                console.error("Firebase Snapshot Error: ", error);
-                noticeContainer.innerHTML = '<li class="list-group-item text-danger">Failed to sync updates.</li>';
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", getLiveNotices);
-
-        // =========================================================================
-        // BIHAR UPCOMING EXAMINATIONS PORTAL DATA & LIVE ENGINE LOGIC
-        // =========================================================================
-        let activeBiharExamKey = null;
-        let currentQuestionIndex = 0;
-        let quizCountdownTimer = null;
-        let userSelectedAnswers = [];
-        let cloudQuestionsList = []; 
-
-        // Live Engine: Pulls all exams directly out of your Firebase Firestore
-        window.showBiharExamsPortal = async function() {
-            const gridTarget = document.getElementById("bihar-exams-grid-target");
-            gridTarget.innerHTML = `
-                <div class="text-center py-4 w-100">
-                    <div class="spinner-border text-danger" role="status"></div>
-                    <p class="text-muted mt-2">Streaming real-time exam notifications from database registry...</p>
-                </div>`;
-            
-            window.resetBiharPortalView();
-            const modalElement = new bootstrap.Modal(document.getElementById('biharExamsModal'));
-            modalElement.show();
-
-            try {
-                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-                const examsColRef = collection(db, "exams");
-                const snapshot = await getDocs(examsColRef);
-                
-                gridTarget.innerHTML = "";
-                
-                if (snapshot.empty) {
-                    gridTarget.innerHTML = `<div class="alert alert-warning text-center w-100">No active examinations published in database.</div>`;
-                    return;
-                }
-
-                snapshot.forEach((doc) => {
-                    const key = doc.id;
-                    const item = doc.data();
-                    const cleanNotes = item.notes ? item.notes.substring(0, 85) : "No description notes available...";
-                    
-                    gridTarget.innerHTML += `
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card h-100 border-0 shadow-sm p-3 hover-action" onclick="viewBiharExamDetails('${key}')">
-                                <div class="card-body d-flex flex-column justify-content-between">
-                                    <div>
-                                        <h6 class="fw-bold text-dark mb-2">${item.title || key.toUpperCase()}</h6>
-                                        <p class="text-muted small mb-3">${cleanNotes}...</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2 border-top pt-2">
-                                        <span class="text-danger small fw-semibold">View Resources →</span>
-                                        <span class="badge bg-light text-secondary border">Live Connected</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (err) {
-                console.error("Failed to stream exams: ", err);
-                gridTarget.innerHTML = `<div class="alert alert-danger w-100">Database Sync Error: ${err.message}</div>`;
-            }
-        };
-
-        window.viewBiharExamDetails = async function(key) {
-            activeBiharExamKey = key;
-            
-            document.getElementById("bx-title").innerText = "Connecting to Cloud...";
-            document.getElementById("bx-notes").innerText = "Syncing descriptions...";
-            document.getElementById("bx-syllabus").innerText = "Mapping curriculum structure...";
-            document.getElementById("bx-cutoff").innerText = "Analyzing threshold patterns...";
-            
-            const mockContainer = document.getElementById("bx-mock-container");
-            mockContainer.innerHTML = `<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-warning"></div> Loading tests...</div>`;
-
-            try {
-                const { doc, getDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-                
-                const docRef = doc(db, "exams", key);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const cloudData = docSnap.data();
-                    document.getElementById("bx-title").innerText = cloudData.title || "Exam Information Track";
-                    document.getElementById("bx-notes").innerText = cloudData.notes || "No extra reference notes published yet.";
-                    document.getElementById("bx-syllabus").innerText = cloudData.syllabus || "Syllabus details pending upload.";
-                    document.getElementById("bx-cutoff").innerText = cloudData.cutoff || "Cutoff parameters not registered.";
-                }
-
-                const mocksColRef = collection(db, "exams", key, "mocks");
-                const querySnapshot = await getDocs(mocksColRef);
-                mockContainer.innerHTML = "";
-
-                if (querySnapshot.empty) {
-                    mockContainer.innerHTML = `<p class="small text-white-50 text-center py-3">No evaluation mock papers created for this track yet.</p>`;
-                } else {
-                    querySnapshot.forEach((mockDoc) => {
-                        const mockData = mockDoc.data();
-                        mockContainer.innerHTML += `
-                            <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100 mb-2" onclick="startLiveCloudMockSession('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')">
-                                <span><i class="fa-solid fa-file-signature me-2"></i> ${mockData.name || 'Evaluation Paper'}</span>
-                                <span class="badge bg-warning text-dark">${mockData.duration || '2 hours'}</span>
-                            </button>
-                        `;
-                    });
-                }
-
-            } catch (err) {
-                console.error("Cloud Retrieval Failure: ", err);
-                mockContainer.innerHTML = `<p class="text-danger small">Failed to load real-time cloud items.</p>`;
-            }
-
-            document.getElementById("bihar-list-view").classList.add("d-none");
-            document.getElementById("bihar-detail-view").classList.remove("d-none");
-        };
-
-        window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
-            if(!confirm(`Do you want to initiate the timed assessment session for: ${paperName}?`)) return;
-            
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-quiz-view").classList.remove("d-none");
-            document.getElementById("quiz-operational-body").classList.add("d-none");
-            
-            const qContainer = document.getElementById("quiz-question-container");
-            qContainer.innerHTML = `
-                <div class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status"></div>
-                    <p class="text-muted mt-2">Generating personalized question sheets from cloud database records...</p>
-                </div>`;
-            
-            try {
-                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-                
-                const questionsColRef = collection(db, "exams", examId, "mocks", mockId, "questions");
-                const snapshot = await getDocs(questionsColRef);
-                
-                cloudQuestionsList = [];
-                snapshot.forEach(doc => {
-                    cloudQuestionsList.push(doc.data());
-                });
-                
-                if(cloudQuestionsList.length === 0) {
-                    qContainer.innerHTML = `
-                        <div class="alert alert-warning border-0 shadow-sm text-dark">
-                            <h5>⚠️ Empty Mock Paper Profile</h5>
-                            <p class="mb-0">This paper has been created, but no questions have been uploaded yet into the database.</p>
-                        </div>`;
-                    return;
-                }
-                
-                document.getElementById("quiz-arena-title").innerText = paperName;
-                document.getElementById("quiz-operational-body").classList.remove("d-none"); 
-                document.getElementById("quiz-score-container").classList.add("d-none"); 
-                
-                currentQuestionIndex = 0;
-                userSelectedAnswers = new Array(cloudQuestionsList.length).fill(null);
-                
-                renderCloudQuestionItem();
-                beginQuizTimerCount(120 * 60); 
-                
-            } catch(err) {
-                console.error(err);
-                qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
-            }
-        };
-
-        window.renderCloudQuestionItem = function() {
-            const qContainer = document.getElementById("quiz-question-container");
-            const item = cloudQuestionsList[currentQuestionIndex];
-            
-            let optionsHtml = "";
-            if (item.o && Array.isArray(item.o)) {
-                item.o.forEach((option, idx) => {
-                    const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
-                    optionsHtml += `
-                        <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
-                            <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
-                            <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
-                        </div>
-                    `;
-                });
-            } else {
-                optionsHtml = `<div class="text-danger small">Error: Question options format invalid in database document.</div>`;
-            }
-
-            qContainer.innerHTML = `
-                <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
-                <p class="fs-5 text-secondary mb-4">${item.q || "No question statement text provided."}</p>
-                <div class="options-block-wrapper">${optionsHtml}</div>
-            `;
-            
-            document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
-            if(currentQuestionIndex === cloudQuestionsList.length - 1) {
-                document.getElementById("quiz-next-btn").classList.add("d-none");
-                document.getElementById("quiz-submit-btn").classList.remove("d-none");
-            } else {
-                document.getElementById("quiz-next-btn").classList.remove("d-none");
-                document.getElementById("quiz-submit-btn").classList.add("d-none");
-            }
-        };
-
-        window.selectQuizOption = function(index) {
-            const radioBtn = document.getElementById(`opt-${index}`);
-            if(radioBtn) radioBtn.checked = true;
-            userSelectedAnswers[currentQuestionIndex] = index;
-        };
-
-        window.navigateQuiz = function(direction) {
-            currentQuestionIndex += direction;
-            renderCloudQuestionItem();
-        };
-
-        window.finalizeQuizExecution = function() {
-            clearInterval(quizCountdownTimer);
-            
-            let correctCount = 0;
-            cloudQuestionsList.forEach((item, index) => {
-                if(userSelectedAnswers[index] === item.a) {
-                    correctCount++;
-                }
-            });
-
-            document.getElementById("quiz-operational-body").classList.add("d-none");
-            document.getElementById("quiz-score-container").classList.remove("d-none");
-            document.getElementById("quiz-final-score-text").innerHTML = `
-                Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${cloudQuestionsList.length} base evaluation samples.<br>
-                <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
-            `;
-        };
-
-        function beginQuizTimerCount(durationSeconds) {
-            clearInterval(quizCountdownTimer);
-            let counter = durationSeconds;
-            const display = document.getElementById("quiz-timer");
-            
-            quizCountdownTimer = setInterval(() => {
-                let hours = Math.floor(counter / 3600);
-                let minutes = Math.floor((counter % 3600) / 60);
-                let seconds = counter % 60;
-
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                display.innerText = (hours > 0 ? hours + ":" : "") + minutes + ":" + seconds;
-
-                if (--counter < 0) {
-                    clearInterval(quizCountdownTimer);
-                    window.finalizeQuizExecution();
-                }
-            }, 1000);
-        }
-
-        window.backToBiharList = function() {
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-list-view").classList.remove("d-none");
-        };
-
-        window.resetBiharPortalView = function() {
-            clearInterval(quizCountdownTimer);
-            document.getElementById("bihar-quiz-view").classList.add("d-none");
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-list-view").classList.remove("d-none");
-        };
-
-        window.exitQuizArena = function() {
-            window.resetBiharPortalView();
-            window.backToBiharList();
-        };
-    </script>
-    <div id="instruction-overlay" class="cbt-overlay" style="display: none;">
-    <div class="instruction-container">
-        <h2 class="border-bottom pb-2">Online Examination Instructions / परीक्षा निर्देश</h2>
-        <div class="instruction-body">
-            <h5>Please read the following instructions carefully:</h5>
-            <ul>
-                <li>Total Questions: <span id="ins-total-q">94</span>. Total Marks: <span id="ins-total-m">188</span>.</li>
-                <li>Duration: 120 Minutes (2 Hours). The countdown timer at the top right will show remaining time.</li>
-                <li>Each question displays its own tracking timer showing your time spent on it.</li>
-                <li>You can shuffle between questions seamlessly using the sidebar navigation palette grid.</li>
-            </ul>
-            <hr>
-            <div class="lang-selection-box my-3 p-3 bg-light rounded">
-                <label for="initial-lang-select" class="form-label fw-bold">Choose your default language / अपनी डिफ़ॉल्ट भाषा चुनें:</label>
-                <select id="initial-lang-select" class="form-select w-auto d-inline-block ms-2">
-                    <option value="en" selected>ENGLISH</option>
-                    <option value="hi">HINDI / हिंदी</option>
-                </select>
+        <section class="container text-center py-5">
+            <div class="py-3">
+                <h1 class="display-5 fw-bold text-dark">📄 PDF Notes Portal</h1>
+                <p class="lead text-muted mt-2">Select your target competitive exam course below to access folders of reference notes and mock papers.</p>
+                <div class="mx-auto" style="width: 80px; height: 4px; background-color: #ffc107; border-radius: 2px;"></div>
             </div>
-        </div>
-        <div class="instruction-footer d-flex justify-content-between mt-4">
-            <button class="btn btn-secondary" onclick="exitCbtEngine()">Exit Test / बाहर निकलें</button>
-            <button class="btn btn-success px-4 fw-bold" onclick="startActualMockTestAfterInstructions()">I am ready to begin / मैं परीक्षा शुरू करने के लिए तैयार हूँ</button>
-        </div>
+        </section>
+
+        <section id="courses" class="py-5 bg-light border-top">
+            <div class="container">
+                <h2 class="text-center mb-5 fw-bold text-dark">Available Mock Portals</h2>
+                
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card p-4 h-100 course-card text-center border-0 shadow-sm" onclick="startBiharRadioMockEngine()">
+                            <div class="bg-danger-subtle rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <span class="fs-2 text-danger">⭐</span>
+                            </div>
+                            <h4 class="fw-bold text-dark">Bihar Upcoming Exams</h4>
+                            <p class="text-muted small mb-0">Bihar Daroga SI & Radio System</p>
+                            <span class="badge bg-danger mt-3 px-3 py-2">Launch Mock Test 1</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card p-4 h-100 course-card text-center border-0 shadow-sm">
+                            <div class="bg-primary-subtle rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <span class="fs-2 text-primary">🏛️</span>
+                            </div>
+                            <h4 class="fw-bold text-dark">UPSC</h4>
+                            <p class="text-muted small mb-0">Civil Services Central Track</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card p-4 h-100 course-card text-center border-0 shadow-sm">
+                            <div class="bg-success-subtle rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <span class="fs-2 text-success">🎓</span>
+                            </div>
+                            <h4 class="fw-bold text-dark">BPSC</h4>
+                            <p class="text-muted small mb-0">Bihar Public Civil Services</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
     </div>
-</div>
 
-<div id="cbt-quiz-container" class="cbt-wrapper" style="display: none;">
-    <header class="cbt-header">
-        <div class="exam-title-pane">
-            <h3 id="cbt-exam-title">BIHAR DAROGA RADIO MOCK TEST</h3>
-        </div>
-        <div class="timer-pane-wrapper">
-            <div id="overall-timer-box" class="timer-card text-danger">Remaining Time: <span id="overall-countdown">120:00</span></div>
-            <div id="question-timer-box" class="timer-card text-primary">Time Spent: <span id="question-countdown">0s</span></div>
-        </div>
-    </header>
-
-    <main class="cbt-split-workspace">
-        <section class="cbt-left-viewport">
-            <div class="viewport-header shadow-sm">
-                <span id="question-number-badge" class="badge bg-dark fs-6">Question No. 01</span>
-                <div class="lang-toggle-box">
-                    <label class="fw-bold me-2">View In:</label>
-                    <select id="lang-selector" class="form-select form-select-sm d-inline-block w-auto" onchange="changeDisplayLanguage()">
-                        <option value="en">ENGLISH</option>
+    <div id="instruction-overlay" class="cbt-overlay" style="display: none;">
+        <div class="instruction-container shadow-lg">
+            <h2 class="border-bottom pb-2 fw-bold text-dark">Online Examination Instructions / परीक्षा निर्देश</h2>
+            <div class="instruction-body my-3">
+                <h5 class="fw-bold text-secondary">Please read the following instructions carefully:</h5>
+                <ul class="lh-lg text-muted">
+                    <li>Total Questions: <span id="ins-total-q" class="fw-bold text-dark">94</span>. Total Marks: <span id="ins-total-m" class="fw-bold text-dark">188</span>.</li>
+                    <li>Duration: 120 Minutes (2 Hours). The countdown timer at the top right will show remaining time.</li>
+                    <li>Each question displays its own tracking timer showing your time spent on it.</li>
+                    <li>You can shuffle between questions seamlessly using the sidebar navigation palette grid.</li>
+                </ul>
+                <hr>
+                <div class="lang-selection-box my-3 p-3 bg-light rounded border">
+                    <label for="initial-lang-select" class="form-label fw-bold text-dark m-0">Choose your default language / अपनी डिफ़ॉल्ट भाषा चुनें:</label>
+                    <select id="initial-lang-select" class="form-select w-auto d-inline-block ms-2">
+                        <option value="en" selected>ENGLISH</option>
                         <option value="hi">HINDI / हिंदी</option>
                     </select>
                 </div>
             </div>
+            <div class="instruction-footer d-flex justify-content-between mt-auto pt-3 border-top">
+                <button class="btn btn-secondary px-4" onclick="exitCbtEngine()">Exit Test / बाहर निकलें</button>
+                <button class="btn btn-success px-4 fw-bold" onclick="startActualMockTestAfterInstructions()">I am ready to begin / मैं परीक्षा शुरू करने के लिए तैयार हूँ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cbt-quiz-container" class="cbt-wrapper" style="display: none;">
+        <header class="cbt-header">
+            <div class="exam-title-pane">
+                <h3 id="cbt-exam-title" class="m-0 fw-bold tracking-wide">BIHAR DAROGA RADIO MOCK TEST</h3>
+            </div>
+            <div class="timer-pane-wrapper">
+                <div id="overall-timer-box" class="timer-card text-danger">Remaining Time: <span id="overall-countdown">120:00</span></div>
+                <div id="question-timer-box" class="timer-card text-primary">Time Spent: <span id="question-countdown">0s</span></div>
+            </div>
+        </header>
+
+        <main class="cbt-split-workspace">
+            <section class="cbt-left-viewport">
+                <div class="viewport-header shadow-sm border-bottom">
+                    <span id="question-number-badge" class="badge bg-dark fs-6 px-3 py-2">Question No. 01</span>
+                    <div class="lang-toggle-box">
+                        <label class="fw-bold me-2 text-dark small">View In:</label>
+                        <select id="lang-selector" class="form-select form-select-sm d-inline-block w-auto" onchange="changeDisplayLanguage()">
+                            <option value="en">ENGLISH</option>
+                            <option value="hi">HINDI / हिंदी</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="question-body-card p-4">
+                    <p id="cbt-question-text" class="question-prompt mb-4">Loading your exam questions...</p>
+                    <div id="cbt-options-group" class="options-vertical-stack">
+                        </div>
+                </div>
+
+                <footer class="cbt-control-toolbar border-top p-3 bg-light">
+                    <div class="left-controls">
+                        <button id="btn-bookmark" class="btn btn-outline-warning text-dark me-2" onclick="handleBookmarkToggle()">⭐ Bookmark</button>
+                        <button id="btn-mark-review" class="btn btn-purple text-white px-3" onclick="handleMarkForReview()">Mark for Review & Next</button>
+                    </div>
+                    <div class="right-controls">
+                        <button id="btn-clear-response" class="btn btn-outline-secondary me-3" onclick="clearSelectedResponse()">Clear Response</button>
+                        <button id="btn-prev" class="btn btn-secondary me-2 px-3" onclick="navigateQuestion(-1)">Previous</button>
+                        <button id="btn-next" class="btn btn-primary px-4 fw-bold" onclick="navigateQuestion(1)">Save & Next</button>
+                    </div>
+                </footer>
+            </section>
+
+            <aside class="cbt-right-sidebar border-start shadow-sm">
+                <div class="student-profile-summary p-3 bg-white border-bottom d-flex align-items-center">
+                    <div class="avatar-placeholder me-3 fs-3">✍️</div>
+                    <div>
+                        <h5 class="m-0 fw-bold text-dark">Examinee Portal</h5>
+                        <small class="text-success fw-bold">● Connected Core Live Session</small>
+                    </div>
+                </div>
+
+                <div class="status-summary-board p-3 bg-light border-bottom">
+                    <div class="status-item"><span class="box-indicator indicator-answered" id="cnt-answered">0</span> Answered</div>
+                    <div class="status-item"><span class="box-indicator indicator-not-answered" id="cnt-not-answered">0</span> Not Answered</div>
+                    <div class="status-item"><span class="box-indicator indicator-unseen" id="cnt-unseen">0</span> Unseen</div>
+                    <div class="status-item"><span class="box-indicator indicator-marked" id="cnt-marked">0</span> Marked for Review</div>
+                </div>
+
+                <div class="grid-panel-header p-2 bg-dark text-white text-center font-monospace small">QUESTION PALETTE</div>
+                <div id="cbt-numeric-grid" class="cbt-matrix-grid p-3">
+                    </div>
+
+                <div class="sidebar-footer-action p-3 border-top bg-white mt-auto">
+                    <button id="btn-cbt-submit" class="btn btn-danger w-100 fw-bold py-2 fs-5 shadow-sm" onclick="triggerExamSubmission()">Submit Examination Paper</button>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <div id="cbt-scorecard-overlay" class="analytics-overlay-screen" style="display: none;">
+        <div class="scorecard-wrapper-card shadow-lg animate-fade-in">
+            <h2 class="text-center fw-bold text-dark border-bottom pb-2">Performance Evaluation Dashboard</h2>
             
-            <div class="question-body-card p-4">
-                <p id="cbt-question-text" class="question-prompt">Loading your exam questions...</p>
-                <div id="cbt-options-group" class="options-vertical-stack">
+            <div class="metric-grid-dashboard my-4">
+                <div class="metric-card bg-primary text-white">
+                    <h6 class="small opacity-75">Score Achieved</h6>
+                    <h2 id="score-val-total" class="fw-bold">00 / 188</h2>
+                </div>
+                <div class="metric-card bg-success text-white">
+                    <h6 class="small opacity-75">Correct Answers</h6>
+                    <h2 id="score-val-correct" class="fw-bold">0</h2>
+                </div>
+                <div class="metric-card bg-danger text-white">
+                    <h6 class="small opacity-75">Incorrect Answers</h6>
+                    <h2 id="score-val-incorrect" class="fw-bold">0</h2>
+                </div>
+                <div class="metric-card bg-warning text-dark">
+                    <h6 class="small opacity-75">Unattempted / Skipped</h6>
+                    <h2 id="score-val-unattempted" class="fw-bold">0</h2>
+                </div>
+            </div>
+            
+            <div class="solutions-explorer-workspace d-flex flex-column border rounded bg-light p-3">
+                <h4 class="fw-bold border-bottom pb-2 text-dark">📖 Check Solution Section & Detailed Answers</h4>
+                <div id="solutions-review-list" class="review-scroll-container bg-white p-3 border rounded shadow-inner">
                     </div>
             </div>
 
-            <footer class="cbt-control-toolbar border-top p-3 bg-light">
-                <div class="left-controls">
-                    <button id="btn-bookmark" class="btn btn-outline-warning text-dark me-2" onclick="handleBookmarkToggle()">⭐ Bookmark</button>
-                    <button id="btn-mark-review" class="btn btn-purple text-white" onclick="handleMarkForReview()">Mark for Review & Next</button>
-                </div>
-                <div class="right-controls">
-                    <button id="btn-clear-response" class="btn btn-outline-secondary me-3" onclick="clearSelectedResponse()">Clear Response</button>
-                    <button id="btn-prev" class="btn btn-secondary me-2" onclick="navigateQuestion(-1)">Previous</button>
-                    <button id="btn-next" class="btn btn-primary" onclick="navigateQuestion(1)">Save & Next</button>
-                </div>
-            </footer>
-        </section>
-
-        <aside class="cbt-right-sidebar border-start">
-            <div class="student-profile-summary p-3 bg-white border-bottom d-flex align-items-center">
-                <div class="avatar-placeholder me-3 fs-3">✍️</div>
-                <div>
-                    <h5 class="m-0 fw-bold">Examinee Portal</h5>
-                    <small class="text-success fw-bold">● Live Connection Status</small>
-                </div>
+            <div class="action-footer-row d-flex justify-content-between mt-4 pt-3 border-top">
+                <button class="btn btn-dark px-4 font-monospace shadow-sm" onclick="activateReattemptMode()">🔄 Toggle Reattempt Mode</button>
+                <button class="btn btn-primary px-4 fw-bold shadow-sm" onclick="window.location.reload()">Exit to Main Dashboard</button>
             </div>
-
-            <div class="status-summary-board p-3 bg-light border-bottom">
-                <div class="status-item"><span class="box-indicator indicator-answered" id="cnt-answered">0</span> Answered</div>
-                <div class="status-item"><span class="box-indicator indicator-not-answered" id="cnt-not-answered">0</span> Not Answered</div>
-                <div class="status-item"><span class="box-indicator indicator-unseen" id="cnt-unseen">0</span> Unseen</div>
-                <div class="status-item"><span class="box-indicator indicator-marked" id="cnt-marked">0</span> Marked for Review</div>
-            </div>
-
-            <div class="grid-panel-header p-2 bg-dark text-white text-center font-monospace small">QUESTION PALETTE</div>
-            <div id="cbt-numeric-grid" class="cbt-matrix-grid p-3">
-                </div>
-
-            <div class="sidebar-footer-action p-3 border-top bg-white">
-                <button id="btn-cbt-submit" class="btn btn-danger w-100 fw-bold" onclick="triggerExamSubmission()">Submit Examination Paper</button>
-            </div>
-        </aside>
-    </main>
-</div>
-
-<div id="cbt-scorecard-overlay" class="analytics-overlay-screen" style="display: none;">
-    <div class="scorecard-wrapper-card shadow-lg">
-        <h2 class="text-center fw-bold text-dark border-bottom pb-2">Performance Evaluation Dashboard</h2>
-        
-        <div class="metric-grid-dashboard my-4">
-            <div class="metric-card bg-primary text-white">
-                <h5>Score Achieved</h5>
-                <h2 id="score-val-total">00 / 188</h2>
-            </div>
-            <div class="metric-card bg-success text-white">
-                <h5>Correct Answers</h5>
-                <h2 id="score-val-correct">0</h2>
-            </div>
-            <div class="metric-card bg-danger text-white">
-                <h5>Incorrect Answers</h5>
-                <h2 id="score-val-incorrect">0</h2>
-            </div>
-            <div class="metric-card bg-warning text-dark">
-                <h5>Unattempted / Skipped</h5>
-                <h2 id="score-val-unattempted">0</h2>
-            </div>
-        </div>
-        
-        <div class="solutions-explorer-workspace d-flex flex-column border rounded bg-light p-3">
-            <h4 class="fw-bold border-bottom pb-2 text-dark">📖 Check Solution Section & Detailed Answers</h4>
-            <div id="solutions-review-list" class="review-scroll-container bg-white p-2 border rounded">
-                </div>
-        </div>
-
-        <div class="action-footer-row d-flex justify-content-between mt-4">
-            <button class="btn btn-dark px-4 font-monospace" onclick="activateReattemptMode()">🔄 Toggle Reattempt Mode</button>
-            <button class="btn btn-primary px-4 fw-bold" onclick="window.location.reload()">Exit to Main Dashboard</button>
         </div>
     </div>
-</div>
+
+    <script type="module">
+        // Import Firebase modules securely
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase Configuration Context Key Mapping Registry
+        const firebaseConfig = {
+            apiKey: "AIzaSyAsExampleKeyPlaceholderOnlyValue",
+            authDomain: "mk-school.firebaseapp.com",
+            projectId: "mk-school",
+            storageBucket: "mk-school.appspot.com",
+            messagingSenderId: "572000000000",
+            appId: "1:572000000000:web:exampleHashStringIdValue"
+        };
+
+        // Initialize connection layers instance references
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Attach database globally so operational routines can read references
+        window.db = db;
+
+        // Core Operational Engine Variable Parameters
+        let rawQuizData = [];            
+        let currentQuestionIndex = 0;
+        let selectedAnswersRegistry = {};  
+        let markedForReviewSet = new Set();
+        let seenQuestionsSet = new Set();
+        let bookmarkedQuestionsSet = new Set();
+
+        let examTotalDurationSeconds = 7200; 
+        let timeSpentOnActiveQuestion = 0;
+        let overallCountdownTracker = null;
+        let questionViewTimerTracker = null;
+
+        // Async Database Fetch Handler targeting path layout schemas 
+        async function startBiharRadioMockEngine() {
+            try {
+                console.log("Commencing live Cloud Database compilation loop arrays...");
+                
+                // Read questions documents collection from target path sequence
+                const querySnapshot = await getDocs(collection(window.db, "exams", "bihar-daroga-radio", "mocks", "mock-test-1", "questions"));
+                
+                let loadedQuestions = [];
+                querySnapshot.forEach((doc) => {
+                    loadedQuestions.push(doc.data());
+                });
+
+                if(loadedQuestions.length === 0) {
+                    alert("Zero quiz records resolved inside target collection hierarchy configuration map paths.");
+                    return;
+                }
+
+                // Sort dataset by custom array keys or matching alphanumeric IDs if required
+                rawQuizData = loadedQuestions;
+                
+                // Map counters instantly inside loading view displays panel components sheets labels
+                document.getElementById("ins-total-q").innerText = rawQuizData.length;
+                document.getElementById("ins-total-m").innerText = rawQuizData.length * 2;
+                
+                // Show standard pre-exam checklist view wrapper panel controls
+                document.getElementById("instruction-overlay").style.display = "flex";
+
+            } catch (error) {
+                console.error("Critical Connection Interrupt Exception Caught:", error);
+                alert("Firestore Link Interface Refused to Connect: " + error.message);
+            }
+        }
+
+        // Exam Runtime Activator Engine Routine Setup Control
+        window.startActualMockTestAfterInstructions = function() {
+            const preferredLangSelectionValue = document.getElementById("initial-lang-select").value;
+            document.getElementById("lang-selector").value = preferredLangSelectionValue;
+            
+            document.getElementById("instruction-overlay").style.display = "none";
+            document.getElementById("main-landing-content").style.display = "none";
+            
+            currentQuestionIndex = 0;
+            selectedAnswersRegistry = {};
+            markedForReviewSet.clear();
+            seenQuestionsSet.clear();
+            seenQuestionsSet.add(0);
+            bookmarkedQuestionsSet.clear();
+            examTotalDurationSeconds = 7200; 
+            
+            document.getElementById("cbt-quiz-container").style.display = "flex";
+            
+            initiateClocks();
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        };
+
+        function initiateClocks() {
+            if(overallCountdownTracker) clearInterval(overallCountdownTracker);
+            if(questionViewTimerTracker) clearInterval(questionViewTimerTracker);
+            
+            overallCountdownTracker = setInterval(() => {
+                if(examTotalDurationSeconds <= 0) {
+                    clearInterval(overallCountdownTracker);
+                    triggerExamSubmission();
+                    return;
+                }
+                examTotalDurationSeconds--;
+                const mins = String(Math.floor(examTotalDurationSeconds / 60)).padStart(2, '0');
+                const secs = String(examTotalDurationSeconds % 60).padStart(2, '0');
+                document.getElementById("overall-countdown").innerText = `${mins}:${secs}`;
+            }, 1000);
+
+            resetQuestionClock();
+        }
+
+        function resetQuestionClock() {
+            if(questionViewTimerTracker) clearInterval(questionViewTimerTracker);
+            timeSpentOnActiveQuestion = 0;
+            document.getElementById("question-countdown").innerText = "0s";
+            
+            questionViewTimerTracker = setInterval(() => {
+                timeSpentOnActiveQuestion++;
+                document.getElementById("question-countdown").innerText = `${timeSpentOnActiveQuestion}s`;
+            }, 1000);
+        }
+
+        function renderCbtQuestionViewport() {
+            if (rawQuizData.length === 0) return;
+            
+            const activeQuestionItemObject = rawQuizData[currentQuestionIndex];
+            document.getElementById("question-number-badge").innerText = `Question No. ${String(currentQuestionIndex + 1).padStart(2, '0')}`;
+            
+            const targetLanguageValueStrKey = document.getElementById("lang-selector").value;
+            
+            let textPromptStr = activeQuestionItemObject.q;
+            let optionsArrayBundle = activeQuestionItemObject.o;
+            
+            if (targetLanguageValueStrKey === "hi" && activeQuestionItemObject.q_hi) {
+                textPromptStr = activeQuestionItemObject.q_hi;
+                optionsArrayBundle = activeQuestionItemObject.o_hi || activeQuestionItemObject.o;
+            }
+            
+            document.getElementById("cbt-question-text").innerText = textPromptStr;
+            
+            const optionsGridContainerElementBox = document.getElementById("cbt-options-group");
+            optionsGridContainerElementBox.innerHTML = "";
+            
+            optionsArrayBundle.forEach((optionStringLabelText, choiceIdx) => {
+                const optionNodeBtn = document.createElement("button");
+                optionNodeBtn.className = "option-item-btn";
+                
+                if (selectedAnswersRegistry[currentQuestionIndex] === choiceIdx) {
+                    optionNodeBtn.className += " selected";
+                }
+                
+                optionNodeBtn.innerHTML = `<strong>${String.fromCharCode(65 + choiceIdx)}.</strong> ${optionStringLabelText}`;
+                optionNodeBtn.onclick = () => saveSelectedOptionResponse(choiceIdx);
+                optionsGridContainerElementBox.appendChild(optionNodeBtn);
+            });
+
+            const bmkBtnElementLabel = document.getElementById("btn-bookmark");
+            if(bookmarkedQuestionsSet.has(currentQuestionIndex)) {
+                bmkBtnElementLabel.className = "btn btn-warning me-2 text-dark fw-bold";
+                bmkBtnElementLabel.innerText = "⭐ Bookmarked";
+            } else {
+                bmkBtnElementLabel.className = "btn btn-outline-warning text-dark me-2";
+                bmkBtnElementLabel.innerText = "⭐ Bookmark";
+            }
+        }
+
+        function saveSelectedOptionResponse(choiceIndex) {
+            selectedAnswersRegistry[currentQuestionIndex] = choiceIndex;
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        }
+
+        window.clearSelectedResponse = function() {
+            delete selectedAnswersRegistry[currentQuestionIndex];
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        };
+
+        window.handleMarkForReview = function() {
+            markedForReviewSet.add(currentQuestionIndex);
+            updateMatrixStatusGridPanel();
+            navigateQuestion(1);
+        };
+
+        window.navigateQuestion = function(direction) {
+            let checkDestinationIndexTarget = currentQuestionIndex + direction;
+            if (checkDestinationIndexTarget >= 0 && checkDestinationIndexTarget < rawQuizData.length) {
+                currentQuestionIndex = checkDestinationIndexTarget;
+                seenQuestionsSet.add(currentQuestionIndex);
+                resetQuestionClock();
+                renderCbtQuestionViewport();
+                updateMatrixStatusGridPanel();
+            }
+        };
+
+        window.jumpDirectlyToQuestion = function(index) {
+            currentQuestionIndex = index;
+            seenQuestionsSet.add(currentQuestionIndex);
+            resetQuestionClock();
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        };
+
+        function updateMatrixStatusGridPanel() {
+            const gridMatrixLayoutWrapperBox = document.getElementById("cbt-numeric-grid");
+            gridMatrixLayoutWrapperBox.innerHTML = "";
+            
+            let countingPaletteStats = { answered: 0, notAnswered: 0, marked: 0, unseen: 0 };
+            
+            for (let i = 0; i < rawQuizData.length; i++) {
+                const matrixCellNodeElement = document.createElement("div");
+                matrixCellNodeElement.innerText = i + 1;
+                
+                if (markedForReviewSet.has(i)) {
+                    matrixCellNodeElement.className = "matrix-cell cell-marked";
+                    countingPaletteStats.marked++;
+                } else if (selectedAnswersRegistry[i] !== undefined) {
+                    matrixCellNodeElement.className = "matrix-cell cell-answered";
+                    countingPaletteStats.answered++;
+                } else if (seenQuestionsSet.has(i)) {
+                    matrixCellNodeElement.className = "matrix-cell cell-not-answered";
+                    countingPaletteStats.notAnswered++;
+                } else {
+                    matrixCellNodeElement.className = "matrix-cell cell-unseen";
+                    countingPaletteStats.unseen++;
+                }
+                
+                if (i === currentQuestionIndex) {
+                    matrixCellNodeElement.style.border = "3px solid #000000";
+                    matrixCellNodeElement.style.transform = "scale(1.12)";
+                    matrixCellNodeElement.style.fontWeight = "900";
+                }
+                
+                matrixCellNodeElement.onclick = () => jumpDirectlyToQuestion(i);
+                gridMatrixLayoutWrapperBox.appendChild(matrixCellNodeElement);
+            }
+            
+            document.getElementById("cnt-answered").innerText = countingPaletteStats.answered;
+            document.getElementById("cnt-not-answered").innerText = countingPaletteStats.notAnswered;
+            document.getElementById("cnt-marked").innerText = countingPaletteStats.marked;
+            document.getElementById("cnt-unseen").innerText = countingPaletteStats.unseen;
+        }
+
+        window.changeDisplayLanguage = function() {
+            renderCbtQuestionViewport();
+        };
+
+        window.handleBookmarkToggle = function() {
+            if(bookmarkedQuestionsSet.has(currentQuestionIndex)) {
+                bookmarkedQuestionsSet.delete(currentQuestionIndex);
+            } else {
+                bookmarkedQuestionsSet.add(currentQuestionIndex);
+            }
+            renderCbtQuestionViewport();
+        };
+
+        window.triggerExamSubmission = function() {
+            if(!confirm("Are you sure you want to finalize your mock answers and submit your file data?")) return;
+            
+            clearInterval(overallCountdownTracker);
+            clearInterval(questionViewTimerTracker);
+            
+            let tallies = { right: 0, wrong: 0, skipped: 0 };
+            const listViewerBoxWrapperElement = document.getElementById("solutions-review-list");
+            listViewerBoxWrapperElement.innerHTML = "";
+            
+            rawQuizData.forEach((questionObject, cursorIdx) => {
+                let userPickedIdxValue = selectedAnswersRegistry[cursorIdx];
+                let accurateKeyDbIndex = questionObject.a;
+                
+                let resolutionStatusStringTextLabel = "";
+                let classColorStylingRuleRef = "";
+                
+                if (userPickedIdxValue === undefined) {
+                    tallies.skipped++;
+                    resolutionStatusStringTextLabel = "UNATTEMPTED / SKIPPED";
+                    classColorStylingRuleRef = "text-warning fw-bold";
+                } else if (userPickedIdxValue === accurateKeyDbIndex) {
+                    tallies.right++;
+                    resolutionStatusStringTextLabel = "CORRECT ANSWER";
+                    classColorStylingRuleRef = "text-success fw-bold";
+                } else {
+                    tallies.wrong++;
+                    resolutionStatusStringTextLabel = "INCORRECT ANSWER";
+                    classColorStylingRuleRef = "text-danger fw-bold";
+                }
+                
+                const solutionCardRowElement = document.createElement("div");
+                solutionCardRowElement.className = "p-3 border-bottom mb-3 bg-light rounded";
+                solutionCardRowElement.innerHTML = `
+                    <p class="mb-1 text-dark fw-bold"><strong>Q${cursorIdx + 1}.</strong> ${questionObject.q}</p>
+                    <p class="small m-0 ${classColorStylingRuleRef}">Evaluation Check: ${resolutionStatusStringTextLabel}</p>
+                    <p class="small m-0 text-success fw-bold">Correct Option: Option ${String.fromCharCode(65 + accurateKeyDbIndex)} (${questionObject.o[accurateKeyDbIndex]})</p>
+                    <div class="p-2 mt-2 bg-white text-secondary border rounded small">
+                        <strong>Detailed Solution Explanation:</strong> ${questionObject.explanation || "No explanation documentation uploaded for this collection index query row database cell."}
+                    </div>
+                `;
+                listViewerBoxWrapperElement.appendChild(solutionCardRowElement);
+            });
+
+            let calculationsPointsSecured = tallies.right * 2;
+            let absoluteGrandTotalAvailableLimit = rawQuizData.length * 2;
+            
+            document.getElementById("score-val-total").innerText = `${calculationsPointsSecured} / ${absoluteGrandTotalAvailableLimit}`;
+            document.getElementById("score-val-correct").innerText = tallies.right;
+            document.getElementById("score-val-incorrect").innerText = tallies.wrong;
+            document.getElementById("score-val-unattempted").innerText = tallies.skipped;
+            
+            document.getElementById("cbt-scorecard-overlay").style.display = "flex";
+        };
+
+        window.activateReattemptMode = function() {
+            document.getElementById("cbt-scorecard-overlay").style.display = "none";
+            
+            selectedAnswersRegistry = {};
+            markedForReviewSet.clear();
+            seenQuestionsSet.clear();
+            seenQuestionsSet.add(0);
+            currentQuestionIndex = 0;
+            examTotalDurationSeconds = 7200; 
+            
+            initiateClocks();
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        };
+
+        window.exitCbtEngine = function() {
+            document.getElementById("instruction-overlay").style.display = "none";
+            document.getElementById("cbt-quiz-container").style.display = "none";
+            document.getElementById("main-landing-content").style.display = "block";
+        };
+
+        // Expose trigger globally to cards buttons on click handles
+        window.startBiharRadioMockEngine = startBiharRadioMockEngine;
+    </script>
 </body>
 </html>
