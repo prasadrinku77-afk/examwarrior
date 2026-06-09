@@ -427,8 +427,7 @@
                     
                     <div id="bihar-list-view">
                         <p class="text-muted mb-4">Select an upcoming target examination to view relevant master notes, expected cut-offs, comprehensive curriculums, and timed evaluation series.</p>
-                        <div class="row g-3" id="bihar-exams-grid-target">
-                            </div>
+                        <div class="row g-3" id="bihar-exams-grid-target"></div>
                     </div>
 
                     <div id="bihar-detail-view" class="d-none">
@@ -466,8 +465,7 @@
                                     <div class="card-body">
                                         <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-stopwatch me-2"></i> Integrated Mock Test Series</h5>
                                         <p class="small text-white-50">Test your operational depth with full-length standard practice exams matched to actual exam structural patterns.</p>
-                                        <div class="d-grid gap-2 mt-4" id="bx-mock-container">
-                                            </div>
+                                        <div class="d-grid gap-2 mt-4" id="bx-mock-container"></div>
                                     </div>
                                 </div>
                             </div>
@@ -490,8 +488,7 @@
                                 <div class="alert alert-info py-2 small">
                                     <strong>System Note:</strong> Answer all benchmark questions carefully. Do not close or minimize this tab while your exam session is running.
                                 </div>
-                                <div id="quiz-question-container" class="my-4">
-                                    </div>
+                                <div id="quiz-question-container" class="my-4"></div>
                                 <div class="d-flex justify-content-between mt-4">
                                     <button class="btn btn-secondary px-4" id="quiz-prev-btn" onclick="navigateQuiz(-1)">Previous</button>
                                     <button class="btn btn-primary px-4" id="quiz-next-btn" onclick="navigateQuiz(1)">Next</button>
@@ -544,7 +541,7 @@
             const q = query(noticesCollection, orderBy("createdAt", "desc"));
 
             onSnapshot(q, (snapshot) => {
-                noticeContainer.innerHTML = ""; // Clear current items
+                noticeContainer.innerHTML = ""; 
 
                 if (snapshot.empty) {
                     noticeContainer.innerHTML = '<li class="list-group-item text-white-50 text-center">No active notices.</li>';
@@ -650,69 +647,7 @@
         let currentQuestionIndex = 0;
         let quizCountdownTimer = null;
         let userSelectedAnswers = [];
-
-        // PASTE THIS TO REPLACE THE OLD viewBiharExamDetails FUNCTION
-window.viewBiharExamDetails = async function(key) {
-    activeBiharExamKey = key;
-    
-    // Set loading placeholders while fetching from cloud documents
-    document.getElementById("bx-title").innerText = "Connecting to Cloud...";
-    document.getElementById("bx-notes").innerText = "Syncing descriptions...";
-    document.getElementById("bx-syllabus").innerText = "Mapping curriculum structure...";
-    document.getElementById("bx-cutoff").innerText = "Analyzing threshold patterns...";
-    
-    const mockContainer = document.getElementById("bx-mock-container");
-    mockContainer.innerHTML = `<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-warning"></div> Loading tests...</div>`;
-
-    try {
-        // 1. Fetch main exam configurations (Title, Syllabus, Cutoff, Notes) from Firestore
-        // We use import-based access or map directly to your live database instance
-        const { doc, getDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-        
-        const docRef = doc(db, "exams", key);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            const cloudData = docSnap.data();
-            document.getElementById("bx-title").innerText = cloudData.title || "Exam Information Track";
-            document.getElementById("bx-notes").innerText = cloudData.notes || "No extra reference notes published yet.";
-            document.getElementById("bx-syllabus").innerText = cloudData.syllabus || "Syllabus details pending upload.";
-            document.getElementById("bx-cutoff").innerText = cloudData.cutoff || "Cutoff parameters not registered.";
-        } else {
-            document.getElementById("bx-title").innerText = "Profile Ready";
-            document.getElementById("bx-notes").innerText = "Database slot registered successfully! Use your creator panel to fill fields.";
-        }
-
-        // 2. Fetch live papers created inside the "mocks" subcollection
-        const mocksColRef = collection(db, "exams", key, "mocks");
-        const querySnapshot = await getDocs(mocksColRef);
-        mockContainer.innerHTML = "";
-
-        if (querySnapshot.empty) {
-            mockContainer.innerHTML = `<p class="small text-white-50">No evaluation mock papers created for this track yet.</p>`;
-            return;
-        }
-
-        // Generate clickable buttons for every paper found inside your database profile
-        querySnapshot.forEach((mockDoc) => {
-            const mockData = mockDoc.data();
-            mockContainer.innerHTML += `
-                <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100 mb-2" onclick="startLiveCloudMockSession('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')">
-                    <span><i class="fa-solid fa-file-signature me-2"></i> ${mockData.name || 'Evaluation Paper'}</span>
-                    <span class="badge bg-warning text-dark">${mockData.duration || '2 hours'}</span>
-                </button>
-            `;
-        });
-
-    } catch (err) {
-        console.error("Cloud Retrieval Failure: ", err);
-        mockContainer.innerHTML = `<p class="text-danger small">Failed to load real-time cloud items.</p>`;
-    }
-
-    // Toggle panel layout visibility
-    document.getElementById("bihar-list-view").classList.add("d-none");
-    document.getElementById("bihar-detail-view").classList.remove("d-none");
-};
+        let cloudQuestionsList = []; 
 
         window.showBiharExamsPortal = function() {
             const gridTarget = document.getElementById("bihar-exams-grid-target");
@@ -743,63 +678,118 @@ window.viewBiharExamDetails = async function(key) {
             modalElement.show();
         };
 
-        window.viewBiharExamDetails = function(key) {
+        window.viewBiharExamDetails = async function(key) {
             activeBiharExamKey = key;
-            const targetData = BIHAR_EXAMS_DATASET[key];
             
-            document.getElementById("bx-title").innerText = targetData.title;
-            document.getElementById("bx-notes").innerText = targetData.notes;
-            document.getElementById("bx-syllabus").innerText = targetData.syllabus;
-            document.getElementById("bx-cutoff").innerText = targetData.cutoff;
+            document.getElementById("bx-title").innerText = "Connecting to Cloud...";
+            document.getElementById("bx-notes").innerText = "Syncing descriptions...";
+            document.getElementById("bx-syllabus").innerText = "Mapping curriculum structure...";
+            document.getElementById("bx-cutoff").innerText = "Analyzing threshold patterns...";
             
             const mockContainer = document.getElementById("bx-mock-container");
-            mockContainer.innerHTML = "";
-            
-            targetData.mocks.forEach((mockName) => {
-                mockContainer.innerHTML += `
-                    <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100" onclick="startMockExamArena('${mockName}')">
-                        <span><i class="fa-solid fa-file-signature me-2"></i> ${mockName}</span>
-                        <span class="badge bg-warning text-dark">2 Hours</span>
-                    </button>
-                `;
-            });
+            mockContainer.innerHTML = `<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-warning"></div> Loading tests...</div>`;
+
+            try {
+                const { doc, getDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                
+                const docRef = doc(db, "exams", key);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    document.getElementById("bx-title").innerText = cloudData.title || "Exam Information Track";
+                    document.getElementById("bx-notes").innerText = cloudData.notes || "No extra reference notes published yet.";
+                    document.getElementById("bx-syllabus").innerText = cloudData.syllabus || "Syllabus details pending upload.";
+                    document.getElementById("bx-cutoff").innerText = cloudData.cutoff || "Cutoff parameters not registered.";
+                } else {
+                    const staticBackup = BIHAR_EXAMS_DATASET[key];
+                    document.getElementById("bx-title").innerText = staticBackup.title;
+                    document.getElementById("bx-notes").innerText = staticBackup.notes;
+                    document.getElementById("bx-syllabus").innerText = staticBackup.syllabus;
+                    document.getElementById("bx-cutoff").innerText = staticBackup.cutoff;
+                }
+
+                const mocksColRef = collection(db, "exams", key, "mocks");
+                const querySnapshot = await getDocs(mocksColRef);
+                mockContainer.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    mockContainer.innerHTML = `<p class="small text-white-50">No evaluation mock papers created for this track yet.</p>`;
+                    return;
+                }
+
+                querySnapshot.forEach((mockDoc) => {
+                    const mockData = mockDoc.data();
+                    mockContainer.innerHTML += `
+                        <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100 mb-2" onclick="startLiveCloudMockSession('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')">
+                            <span><i class="fa-solid fa-file-signature me-2"></i> ${mockData.name || 'Evaluation Paper'}</span>
+                            <span class="badge bg-warning text-dark">${mockData.duration || '2 hours'}</span>
+                        </button>
+                    `;
+                });
+
+            } catch (err) {
+                console.error("Cloud Retrieval Failure: ", err);
+                mockContainer.innerHTML = `<p class="text-danger small">Failed to load real-time cloud items.</p>`;
+            }
 
             document.getElementById("bihar-list-view").classList.add("d-none");
             document.getElementById("bihar-detail-view").classList.remove("d-none");
         };
 
-        window.backToBiharList = function() {
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-list-view").classList.remove("d-none");
-        };
-
-        window.resetBiharPortalView = function() {
-            clearInterval(quizCountdownTimer);
-            document.getElementById("bihar-quiz-view").classList.add("d-none");
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-list-view").classList.remove("d-none");
-        };
-
-        window.startMockExamArena = function(mockName) {
-            if(!confirm(`Do you want to initiate the timed 2-Hour assessment session for: ${mockName}?`)) return;
+        window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
+            if(!confirm(`Do you want to initiate the timed assessment session for: ${paperName}?`)) return;
             
             document.getElementById("bihar-detail-view").classList.add("d-none");
             document.getElementById("bihar-quiz-view").classList.remove("d-none");
-            document.getElementById("quiz-operational-body").classList.remove("d-none");
-            document.getElementById("quiz-score-container").classList.add("d-none");
+            document.getElementById("quiz-operational-body").classList.add("d-none");
             
-            document.getElementById("quiz-arena-title").innerText = `${BIHAR_EXAMS_DATASET[activeBiharExamKey].title} - ${mockName}`;
+            const qContainer = document.getElementById("quiz-question-container");
+            qContainer.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted mt-2">Generating personalized question sheets from cloud database records...</p>
+                </div>`;
             
-            currentQuestionIndex = 0;
-            userSelectedAnswers = new Array(sampleQuestionsList.length).fill(null);
-            
-            renderQuizQuestion();
-            beginQuizTimerCount(120 * 60); 
+            try {
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                
+                const questionsColRef = collection(db, "exams", examId, "mocks", mockId, "questions");
+                const snapshot = await getDocs(questionsColRef);
+                
+                cloudQuestionsList = [];
+                snapshot.forEach(doc => {
+                    cloudQuestionsList.push(doc.data());
+                });
+                
+                if(cloudQuestionsList.length === 0) {
+                    qContainer.innerHTML = `
+                        <div class="alert alert-warning border-0 shadow-sm text-dark">
+                            <h5>⚠️ Empty Mock Paper Profile</h5>
+                            <p class="mb-0">This paper has been created, but no questions have been uploaded yet. Please use your bulk uploader tool!</p>
+                        </div>`;
+                    return;
+                }
+                
+                document.getElementById("quiz-arena-title").innerText = paperName;
+                document.getElementById("quiz-operational-body").classList.remove("d-none"); 
+                document.getElementById("quiz-score-container").classList.add("d-none"); 
+                
+                currentQuestionIndex = 0;
+                userSelectedAnswers = new Array(cloudQuestionsList.length).fill(null);
+                
+                renderCloudQuestionItem();
+                beginQuizTimerCount(120 * 60); 
+                
+            } catch(err) {
+                console.error(err);
+                qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
+            }
         };
 
-        function renderQuizQuestion() {
+        window.renderCloudQuestionItem = function() {
             const qContainer = document.getElementById("quiz-question-container");
-            const item = sampleQuestionsList[currentQuestionIndex];
+            const item = cloudQuestionsList[currentQuestionIndex];
             
             let optionsHtml = "";
             item.o.forEach((option, idx) => {
@@ -813,20 +803,20 @@ window.viewBiharExamDetails = async function(key) {
             });
 
             qContainer.innerHTML = `
-                <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${sampleQuestionsList.length}</h5>
+                <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
                 <p class="fs-5 text-secondary mb-4">${item.q}</p>
                 <div class="options-block-wrapper">${optionsHtml}</div>
             `;
             
             document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
-            if(currentQuestionIndex === sampleQuestionsList.length - 1) {
+            if(currentQuestionIndex === cloudQuestionsList.length - 1) {
                 document.getElementById("quiz-next-btn").classList.add("d-none");
                 document.getElementById("quiz-submit-btn").classList.remove("d-none");
             } else {
                 document.getElementById("quiz-next-btn").classList.remove("d-none");
                 document.getElementById("quiz-submit-btn").classList.add("d-none");
             }
-        }
+        };
 
         window.selectQuizOption = function(index) {
             const radioBtn = document.getElementById(`opt-${index}`);
@@ -836,7 +826,25 @@ window.viewBiharExamDetails = async function(key) {
 
         window.navigateQuiz = function(direction) {
             currentQuestionIndex += direction;
-            renderQuizQuestion();
+            renderCloudQuestionItem();
+        };
+
+        window.finalizeQuizExecution = function() {
+            clearInterval(quizCountdownTimer);
+            
+            let correctCount = 0;
+            cloudQuestionsList.forEach((item, index) => {
+                if(userSelectedAnswers[index] === item.a) {
+                    correctCount++;
+                }
+            });
+
+            document.getElementById("quiz-operational-body").classList.add("d-none");
+            document.getElementById("quiz-score-container").classList.remove("d-none");
+            document.getElementById("quiz-final-score-text").innerHTML = `
+                Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${cloudQuestionsList.length} base evaluation samples.<br>
+                <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
+            `;
         };
 
         function beginQuizTimerCount(durationSeconds) {
@@ -861,199 +869,18 @@ window.viewBiharExamDetails = async function(key) {
             }, 1000);
         }
 
-        let cloudQuestionsList = [];
+        window.backToBiharList = function() {
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-list-view").classList.remove("d-none");
+        };
 
-window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
-    if(!confirm(`Do you want to initiate the timed assessment session for: ${paperName}?`)) return;
-    
-    document.getElementById("bihar-detail-view").classList.add("d-none");
-    document.getElementById("bihar-quiz-view").classList.remove("d-none");
-    document.getElementById("quiz-operational-body").classList.add("d-none");
-    
-    const qContainer = document.getElementById("quiz-question-container");
-    qContainer.innerHTML = `
-        <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="text-muted mt-2">Generating question sheets from cloud database structures...</p>
-        </div>`;
-    
-    try {
-        const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-        const questionsColRef = collection(db, "exams", examId, "mocks", mockId, "questions");
-        const snapshot = await getDocs(questionsColRef);
-        
-        cloudQuestionsList = [];
-        snapshot.forEach(doc => {
-            cloudQuestionsList.push(doc.data());
-        });
-        
-        if(cloudQuestionsList.length === 0) {
-            qContainer.innerHTML = `
-                <div class="alert alert-warning border-0 text-dark">
-                    <h5>⚠️ Empty Mock Paper Profile</h5>
-                    <p class="mb-0">This paper has been created, but no questions have been uploaded yet. Please use your bulk uploader tool!</p>
-                </div>`;
-            return;
-        }
-        
-        document.getElementById("quiz-arena-title").innerText = paperName;
-        document.getElementById("quiz-operational-body").classList.remove("d-none");
-        document.getElementById("quiz-score-container").classList.add("d-none");
-        
-        currentQuestionIndex = 0;
-        userSelectedAnswers = new Array(cloudQuestionsList.length).fill(null);
-        
-        renderCloudQuestionItem();
-        beginQuizTimerCount(120 * 60); 
-        
-    } catch(err) {
-        console.error(err);
-        qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
-    }
-};
+        window.resetBiharPortalView = function() {
+            clearInterval(quizCountdownTimer);
+            document.getElementById("bihar-quiz-view").classList.add("d-none");
+            document.getElementById("bihar-detail-view").classList.add("d-none");
+            document.getElementById("bihar-list-view").classList.remove("d-none");
+        };
 
-window.renderCloudQuestionItem = function() {
-    const qContainer = document.getElementById("quiz-question-container");
-    const item = cloudQuestionsList[currentQuestionIndex];
-    
-    let optionsHtml = "";
-    item.o.forEach((option, idx) => {
-        const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
-        optionsHtml += `
-            <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
-                <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
-                <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
-            </div>
-        `;
-    });
-
-    qContainer.innerHTML = `
-        <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
-        <p class="fs-5 text-secondary mb-4">${item.q}</p>
-        <div class="options-block-wrapper">${optionsHtml}</div>
-    `;
-    
-    document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
-    if(currentQuestionIndex === cloudQuestionsList.length - 1) {
-        document.getElementById("quiz-next-btn").classList.add("d-none");
-        document.getElementById("quiz-submit-btn").classList.remove("d-none");
-    } else {
-        document.getElementById("quiz-next-btn").classList.remove("d-none");
-        document.getElementById("quiz-submit-btn").classList.add("d-none");
-    }
-};
-
-window.finalizeQuizExecution = function() {
-    clearInterval(quizCountdownTimer);
-    
-    let correctCount = 0;
-    cloudQuestionsList.forEach((item, index) => {
-        if(userSelectedAnswers[index] === item.a) {
-            correctCount++;
-        }
-    });
-
-    document.getElementById("quiz-operational-body").classList.add("d-none");
-    document.getElementById("quiz-score-container").classList.remove("d-none");
-    document.getElementById("quiz-final-score-text").innerHTML = `
-        Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${cloudQuestionsList.length} base evaluation samples.<br>
-        <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
-    `;
-};
-let cloudQuestionsList = []; // This variable will store the questions we download from the cloud
-
-window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
-    // 1. Ask the student for confirmation before starting the timer
-    if(!confirm(`Do you want to initiate the timed assessment session for: ${paperName}?`)) return;
-    
-    // 2. Hide the details page layout and reveal the quiz wrapper arena
-    document.getElementById("bihar-detail-view").classList.add("d-none");
-    document.getElementById("bihar-quiz-view").classList.remove("d-none");
-    document.getElementById("quiz-operational-body").classList.add("d-none"); // Keep hidden until data arrives
-    
-    // 3. Display a loading spinner to the student while data downloads
-    const qContainer = document.getElementById("quiz-question-container");
-    qContainer.innerHTML = `
-        <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="text-muted mt-2">Generating personalized question sheets from cloud database records...</p>
-        </div>`;
-    
-    try {
-        // 4. Dynamically import Firestore modules to read the subcollections
-        const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-        
-        // This targets the exact subcollection path: exams -> (examId) -> mocks -> (mockId) -> questions
-        const questionsColRef = collection(db, "exams", examId, "mocks", mockId, "questions");
-        const snapshot = await getDocs(questionsColRef);
-        
-        // 5. Clear old questions from local memory and push the new cloud dataset items
-        cloudQuestionsList = [];
-        snapshot.forEach(doc => {
-            cloudQuestionsList.push(doc.data());
-        });
-        
-        // Safety Check: Verify if questions actually exist inside this mock paper
-        if(cloudQuestionsList.length === 0) {
-            qContainer.innerHTML = `
-                <div class="alert alert-warning border-0 shadow-sm">
-                    <h5>⚠️ Empty Mock Paper Profile</h5>
-                    <p class="mb-0">This paper has been created, but no questions have been uploaded yet. Please run your bulk uploader tool!</p>
-                </div>`;
-            return;
-        }
-        
-        // 6. Bind downloaded parameters directly to the User Interface
-        document.getElementById("quiz-arena-title").innerText = paperName;
-        document.getElementById("quiz-operational-body").classList.remove("d-none"); // Reveal the test interface
-        document.getElementById("quiz-score-container").classList.add("d-none"); // Hide score screen from previous attempts
-        
-        // 7. Reset index trackers back to question #1
-        currentQuestionIndex = 0;
-        userSelectedAnswers = new Array(cloudQuestionsList.length).fill(null);
-        
-        // 8. Render the first cloud question item and fire up the countdown tracker
-        renderCloudQuestionItem();
-        beginQuizTimerCount(120 * 60); // Set to 120 minutes (2 hours)
-        
-    } catch(err) {
-        console.error(err);
-        qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
-    }
-};
-        function renderCloudQuestionItem() {
-    const qContainer = document.getElementById("quiz-question-container");
-    const item = cloudQuestionsList[currentQuestionIndex];
-    
-    // Generate the HTML for the options dynamically based on what is in the database
-    let optionsHtml = "";
-    item.o.forEach((option, idx) => {
-        const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
-        optionsHtml += `
-            <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
-                <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
-                <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
-            </div>
-        `;
-    });
-
-    // Inject the structured Question template text content into the UI container window
-    qContainer.innerHTML = `
-        <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
-        <p class="fs-5 text-secondary mb-4">${item.q}</p>
-        <div class="options-block-wrapper">${optionsHtml}</div>
-    `;
-    
-    // Manage action navigation button states (Prev/Next/Submit) dynamically
-    document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
-    if(currentQuestionIndex === cloudQuestionsList.length - 1) {
-        document.getElementById("quiz-next-btn").classList.add("d-none");
-        document.getElementById("quiz-submit-btn").classList.remove("d-none");
-    } else {
-        document.getElementById("quiz-next-btn").classList.remove("d-none");
-        document.getElementById("quiz-submit-btn").classList.add("d-none");
-    }
-}
         window.exitQuizArena = function() {
             window.resetBiharPortalView();
             window.backToBiharList();
