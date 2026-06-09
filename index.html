@@ -825,5 +825,137 @@
             window.backToBiharList();
         };
     </script>
+    <div id="instruction-overlay" class="cbt-overlay" style="display: none;">
+    <div class="instruction-container">
+        <h2 class="border-bottom pb-2">Online Examination Instructions / परीक्षा निर्देश</h2>
+        <div class="instruction-body">
+            <h5>Please read the following instructions carefully:</h5>
+            <ul>
+                <li>Total Questions: <span id="ins-total-q">94</span>. Total Marks: <span id="ins-total-m">188</span>.</li>
+                <li>Duration: 120 Minutes (2 Hours). The countdown timer at the top right will show remaining time.</li>
+                <li>Each question displays its own tracking timer showing your time spent on it.</li>
+                <li>You can shuffle between questions seamlessly using the sidebar navigation palette grid.</li>
+            </ul>
+            <hr>
+            <div class="lang-selection-box my-3 p-3 bg-light rounded">
+                <label for="initial-lang-select" class="form-label fw-bold">Choose your default language / अपनी डिफ़ॉल्ट भाषा चुनें:</label>
+                <select id="initial-lang-select" class="form-select w-auto d-inline-block ms-2">
+                    <option value="en" selected>ENGLISH</option>
+                    <option value="hi">HINDI / हिंदी</option>
+                </select>
+            </div>
+        </div>
+        <div class="instruction-footer d-flex justify-content-between mt-4">
+            <button class="btn btn-secondary" onclick="exitCbtEngine()">Exit Test / बाहर निकलें</button>
+            <button class="btn btn-success px-4 fw-bold" onclick="startActualMockTestAfterInstructions()">I am ready to begin / मैं परीक्षा शुरू करने के लिए तैयार हूँ</button>
+        </div>
+    </div>
+</div>
+
+<div id="cbt-quiz-container" class="cbt-wrapper" style="display: none;">
+    <header class="cbt-header">
+        <div class="exam-title-pane">
+            <h3 id="cbt-exam-title">BIHAR DAROGA RADIO MOCK TEST</h3>
+        </div>
+        <div class="timer-pane-wrapper">
+            <div id="overall-timer-box" class="timer-card text-danger">Remaining Time: <span id="overall-countdown">120:00</span></div>
+            <div id="question-timer-box" class="timer-card text-primary">Time Spent: <span id="question-countdown">0s</span></div>
+        </div>
+    </header>
+
+    <main class="cbt-split-workspace">
+        <section class="cbt-left-viewport">
+            <div class="viewport-header shadow-sm">
+                <span id="question-number-badge" class="badge bg-dark fs-6">Question No. 01</span>
+                <div class="lang-toggle-box">
+                    <label class="fw-bold me-2">View In:</label>
+                    <select id="lang-selector" class="form-select form-select-sm d-inline-block w-auto" onchange="changeDisplayLanguage()">
+                        <option value="en">ENGLISH</option>
+                        <option value="hi">HINDI / हिंदी</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="question-body-card p-4">
+                <p id="cbt-question-text" class="question-prompt">Loading your exam questions...</p>
+                <div id="cbt-options-group" class="options-vertical-stack">
+                    </div>
+            </div>
+
+            <footer class="cbt-control-toolbar border-top p-3 bg-light">
+                <div class="left-controls">
+                    <button id="btn-bookmark" class="btn btn-outline-warning text-dark me-2" onclick="handleBookmarkToggle()">⭐ Bookmark</button>
+                    <button id="btn-mark-review" class="btn btn-purple text-white" onclick="handleMarkForReview()">Mark for Review & Next</button>
+                </div>
+                <div class="right-controls">
+                    <button id="btn-clear-response" class="btn btn-outline-secondary me-3" onclick="clearSelectedResponse()">Clear Response</button>
+                    <button id="btn-prev" class="btn btn-secondary me-2" onclick="navigateQuestion(-1)">Previous</button>
+                    <button id="btn-next" class="btn btn-primary" onclick="navigateQuestion(1)">Save & Next</button>
+                </div>
+            </footer>
+        </section>
+
+        <aside class="cbt-right-sidebar border-start">
+            <div class="student-profile-summary p-3 bg-white border-bottom d-flex align-items-center">
+                <div class="avatar-placeholder me-3 fs-3">✍️</div>
+                <div>
+                    <h5 class="m-0 fw-bold">Examinee Portal</h5>
+                    <small class="text-success fw-bold">● Live Connection Status</small>
+                </div>
+            </div>
+
+            <div class="status-summary-board p-3 bg-light border-bottom">
+                <div class="status-item"><span class="box-indicator indicator-answered" id="cnt-answered">0</span> Answered</div>
+                <div class="status-item"><span class="box-indicator indicator-not-answered" id="cnt-not-answered">0</span> Not Answered</div>
+                <div class="status-item"><span class="box-indicator indicator-unseen" id="cnt-unseen">0</span> Unseen</div>
+                <div class="status-item"><span class="box-indicator indicator-marked" id="cnt-marked">0</span> Marked for Review</div>
+            </div>
+
+            <div class="grid-panel-header p-2 bg-dark text-white text-center font-monospace small">QUESTION PALETTE</div>
+            <div id="cbt-numeric-grid" class="cbt-matrix-grid p-3">
+                </div>
+
+            <div class="sidebar-footer-action p-3 border-top bg-white">
+                <button id="btn-cbt-submit" class="btn btn-danger w-100 fw-bold" onclick="triggerExamSubmission()">Submit Examination Paper</button>
+            </div>
+        </aside>
+    </main>
+</div>
+
+<div id="cbt-scorecard-overlay" class="analytics-overlay-screen" style="display: none;">
+    <div class="scorecard-wrapper-card shadow-lg">
+        <h2 class="text-center fw-bold text-dark border-bottom pb-2">Performance Evaluation Dashboard</h2>
+        
+        <div class="metric-grid-dashboard my-4">
+            <div class="metric-card bg-primary text-white">
+                <h5>Score Achieved</h5>
+                <h2 id="score-val-total">00 / 188</h2>
+            </div>
+            <div class="metric-card bg-success text-white">
+                <h5>Correct Answers</h5>
+                <h2 id="score-val-correct">0</h2>
+            </div>
+            <div class="metric-card bg-danger text-white">
+                <h5>Incorrect Answers</h5>
+                <h2 id="score-val-incorrect">0</h2>
+            </div>
+            <div class="metric-card bg-warning text-dark">
+                <h5>Unattempted / Skipped</h5>
+                <h2 id="score-val-unattempted">0</h2>
+            </div>
+        </div>
+        
+        <div class="solutions-explorer-workspace d-flex flex-column border rounded bg-light p-3">
+            <h4 class="fw-bold border-bottom pb-2 text-dark">📖 Check Solution Section & Detailed Answers</h4>
+            <div id="solutions-review-list" class="review-scroll-container bg-white p-2 border rounded">
+                </div>
+        </div>
+
+        <div class="action-footer-row d-flex justify-content-between mt-4">
+            <button class="btn btn-dark px-4 font-monospace" onclick="activateReattemptMode()">🔄 Toggle Reattempt Mode</button>
+            <button class="btn btn-primary px-4 fw-bold" onclick="window.location.reload()">Exit to Main Dashboard</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
