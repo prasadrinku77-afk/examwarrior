@@ -48,6 +48,276 @@
         .animate-pulse {
             animation: pulse 2s infinite;
         }
+
+        /* =========================================================================
+           PHASE 2: LIVE CBT COMPUTER BASED TEST LAYOUT CORE DESIGN STYLES
+           ========================================================================= */
+        .cbt-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .instruction-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 850px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        .instruction-body {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .cbt-wrapper {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #f8f9fa;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .cbt-header {
+            background: #ffffff;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 12px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        .cbt-exam-title {
+            font-weight: 700;
+            color: #212529;
+            margin: 0;
+            font-size: 1.35rem;
+        }
+        .timer-pane-wrapper {
+            display: flex;
+            gap: 15px;
+        }
+        .timer-card {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border: 1px solid currentColor;
+            background: rgba(255,255,255,0.8);
+        }
+        .cbt-split-workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .cbt-left-viewport {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            height: 100%;
+        }
+        .viewport-header {
+            background: #f1f3f5;
+            padding: 10px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .question-body-card {
+            flex: 1;
+            overflow-y: auto;
+            padding: 35px !important;
+        }
+        .question-prompt {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2b303a;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .options-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option-item-btn {
+            background: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 15px 20px;
+            text-align: left;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+            width: 100%;
+            color: #495057;
+            display: flex;
+            align-items: center;
+        }
+        .option-item-btn:hover {
+            background: #f1f3f5;
+            border-color: #6c757d;
+        }
+        .option-item-btn.selected {
+            background: #d1e7dd !important;
+            border-color: #198754 !important;
+            color: #0f5132 !important;
+            font-weight: 600;
+        }
+        .cbt-control-toolbar {
+            height: 75px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        }
+        .btn-purple {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        .btn-purple:hover {
+            background-color: #59359a;
+            border-color: #533190;
+        }
+        .cbt-right-sidebar {
+            flex: 1;
+            max-width: 360px;
+            min-width: 300px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .avatar-placeholder {
+            width: 45px; height: 45px;
+            background: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-summary-board {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .box-indicator {
+            width: 24px; height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: white;
+        }
+        .indicator-answered, .cell-answered { background-color: #198754; color: white; border: 1px solid #198754; }
+        .indicator-not-answered, .cell-not-answered { background-color: #dc3545; color: white; border: 1px solid #dc3545; }
+        .indicator-unseen, .cell-unseen { background-color: #e9ecef; color: #495057; border: 1px solid #ced4da; }
+        .indicator-marked, .cell-marked { background-color: #6f42c1; color: white; border: 1px solid #6f42c1; }
+        
+        .cbt-matrix-grid {
+            flex: 1;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-auto-rows: max-content;
+            gap: 10px;
+            align-content: start;
+        }
+        .matrix-cell {
+            height: 42px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            user-select: none;
+        }
+        .matrix-cell:hover {
+            transform: scale(1.1);
+        }
+        .matrix-cell.active-focus {
+            outline: 3px solid #0d6efd;
+            outline-offset: 1px;
+        }
+        .analytics-overlay-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(240, 242, 245, 0.98);
+            z-index: 10005;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 30px 15px;
+        }
+        .scorecard-wrapper-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 950px;
+            border-radius: 14px;
+            padding: 35px;
+            height: max-content;
+        }
+        .metric-grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        @media(max-width: 768px) {
+            .metric-grid-dashboard { grid-template-columns: repeat(2, 1fr); }
+        }
+        .metric-card {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        .metric-card h5 { font-size: 0.95rem; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; opacity: 0.9; }
+        .metric-card h2 { font-weight: 800; margin: 0; }
+        .solutions-explorer-workspace {
+            margin-top: 25px;
+        }
+        .review-scroll-container {
+            max-height: 45vh;
+            overflow-y: auto;
+        }
+        .sol-item-row {
+            border-left: 5px solid #ced4da;
+            padding-left: 15px;
+        }
+        .sol-item-row.sol-correct { border-left-color: #198754; background: #f8fff9; }
+        .sol-item-row.sol-incorrect { border-left-color: #dc3545; background: #fff5f5; }
+        .sol-item-row.sol-skipped { border-left-color: #ffc107; background: #fffdf5; }
+        
+        /* Bookmark indicator marker style */
+        .matrix-cell.has-bookmark::after {
+            content: "⭐";
+            position: absolute;
+            font-size: 8px;
+            top: 1px;
+            right: 1px;
+        }
+        .matrix-cell { position: relative; }
     </style>
 </head>
 <body>
@@ -464,35 +734,8 @@
                     </div>
 
                     <div id="bihar-quiz-view" class="d-none">
-                        <div class="card shadow-sm border-0 p-4">
-                            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-                                <div>
-                                    <h4 class="fw-bold text-dark mb-0" id="quiz-arena-title">Mock Examination Arena</h4>
-                                    <small class="text-muted" id="quiz-arena-subtitle">Duration: 2 Hours (120 Mins)</small>
-                                </div>
-                                <div class="bg-danger text-white px-3 py-2 rounded fw-bold fs-5">
-                                    <i class="fa-solid fa-clock me-1"></i> <span id="quiz-timer">120:00</span>
-                                </div>
-                            </div>
-                            
-                            <div id="quiz-operational-body">
-                                <div class="alert alert-info py-2 small">
-                                    <strong>System Note:</strong> Answer all benchmark questions carefully. Do not close or minimize this tab while your exam session is running.
-                                </div>
-                                <div id="quiz-question-container" class="my-4"></div>
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button class="btn btn-secondary px-4" id="quiz-prev-btn" onclick="navigateQuiz(-1)">Previous</button>
-                                    <button class="btn btn-primary px-4" id="quiz-next-btn" onclick="navigateQuiz(1)">Next</button>
-                                    <button class="btn btn-success px-4 d-none" id="quiz-submit-btn" onclick="finalizeQuizExecution()">Submit Exam Paper</button>
-                                </div>
-                            </div>
-
-                            <div id="quiz-score-container" class="d-none text-center py-5">
-                                <div class="display-1 text-success fw-bold mb-3"><i class="fa-solid fa-square-poll-vertical"></i></div>
-                                <h2 class="fw-bold text-dark">Exam Session Completed!</h2>
-                                <p class="lead text-muted my-3" id="quiz-final-score-text">You successfully completed your evaluation sheet.</p>
-                                <button class="btn btn-outline-danger px-4 mt-2" onclick="exitQuizArena()">Exit Exam Arena</button>
-                            </div>
+                        <div class="alert alert-warning text-center my-4">
+                            <strong>CBT Engine Shift:</strong> Moving user configuration tracking payload onto full-screen isolated workspace shell...
                         </div>
                     </div>
 
@@ -501,15 +744,145 @@
         </div>
     </div>
 
+    <div id="instruction-overlay" class="cbt-overlay" style="display: none;">
+        <div class="instruction-container">
+            <h2 class="border-bottom pb-2fw-bold text-dark"><i class="fa-solid fa-circle-info text-primary me-2"></i> Online Examination Instructions / परीक्षा निर्देश</h2>
+            <div class="instruction-body my-3">
+                <h5 class="fw-bold text-secondary">Please read the following instructions carefully before starting:</h5>
+                <ul class="lh-lg text-dark">
+                    <li>Total Questions Matrix Array: <span id="ins-total-q" class="badge bg-dark fs-6">94</span> items.</li>
+                    <li>Total Weight Evaluation Value: <span id="ins-total-m" class="badge bg-success fs-6">188</span> Marks (+2 Marks per Correct fit).</li>
+                    <li>Duration Timeline Limit: <span class="fw-bold text-danger">120 Minutes (2 Full Hours)</span>. The primary clock tracking container automatically updates at the top header zone.</li>
+                    <li>Each exam question operates a decoupled individual timer sequence logging your exact cognitive focus depth.</li>
+                    <li>You can jump, skip, shuffle, or flag question panels dynamically inside the sidebar numeric matrix layout layout grid.</li>
+                </ul>
+                <hr>
+                <div class="lang-selection-box my-3 p-3 bg-light rounded border">
+                    <label for="initial-lang-select" class="form-label fw-bold text-primary"><i class="fa-solid fa-language me-1"></i> Choose Default Display Language / अपनी डिफ़ॉльт भाषा चुनें:</label>
+                    <select id="initial-lang-select" class="form-select w-auto d-inline-block ms-2 fw-bold border-primary">
+                        <option value="en" selected>ENGLISH</option>
+                        <option value="hi">HINDI / हिंदी</option>
+                    </select>
+                </div>
+            </div>
+            <div class="instruction-footer d-flex justify-content-between border-top pt-3 mt-4">
+                <button class="btn btn-outline-danger px-4 fw-bold" onclick="exitCbtEngine()">Exit Test / बाहर निकलें</button>
+                <button class="btn btn-success px-4 fw-bold shadow-sm" onclick="startActualMockTestAfterInstructions()">I am ready to begin / मैं परीक्षा शुरू करने के लिए तैयार हूँ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cbt-quiz-container" class="cbt-wrapper" style="display: none;">
+        <header class="cbt-header shadow-sm">
+            <div class="exam-title-pane d-flex align-items-center">
+                <span class="badge bg-danger me-2 animate-pulse">LIVE EXAM</span>
+                <h3 id="cbt-exam-title" class="cbt-exam-title">BIHAR DAROGA RADIO HEAD TEST STATION</h3>
+            </div>
+            <div class="timer-pane-wrapper">
+                <div id="overall-timer-box" class="timer-card text-danger shadow-sm"><i class="fa-solid fa-hourglass-half me-1"></i> Remaining: <span id="overall-countdown">120:00</span></div>
+                <div id="question-timer-box" class="timer-card text-primary shadow-sm"><i class="fa-solid fa-stopwatch me-1"></i> This Question: <span id="question-countdown">0s</span></div>
+            </div>
+        </header>
+
+        <main class="cbt-split-workspace">
+            <section class="cbt-left-viewport">
+                <div class="viewport-header shadow-sm">
+                    <span id="question-number-badge" class="badge bg-dark fs-6 px-3 py-2">Question No. 01</span>
+                    <div class="lang-toggle-box d-flex align-items-center gap-2">
+                        <span class="small fw-bold text-muted"><i class="fa-solid fa-eye me-1"></i> View In:</span>
+                        <select id="lang-selector" class="form-select form-select-sm fw-bold border-secondary" onchange="changeDisplayLanguage()">
+                            <option value="en">ENGLISH</option>
+                            <option value="hi">HINDI / हिंदी</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="question-body-card">
+                    <p id="cbt-question-text" class="question-prompt">Loading your exam registry sheets securely...</p>
+                    <div id="cbt-options-group" class="options-vertical-stack"></div>
+                </div>
+
+                <footer class="cbt-control-toolbar border-top p-3 bg-light">
+                    <div class="left-controls">
+                        <button id="btn-bookmark" class="btn btn-outline-warning text-dark fw-bold me-2" onclick="handleBookmarkToggle()"><i class="fa-regular fa-star me-1"></i> Bookmark</button>
+                        <button id="btn-mark-review" class="btn btn-purple text-white fw-bold" onclick="handleMarkForReview()"><i class="fa-solid fa-flag me-1"></i> Mark for Review & Next</button>
+                    </div>
+                    <div class="right-controls">
+                        <button id="btn-clear-response" class="btn btn-outline-secondary fw-bold me-3" onclick="clearSelectedResponse()">Clear Response</button>
+                        <button id="btn-prev" class="btn btn-secondary fw-bold me-2" onclick="navigateQuestion(-1)">Previous</button>
+                        <button id="btn-next" class="btn btn-primary fw-bold" onclick="navigateQuestion(1)">Save & Next <i class="fa-solid fa-angle-right ms-1"></i></button>
+                    </div>
+                </footer>
+            </section>
+
+            <aside class="cbt-right-sidebar border-start shadow-sm">
+                <div class="student-profile-summary p-3 bg-white border-bottom d-flex align-items-center">
+                    <div class="avatar-placeholder me-3 fs-4">✍️</div>
+                    <div>
+                        <h6 class="m-0 fw-bold text-dark">Examinee Portal Terminal</h6>
+                        <small class="text-success fw-bold d-flex align-items-center gap-1"><span class="spinner-grow spinner-grow-sm text-success" style="width:8px;height:8px;"></span> Encrypted Session Active</small>
+                    </div>
+                </div>
+
+                <div class="status-summary-board p-3 bg-light border-bottom">
+                    <div class="status-item"><span class="box-indicator indicator-answered" id="cnt-answered">0</span> Answered</div>
+                    <div class="status-item"><span class="box-indicator indicator-not-answered" id="cnt-not-answered">0</span> Not Answered</div>
+                    <div class="status-item"><span class="box-indicator indicator-unseen" id="cnt-unseen">0</span> Unseen</div>
+                    <div class="status-item"><span class="box-indicator indicator-marked" id="cnt-marked">0</span> Marked Review</div>
+                </div>
+
+                <div class="grid-panel-header p-2 bg-dark text-white text-center font-monospace small tracking-wider">QUESTION PALETTE INDEX</div>
+                <div id="cbt-numeric-grid" class="cbt-matrix-grid p-3"></div>
+
+                <div class="sidebar-footer-action p-3 border-top bg-white mt-auto">
+                    <button id="btn-cbt-submit" class="btn btn-danger w-100 py-2.5 fw-bold text-uppercase shadow-sm" onclick="triggerExamSubmission()">Submit Examination Paper</button>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <div id="cbt-scorecard-overlay" class="analytics-overlay-screen" style="display: none;">
+        <div class="scorecard-wrapper-card shadow-lg border">
+            <h2 class="text-center fw-bold text-primary border-bottom pb-3 mb-4"><i class="fa-solid fa-square-poll-vertical me-2"></i> Performance Evaluation Dashboard</h2>
+            
+            <div class="metric-grid-dashboard my-4">
+                <div class="metric-card bg-primary text-white shadow-sm">
+                    <h5>Score Achieved</h5>
+                    <h2 id="score-val-total">00 / 188</h2>
+                </div>
+                <div class="metric-card bg-success text-white shadow-sm">
+                    <h5>Correct Fits</h5>
+                    <h2 id="score-val-correct">0</h2>
+                </div>
+                <div class="metric-card bg-danger text-white shadow-sm">
+                    <h5>Incorrect Strikes</h5>
+                    <h2 id="score-val-incorrect">0</h2>
+                </div>
+                <div class="metric-card bg-warning text-dark shadow-sm">
+                    <h5>Skipped / Vacant</h5>
+                    <h2 id="score-val-unattempted">0</h2>
+                </div>
+            </div>
+            
+            <div class="solutions-explorer-workspace d-flex flex-column border rounded bg-light p-3 my-4">
+                <h5 class="fw-bold border-bottom pb-2 text-dark d-flex align-items-center"><i class="fa-solid fa-book-open text-primary me-2"></i> 📖 Check Solution Section & Detailed Answers</h5>
+                <div id="solutions-review-list" class="review-scroll-container bg-white p-2 border rounded"></div>
+            </div>
+
+            <div class="action-footer-row d-flex justify-content-between border-top pt-3 mt-4">
+                <button class="btn btn-outline-dark px-4 fw-bold font-monospace" onclick="activateReattemptMode()"><i class="fa-solid fa-toggle-on text-success me-1"></i> Reattempt Mode (OFF/ON)</button>
+                <button class="btn btn-primary px-5 fw-bold shadow" onclick="window.location.reload()">Exit to Main Dashboard</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script type="module" src="js/app.js"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration Core Sync Data
         const firebaseConfig = {
             apiKey: "AIzaSyA8uZDSlXt9Jfglhh47zyo0wjdRxHuFMRc",
             authDomain: "mk-school-300b3.firebaseapp.com",
@@ -520,18 +893,20 @@
             measurementId: "G-6959G49TVX"
         };
 
-        // Initialize App & DB Connection
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
+        // BOUNDING APP SCOPE INSTANCE SAFELY TO USER GLOBAL SCOPE REGISTRY MATRIX
+        window.db = db;
+
         const noticeContainer = document.getElementById("homepage-notice-list");
 
-        // Set up the Real-time stream listener
         function getLiveNotices() {
             const noticesCollection = collection(db, "notices");
             const q = query(noticesCollection, orderBy("createdAt", "desc"));
 
             onSnapshot(q, (snapshot) => {
+                if(!noticeContainer) return;
                 noticeContainer.innerHTML = ""; 
 
                 if (snapshot.empty) {
@@ -543,28 +918,21 @@
                     const notice = doc.data();
                     const li = document.createElement("li");
                     li.className = "list-group-item d-flex align-items-start gap-2";
-                    
-                    li.innerHTML = `
-                        <span>🔹</span>
-                        <div>${notice.notice}</div>
-                    `;
+                    li.innerHTML = `<span>🔹</span><div>${notice.notice}</div>`;
                     noticeContainer.appendChild(li);
                 });
             }, (error) => {
                 console.error("Firebase Snapshot Error: ", error);
-                noticeContainer.innerHTML = '<li class="list-group-item text-danger">Failed to sync updates.</li>';
+                if(noticeContainer) noticeContainer.innerHTML = '<li class="list-group-item text-danger">Failed to sync updates.</li>';
             });
         }
 
         document.addEventListener("DOMContentLoaded", getLiveNotices);
 
         // =========================================================================
-        // BIHAR UPCOMING EXAMINATIONS PORTAL DATA & LIVE ENGINE LOGIC
+        // REALTIME BIHAR MOCK DATA COLLECTION HARVESTING & SHELL TRANSLATION SYSTEM
         // =========================================================================
         let activeBiharExamKey = null;
-        let currentQuestionIndex = 0;
-        let quizCountdownTimer = null;
-        let userSelectedAnswers = [];
         let cloudQuestionsList = []; 
 
         // Live Engine: Pulls all exams directly out of your Firebase Firestore
@@ -581,10 +949,8 @@
             modalElement.show();
 
             try {
-                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
                 const examsColRef = collection(db, "exams");
                 const snapshot = await getDocs(examsColRef);
-                
                 gridTarget.innerHTML = "";
                 
                 if (snapshot.empty) {
@@ -632,8 +998,7 @@
             mockContainer.innerHTML = `<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-warning"></div> Loading tests...</div>`;
 
             try {
-                const { doc, getDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-                
+                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
                 const docRef = doc(db, "exams", key);
                 const docSnap = await getDoc(docRef);
 
@@ -654,8 +1019,15 @@
                 } else {
                     querySnapshot.forEach((mockDoc) => {
                         const mockData = mockDoc.data();
+                        
+                        // IF BIHAR DAROGA ROUTE TARGETED -> HOOK INTO THE CORE ISOLATED GLOBAL CBT WORKSPACE RUNTIME
+                        let actionTriggerStr = `startBiharRadioMockEngine('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')`;
+                        if(key !== "bihar-daroga-radio") {
+                            actionTriggerStr = `startLiveCloudMockSession('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')`;
+                        }
+
                         mockContainer.innerHTML += `
-                            <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100 mb-2" onclick="startLiveCloudMockSession('${key}', '${mockDoc.id}', '${mockData.name || 'Evaluation Paper'}')">
+                            <button class="btn btn-outline-warning text-start d-flex justify-content-between align-items-center py-2 w-100 mb-2" onclick="${actionTriggerStr}">
                                 <span><i class="fa-solid fa-file-signature me-2"></i> ${mockData.name || 'Evaluation Paper'}</span>
                                 <span class="badge bg-warning text-dark">${mockData.duration || '2 hours'}</span>
                             </button>
@@ -672,290 +1044,388 @@
             document.getElementById("bihar-detail-view").classList.remove("d-none");
         };
 
-        window.startLiveCloudMockSession = async function(examId, mockId, paperName) {
-            if(!confirm(`Do you want to initiate the timed assessment session for: ${paperName}?`)) return;
-            
-            document.getElementById("bihar-detail-view").classList.add("d-none");
-            document.getElementById("bihar-quiz-view").classList.remove("d-none");
-            document.getElementById("quiz-operational-body").classList.add("d-none");
-            
-            const qContainer = document.getElementById("quiz-question-container");
-            qContainer.innerHTML = `
-                <div class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status"></div>
-                    <p class="text-muted mt-2">Generating personalized question sheets from cloud database records...</p>
-                </div>`;
-            
-            try {
-                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-                
-                const questionsColRef = collection(db, "exams", examId, "mocks", mockId, "questions");
-                const snapshot = await getDocs(questionsColRef);
-                
-                cloudQuestionsList = [];
-                snapshot.forEach(doc => {
-                    cloudQuestionsList.push(doc.data());
-                });
-                
-                if(cloudQuestionsList.length === 0) {
-                    qContainer.innerHTML = `
-                        <div class="alert alert-warning border-0 shadow-sm text-dark">
-                            <h5>⚠️ Empty Mock Paper Profile</h5>
-                            <p class="mb-0">This paper has been created, but no questions have been uploaded yet into the database.</p>
-                        </div>`;
-                    return;
-                }
-                
-                document.getElementById("quiz-arena-title").innerText = paperName;
-                document.getElementById("quiz-operational-body").classList.remove("d-none"); 
-                document.getElementById("quiz-score-container").classList.add("d-none"); 
-                
-                currentQuestionIndex = 0;
-                userSelectedAnswers = new Array(cloudQuestionsList.length).fill(null);
-                
-                renderCloudQuestionItem();
-                beginQuizTimerCount(120 * 60); 
-                
-            } catch(err) {
-                console.error(err);
-                qContainer.innerHTML = `<div class="alert alert-danger">Error initializing test session: ${err.message}</div>`;
-            }
-        };
-
-        window.renderCloudQuestionItem = function() {
-            const qContainer = document.getElementById("quiz-question-container");
-            const item = cloudQuestionsList[currentQuestionIndex];
-            
-            let optionsHtml = "";
-            if (item.o && Array.isArray(item.o)) {
-                item.o.forEach((option, idx) => {
-                    const isChecked = userSelectedAnswers[currentQuestionIndex] === idx ? 'checked' : '';
-                    optionsHtml += `
-                        <div class="form-check p-3 border rounded mb-2 bg-white custom-quiz-option" style="cursor:pointer;" onclick="selectQuizOption(${idx})">
-                            <input class="form-check-input ms-1" type="radio" name="quizOpt" id="opt-${idx}" value="${idx}" ${isChecked}>
-                            <label class="form-check-input-label d-block ps-4" for="opt-${idx}" style="cursor:pointer; width:100%;">${option}</label>
-                        </div>
-                    `;
-                });
-            } else {
-                optionsHtml = `<div class="text-danger small">Error: Question options format invalid in database document.</div>`;
-            }
-
-            qContainer.innerHTML = `
-                <h5 class="fw-bold text-dark mb-4">Question ${currentQuestionIndex + 1} of ${cloudQuestionsList.length}</h5>
-                <p class="fs-5 text-secondary mb-4">${item.q || "No question statement text provided."}</p>
-                <div class="options-block-wrapper">${optionsHtml}</div>
-            `;
-            
-            document.getElementById("quiz-prev-btn").disabled = (currentQuestionIndex === 0);
-            if(currentQuestionIndex === cloudQuestionsList.length - 1) {
-                document.getElementById("quiz-next-btn").classList.add("d-none");
-                document.getElementById("quiz-submit-btn").classList.remove("d-none");
-            } else {
-                document.getElementById("quiz-next-btn").classList.remove("d-none");
-                document.getElementById("quiz-submit-btn").classList.add("d-none");
-            }
-        };
-
-        window.selectQuizOption = function(index) {
-            const radioBtn = document.getElementById(`opt-${index}`);
-            if(radioBtn) radioBtn.checked = true;
-            userSelectedAnswers[currentQuestionIndex] = index;
-        };
-
-        window.navigateQuiz = function(direction) {
-            currentQuestionIndex += direction;
-            renderCloudQuestionItem();
-        };
-
-        window.finalizeQuizExecution = function() {
-            clearInterval(quizCountdownTimer);
-            
-            let correctCount = 0;
-            cloudQuestionsList.forEach((item, index) => {
-                if(userSelectedAnswers[index] === item.a) {
-                    correctCount++;
-                }
-            });
-
-            document.getElementById("quiz-operational-body").classList.add("d-none");
-            document.getElementById("quiz-score-container").classList.remove("d-none");
-            document.getElementById("quiz-final-score-text").innerHTML = `
-                Evaluation Metrics: You scored <strong>${correctCount} Correct</strong> answers out of ${cloudQuestionsList.length} base evaluation samples.<br>
-                <small class="text-muted mt-2 d-block">Your score has been captured in the system registry matrix.</small>
-            `;
-        };
-
-        function beginQuizTimerCount(durationSeconds) {
-            clearInterval(quizCountdownTimer);
-            let counter = durationSeconds;
-            const display = document.getElementById("quiz-timer");
-            
-            quizCountdownTimer = setInterval(() => {
-                let hours = Math.floor(counter / 3600);
-                let minutes = Math.floor((counter % 3600) / 60);
-                let seconds = counter % 60;
-
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                display.innerText = (hours > 0 ? hours + ":" : "") + minutes + ":" + seconds;
-
-                if (--counter < 0) {
-                    clearInterval(quizCountdownTimer);
-                    window.finalizeQuizExecution();
-                }
-            }, 1000);
-        }
-
         window.backToBiharList = function() {
             document.getElementById("bihar-detail-view").classList.add("d-none");
             document.getElementById("bihar-list-view").classList.remove("d-none");
         };
 
         window.resetBiharPortalView = function() {
-            clearInterval(quizCountdownTimer);
-            document.getElementById("bihar-quiz-view").classList.add("d-none");
             document.getElementById("bihar-detail-view").classList.add("d-none");
             document.getElementById("bihar-list-view").classList.remove("d-none");
         };
+    </script>
 
-        window.exitQuizArena = function() {
-            window.resetBiharPortalView();
-            window.backToBiharList();
+    <script>
+        // GLOBAL STORAGE CORE RUNTIME REGISTERS
+        let rawQuizData = [];            
+        let currentQuestionIndex = 0;    
+        let selectedAnswersRegistry = {}; 
+        let markedForReviewSet = new Set(); 
+        let seenQuestionsSet = new Set();   
+        let bookmarkedQuestionsSet = new Set(); 
+        
+        let overallRemainingTimeSecs = 120 * 60; 
+        let questionTimeSpentSecs = 0;        
+        
+        let examCountdownTimerInterval = null;
+        let individualQuestionTimerInterval = null;
+        let isReattemptModeActive = false;
+        
+        let targetExamPathId = "";
+        let targetMockPathId = "";
+
+        // CORE ENTRY TRIGGER FUNCTION HOOK
+        window.startBiharRadioMockEngine = async function(examId, mockId, paperName) {
+            // Dismiss standard modal view wrapper
+            const modalEl = document.getElementById('biharExamsModal');
+            if(modalEl) {
+                const modalInst = bootstrap.Modal.getInstance(modalEl);
+                if(modalInst) modalInst.hide();
+            }
+            
+            targetExamPathId = examId;
+            targetMockPathId = mockId;
+            
+            document.getElementById("cbt-exam-title").innerText = paperName.toUpperCase();
+            document.getElementById("instruction-overlay").style.display = "flex";
+            
+            // Preset target metrics inside structural interface
+            document.getElementById("ins-total-q").innerText = "94";
+            document.getElementById("ins-total-m").innerText = "188";
+        };
+
+        window.exitCbtEngine = function() {
+            if(confirm("Are you sure you want to terminate this examination session? Progress will be lost.")) {
+                window.location.reload();
+            }
+        };
+
+        window.startActualMockTestAfterInstructions = async function() {
+            document.getElementById("instruction-overlay").style.display = "none";
+            document.getElementById("cbt-quiz-container").style.display = "flex";
+            
+            // Capture initial translation configuration frame dropdown parameter
+            const defaultLanguageChoice = document.getElementById("initial-lang-select").value;
+            document.getElementById("lang-selector").value = defaultLanguageChoice;
+            
+            // Dynamic pull sequence deployment
+            try {
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                const colRef = collection(window.db, "exams", targetExamPathId, "mocks", targetMockPathId, "questions");
+                const snapshot = await getDocs(colRef);
+                
+                rawQuizData = [];
+                snapshot.forEach(doc => {
+                    rawQuizData.push({ id: doc.id, ...doc.data() });
+                });
+                
+                if(rawQuizData.length === 0) {
+                    alert("No questions found inside database collection path profile!");
+                    window.location.reload();
+                    return;
+                }
+                
+                // Initialize clean data tracking state maps
+                currentQuestionIndex = 0;
+                selectedAnswersRegistry = {};
+                markedForReviewSet.clear();
+                seenQuestionsSet.clear();
+                bookmarkedQuestionsSet.clear();
+                
+                overallRemainingTimeSecs = 120 * 60;
+                seenQuestionsSet.add(0); // Mark question 1 seen instantly
+                
+                initiateClocks();
+                renderCbtQuestionViewport();
+                updateMatrixStatusGridPanel();
+                
+            } catch (err) {
+                console.error(err);
+                alert("Engine Crash Hook Error: " + err.message);
+            }
+        };
+
+        function initiateClocks() {
+            clearInterval(examCountdownTimerInterval);
+            clearInterval(individualQuestionTimerInterval);
+            
+            // 1. Overall global system breakdown countdown
+            examCountdownTimerInterval = setInterval(() => {
+                overallRemainingTimeSecs--;
+                
+                let hrs = Math.floor(overallRemainingTimeSecs / 3600);
+                let mins = Math.floor((overallRemainingTimeSecs % 3600) / 60);
+                let secs = overallRemainingTimeSecs % 60;
+                
+                mins = mins < 10 ? "0" + mins : mins;
+                secs = secs < 10 ? "0" + secs : secs;
+                
+                document.getElementById("overall-countdown").innerText = (hrs > 0 ? hrs + ":" : "") + mins + ":" + secs;
+                
+                if(overallRemainingTimeSecs <= 0) {
+                    clearInterval(examCountdownTimerInterval);
+                    alert("Time limit expired! Processing automatic sheet compile sequence down...");
+                    triggerExamSubmission();
+                }
+            }, 1000);
+            
+            // 2. Individual targeted component focus sequence counter
+            questionTimeSpentSecs = 0;
+            individualQuestionTimerInterval = setInterval(() => {
+                questionTimeSpentSecs++;
+                document.getElementById("question-countdown").innerText = questionTimeSpentSecs + "s";
+            }, 1000);
+        }
+
+        window.renderCbtQuestionViewport = function() {
+            const questionData = rawQuizData[currentQuestionIndex];
+            const activeLanguageCode = document.getElementById("lang-selector").value;
+            
+            document.getElementById("question-number-badge").innerText = `Question No. ${(currentQuestionIndex + 1).toString().padStart(2, '0')}`;
+            
+            // Dynamic multi-lingual key alignment mapping check
+            let textPrompt = questionData.q; 
+            let optionArray = questionData.o; 
+            
+            if(activeLanguageCode === "hi") {
+                if(questionData.q_hi) textPrompt = questionData.q_hi;
+                if(questionData.o_hi && Array.isArray(questionData.o_hi)) optionArray = questionData.o_hi;
+            }
+            
+            document.getElementById("cbt-question-text").innerText = textPrompt || "No prompt statement context registered inside document mapping index.";
+            
+            // Clear and repaint structural option rows
+            const stackContainer = document.getElementById("cbt-options-group");
+            stackContainer.innerHTML = "";
+            
+            if(optionArray && Array.isArray(optionArray)) {
+                optionArray.forEach((optionString, optionIdx) => {
+                    const isSelected = selectedAnswersRegistry[currentQuestionIndex] === optionIdx;
+                    const choiceBtn = document.createElement("button");
+                    choiceBtn.className = `option-item-btn ${isSelected ? 'selected' : ''}`;
+                    choiceBtn.setAttribute("onclick", `registerUserSelectionClick(${optionIdx})`);
+                    
+                    // Alpha token injection label mapping layout prefix
+                    const prefixes = ["A", "B", "C", "D", "E"];
+                    choiceBtn.innerHTML = `<span class="badge bg-light text-dark border me-3 px-2.5 py-1.5">${prefixes[optionIdx] || '•'}</span> ${optionString}`;
+                    stackContainer.appendChild(choiceBtn);
+                });
+            }
+            
+            // Sync operational navigation button disables
+            document.getElementById("btn-prev").disabled = (currentQuestionIndex === 0);
+            document.getElementById("btn-next").innerText = (currentQuestionIndex === rawQuizData.length - 1) ? "Finish Summary" : "Save & Next";
+            
+            // Sync contextual layout indicators on bookmark states
+            const bookmarkBtn = document.getElementById("btn-bookmark");
+            if(bookmarkedQuestionsSet.has(currentQuestionIndex)) {
+                bookmarkBtn.className = "btn btn-warning text-dark fw-bold me-2";
+                bookmarkBtn.innerHTML = "⭐ Bookmarked";
+            } else {
+                bookmarkBtn.className = "btn btn-outline-warning text-dark fw-bold me-2";
+                bookmarkBtn.innerHTML = "⭐ Bookmark";
+            }
+        };
+
+        window.registerUserSelectionClick = function(optionIndex) {
+            selectedAnswersRegistry[currentQuestionIndex] = optionIndex;
+            // Instantly remove from review status upon explicit lock registration choice if present
+            markedForReviewSet.delete(currentQuestionIndex);
+            
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        };
+
+        window.clearSelectedResponse = function() {
+            delete selectedAnswersRegistry[currentQuestionIndex];
+            markedForReviewSet.delete(currentQuestionIndex);
+            
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        };
+
+        window.handleBookmarkToggle = function() {
+            if(bookmarkedQuestionsSet.has(currentQuestionIndex)) {
+                bookmarkedQuestionsSet.delete(currentQuestionIndex);
+            } else {
+                bookmarkedQuestionsSet.add(currentQuestionIndex);
+            }
+            renderCbtQuestionViewport();
+            updateMatrixStatusGridPanel();
+        };
+
+        window.handleMarkForReview = function() {
+            markedForReviewSet.add(currentQuestionIndex);
+            navigateQuestion(1);
+        };
+
+        window.navigateQuestion = function(stepDeltaValue) {
+            const nextTargetIndex = currentQuestionIndex + stepDeltaValue;
+            
+            if(nextTargetIndex >= 0 && nextTargetIndex < rawQuizData.length) {
+                currentQuestionIndex = nextTargetIndex;
+                seenQuestionsSet.add(currentQuestionIndex);
+                
+                // Reset decoupled question individual clock component counter
+                questionTimeSpentSecs = 0;
+                document.getElementById("question-countdown").innerText = "0s";
+                
+                renderCbtQuestionViewport();
+                updateMatrixStatusGridPanel();
+            } else if (nextTargetIndex >= rawQuizData.length) {
+                triggerExamSubmission();
+            }
+        };
+
+        window.jumpToSpecificQuestionIndex = function(targetIdx) {
+            if(targetIdx >= 0 && targetIdx < rawQuizData.length) {
+                currentQuestionIndex = targetIdx;
+                seenQuestionsSet.add(currentQuestionIndex);
+                
+                questionTimeSpentSecs = 0;
+                document.getElementById("question-countdown").innerText = "0s";
+                
+                renderCbtQuestionViewport();
+                updateMatrixStatusGridPanel();
+            }
+        };
+
+        window.changeDisplayLanguage = function() {
+            renderCbtQuestionViewport();
+        };
+
+        window.updateMatrixStatusGridPanel = function() {
+            const matrixGridElement = document.getElementById("cbt-numeric-grid");
+            matrixGridElement.innerHTML = "";
+            
+            let countAnswered = 0;
+            let countNotAnswered = 0;
+            let countMarked = 0;
+            let countUnseen = 0;
+            
+            for(let i = 0; i < rawQuizData.length; i++) {
+                const cell = document.createElement("div");
+                cell.setAttribute("onclick", `jumpToSpecificQuestionIndex(${i})`);
+                cell.innerText = i + 1;
+                
+                let stateClass = "cell-unseen";
+                
+                if(markedForReviewSet.has(i)) {
+                    stateClass = "cell-marked";
+                    countMarked++;
+                } else if (selectedAnswersRegistry[i] !== undefined) {
+                    stateClass = "cell-answered";
+                    countAnswered++;
+                } else if (seenQuestionsSet.has(i)) {
+                    stateClass = "cell-not-answered";
+                    countNotAnswered++;
+                } else {
+                    countUnseen++;
+                }
+                
+                if(i === currentQuestionIndex) {
+                    stateClass += " active-focus";
+                }
+                if(bookmarkedQuestionsSet.has(i)) {
+                    stateClass += " has-bookmark";
+                }
+                
+                cell.className = `matrix-cell ${stateClass}`;
+                matrixGridElement.appendChild(cell);
+            }
+            
+            // Print counter summaries onto display elements
+            document.getElementById("cnt-answered").innerText = countAnswered;
+            document.getElementById("cnt-not-answered").innerText = countNotAnswered;
+            document.getElementById("cnt-marked").innerText = countMarked;
+            document.getElementById("cnt-unseen").innerText = countUnseen;
+        };
+
+        window.triggerExamSubmission = function() {
+            if(!confirm("Are you sure you want to end your test session and compile scores now? Answers cannot be changed!")) return;
+            
+            // Tear down running intervals cleanly
+            clearInterval(examCountdownTimerInterval);
+            clearInterval(individualQuestionTimerInterval);
+            
+            document.getElementById("cbt-quiz-container").style.display = "none";
+            document.getElementById("cbt-scorecard-overlay").style.display = "flex";
+            
+            calculateScoreSheetMetrics();
+        };
+
+        function calculateScoreSheetMetrics() {
+            let totalCorrectAnswers = 0;
+            let totalIncorrectAnswers = 0;
+            let totalUnattemptedAnswers = 0;
+            
+            const reviewScrollBlock = document.getElementById("solutions-review-list");
+            reviewScrollBlock.innerHTML = "";
+            
+            rawQuizData.forEach((questionItem, qIdx) => {
+                const userChoiceIdx = selectedAnswersRegistry[qIdx];
+                const cleanCorrectIndex = parseInt(questionItem.a); 
+                
+                let resultStateClass = "sol-skipped";
+                let statusBadgeText = "SKIPPED / UNATTEMPTED";
+                
+                if(userChoiceIdx === undefined) {
+                    totalUnattemptedAnswers++;
+                } else if (userChoiceIdx === cleanCorrectIndex) {
+                    totalCorrectAnswers++;
+                    resultStateClass = "sol-correct";
+                    statusBadgeText = "CORRECT ANSWER";
+                } else {
+                    totalIncorrectAnswers++;
+                    resultStateClass = "sol-incorrect";
+                    statusBadgeText = "INCORRECT CHOICE";
+                }
+                
+                // Pull choice names or label tokens safely mapping indices
+                const keyPrefixes = ["A", "B", "C", "D", "E"];
+                const stringCorrectAnswerText = (questionItem.o && questionItem.o[cleanCorrectIndex]) ? questionItem.o[cleanCorrectIndex] : "Index reference invalid match parameters";
+                const stringUserAnswerText = (userChoiceIdx !== undefined && questionItem.o && questionItem.o[userChoiceIdx]) ? questionItem.o[userChoiceIdx] : "None Selected";
+                
+                const solutionRowCard = document.createElement("div");
+                solutionRowCard.className = `sol-item-row ${resultStateClass} p-3 mb-3 border rounded shadow-sm`;
+                
+                solutionRowCard.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge ${resultStateClass === 'sol-correct' ? 'bg-success' : resultStateClass === 'sol-incorrect' ? 'bg-danger' : 'bg-warning text-dark'}">Q. ${qIdx + 1} - ${statusBadgeText}</span>
+                    </div>
+                    <p class="fw-bold text-dark mb-2">${questionItem.q}</p>
+                    <div class="small mb-2 text-muted">
+                        <div><strong>Your Answer Choice:</strong> ${userChoiceIdx !== undefined ? keyPrefixes[userChoiceIdx] + ') ' + stringUserAnswerText : '<span class="text-danger">Skipped</span>'}</div>
+                        <div class="text-success"><strong>Correct Reference Answer:</strong> ${keyPrefixes[cleanCorrectIndex] ? keyPrefixes[cleanCorrectIndex] + ') ' : ''}${stringCorrectAnswerText}</div>
+                    </div>
+                    ${questionItem.explanation ? `<div class="bg-light p-2.5 rounded border border-secondary-subtle small mt-2"><strong>Detailed Solution Explanation:</strong> ${questionItem.explanation}</div>` : ''}
+                `;
+                reviewScrollBlock.appendChild(solutionRowCard);
+            });
+            
+            // Print mathematical score values onto dashboard layout cards
+            const totalSecuredPoints = totalCorrectAnswers * 2;
+            document.getElementById("score-val-total").innerText = `${totalSecuredPoints} / 188`;
+            document.getElementById("score-val-correct").innerText = totalCorrectAnswers;
+            document.getElementById("score-val-incorrect").innerText = totalIncorrectAnswers;
+            document.getElementById("score-val-unattempted").innerText = totalUnattemptedAnswers;
+        };
+
+        window.activateReattemptMode = function() {
+            isReattemptModeActive = !isReattemptModeActive;
+            alert(`Reattempt Mode toggled to: ${isReattemptModeActive ? 'ON' : 'OFF'}.\n\nIn Reattempt mode, the dashboard will close, allowing you to cycle options again to improve retention accuracy!`);
+            
+            if(isReattemptModeActive) {
+                document.getElementById("cbt-scorecard-overlay").style.display = "none";
+                document.getElementById("cbt-quiz-container").style.display = "flex";
+                
+                // Reinitialize system timers for focus tracking on retry runs
+                overallRemainingTimeSecs = 120 * 60;
+                initiateClocks();
+                renderCbtQuestionViewport();
+                updateMatrixStatusGridPanel();
+            }
         };
     </script>
-    <div id="instruction-overlay" class="cbt-overlay" style="display: none;">
-    <div class="instruction-container">
-        <h2 class="border-bottom pb-2">Online Examination Instructions / परीक्षा निर्देश</h2>
-        <div class="instruction-body">
-            <h5>Please read the following instructions carefully:</h5>
-            <ul>
-                <li>Total Questions: <span id="ins-total-q">94</span>. Total Marks: <span id="ins-total-m">188</span>.</li>
-                <li>Duration: 120 Minutes (2 Hours). The countdown timer at the top right will show remaining time.</li>
-                <li>Each question displays its own tracking timer showing your time spent on it.</li>
-                <li>You can shuffle between questions seamlessly using the sidebar navigation palette grid.</li>
-            </ul>
-            <hr>
-            <div class="lang-selection-box my-3 p-3 bg-light rounded">
-                <label for="initial-lang-select" class="form-label fw-bold">Choose your default language / अपनी डिफ़ॉल्ट भाषा चुनें:</label>
-                <select id="initial-lang-select" class="form-select w-auto d-inline-block ms-2">
-                    <option value="en" selected>ENGLISH</option>
-                    <option value="hi">HINDI / हिंदी</option>
-                </select>
-            </div>
-        </div>
-        <div class="instruction-footer d-flex justify-content-between mt-4">
-            <button class="btn btn-secondary" onclick="exitCbtEngine()">Exit Test / बाहर निकलें</button>
-            <button class="btn btn-success px-4 fw-bold" onclick="startActualMockTestAfterInstructions()">I am ready to begin / मैं परीक्षा शुरू करने के लिए तैयार हूँ</button>
-        </div>
-    </div>
-</div>
-
-<div id="cbt-quiz-container" class="cbt-wrapper" style="display: none;">
-    <header class="cbt-header">
-        <div class="exam-title-pane">
-            <h3 id="cbt-exam-title">BIHAR DAROGA RADIO MOCK TEST</h3>
-        </div>
-        <div class="timer-pane-wrapper">
-            <div id="overall-timer-box" class="timer-card text-danger">Remaining Time: <span id="overall-countdown">120:00</span></div>
-            <div id="question-timer-box" class="timer-card text-primary">Time Spent: <span id="question-countdown">0s</span></div>
-        </div>
-    </header>
-
-    <main class="cbt-split-workspace">
-        <section class="cbt-left-viewport">
-            <div class="viewport-header shadow-sm">
-                <span id="question-number-badge" class="badge bg-dark fs-6">Question No. 01</span>
-                <div class="lang-toggle-box">
-                    <label class="fw-bold me-2">View In:</label>
-                    <select id="lang-selector" class="form-select form-select-sm d-inline-block w-auto" onchange="changeDisplayLanguage()">
-                        <option value="en">ENGLISH</option>
-                        <option value="hi">HINDI / हिंदी</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="question-body-card p-4">
-                <p id="cbt-question-text" class="question-prompt">Loading your exam questions...</p>
-                <div id="cbt-options-group" class="options-vertical-stack">
-                    </div>
-            </div>
-
-            <footer class="cbt-control-toolbar border-top p-3 bg-light">
-                <div class="left-controls">
-                    <button id="btn-bookmark" class="btn btn-outline-warning text-dark me-2" onclick="handleBookmarkToggle()">⭐ Bookmark</button>
-                    <button id="btn-mark-review" class="btn btn-purple text-white" onclick="handleMarkForReview()">Mark for Review & Next</button>
-                </div>
-                <div class="right-controls">
-                    <button id="btn-clear-response" class="btn btn-outline-secondary me-3" onclick="clearSelectedResponse()">Clear Response</button>
-                    <button id="btn-prev" class="btn btn-secondary me-2" onclick="navigateQuestion(-1)">Previous</button>
-                    <button id="btn-next" class="btn btn-primary" onclick="navigateQuestion(1)">Save & Next</button>
-                </div>
-            </footer>
-        </section>
-
-        <aside class="cbt-right-sidebar border-start">
-            <div class="student-profile-summary p-3 bg-white border-bottom d-flex align-items-center">
-                <div class="avatar-placeholder me-3 fs-3">✍️</div>
-                <div>
-                    <h5 class="m-0 fw-bold">Examinee Portal</h5>
-                    <small class="text-success fw-bold">● Live Connection Status</small>
-                </div>
-            </div>
-
-            <div class="status-summary-board p-3 bg-light border-bottom">
-                <div class="status-item"><span class="box-indicator indicator-answered" id="cnt-answered">0</span> Answered</div>
-                <div class="status-item"><span class="box-indicator indicator-not-answered" id="cnt-not-answered">0</span> Not Answered</div>
-                <div class="status-item"><span class="box-indicator indicator-unseen" id="cnt-unseen">0</span> Unseen</div>
-                <div class="status-item"><span class="box-indicator indicator-marked" id="cnt-marked">0</span> Marked for Review</div>
-            </div>
-
-            <div class="grid-panel-header p-2 bg-dark text-white text-center font-monospace small">QUESTION PALETTE</div>
-            <div id="cbt-numeric-grid" class="cbt-matrix-grid p-3">
-                </div>
-
-            <div class="sidebar-footer-action p-3 border-top bg-white">
-                <button id="btn-cbt-submit" class="btn btn-danger w-100 fw-bold" onclick="triggerExamSubmission()">Submit Examination Paper</button>
-            </div>
-        </aside>
-    </main>
-</div>
-
-<div id="cbt-scorecard-overlay" class="analytics-overlay-screen" style="display: none;">
-    <div class="scorecard-wrapper-card shadow-lg">
-        <h2 class="text-center fw-bold text-dark border-bottom pb-2">Performance Evaluation Dashboard</h2>
-        
-        <div class="metric-grid-dashboard my-4">
-            <div class="metric-card bg-primary text-white">
-                <h5>Score Achieved</h5>
-                <h2 id="score-val-total">00 / 188</h2>
-            </div>
-            <div class="metric-card bg-success text-white">
-                <h5>Correct Answers</h5>
-                <h2 id="score-val-correct">0</h2>
-            </div>
-            <div class="metric-card bg-danger text-white">
-                <h5>Incorrect Answers</h5>
-                <h2 id="score-val-incorrect">0</h2>
-            </div>
-            <div class="metric-card bg-warning text-dark">
-                <h5>Unattempted / Skipped</h5>
-                <h2 id="score-val-unattempted">0</h2>
-            </div>
-        </div>
-        
-        <div class="solutions-explorer-workspace d-flex flex-column border rounded bg-light p-3">
-            <h4 class="fw-bold border-bottom pb-2 text-dark">📖 Check Solution Section & Detailed Answers</h4>
-            <div id="solutions-review-list" class="review-scroll-container bg-white p-2 border rounded">
-                </div>
-        </div>
-
-        <div class="action-footer-row d-flex justify-content-between mt-4">
-            <button class="btn btn-dark px-4 font-monospace" onclick="activateReattemptMode()">🔄 Toggle Reattempt Mode</button>
-            <button class="btn btn-primary px-4 fw-bold" onclick="window.location.reload()">Exit to Main Dashboard</button>
-        </div>
-    </div>
-</div>
 </body>
 </html>
