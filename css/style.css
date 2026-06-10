@@ -51,7 +51,8 @@ margin-left:10px;
 font-weight:500;
 }
 
-.nav-link:hover{\ncolor:var(--gold) !important;
+.nav-link:hover{
+color:var(--gold) !important;
 }
 
 /* HERO */
@@ -120,7 +121,8 @@ padding:12px;
 border-radius:10px;
 }
 
-.form-control:focus{\nbox-shadow:none;
+.form-control:focus{
+box-shadow:none;
 border-color:var(--gold);
 }
 
@@ -141,7 +143,8 @@ color:#f1f1f1;
 
 /* FOOTER */
 
-footer{\nbackground:var(--dark);
+footer{
+background:var(--dark);
 }
 
 footer h5{
@@ -166,7 +169,8 @@ z-index:999;
 transition:.3s;
 }
 
-.whatsapp-btn:hover{\ntransform:scale(1.05);
+.whatsapp-btn:hover{
+transform:scale(1.05);
 color:white;
 }
 
@@ -215,6 +219,7 @@ font-size:.9rem;
     display: flex;
     flex-direction: column;
     font-family: system-ui, -apple-system, sans-serif;
+    overflow: hidden; /* Prevents whole screen scrolling on desktop */
 }
 .cbt-header {
     background: #ffffff;
@@ -224,6 +229,7 @@ font-size:.9rem;
     justify-content: space-between;
     align-items: center;
     height: 70px;
+    flex-shrink: 0;
 }
 .cbt-exam-title {
     font-weight: 700;
@@ -246,6 +252,7 @@ font-size:.9rem;
 .cbt-split-workspace {
     display: flex;
     flex: 1;
+    height: calc(100vh - 70px); /* Locks sizing frame accurately */
     overflow: hidden;
 }
 .cbt-left-viewport {
@@ -254,6 +261,7 @@ font-size:.9rem;
     flex-direction: column;
     background: #ffffff;
     height: 100%;
+    position: relative;
 }
 .viewport-header {
     background: #f1f3f5;
@@ -262,11 +270,13 @@ font-size:.9rem;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #dee2e6;
+    flex-shrink: 0;
 }
 .question-body-card {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: auto; /* Enables scrolling for questions independently */
     padding: 35px !important;
+    padding-bottom: 100px !important; /* Safety padding from desktop footer bar */
 }
 .question-prompt {
     font-size: 1.2rem;
@@ -310,6 +320,8 @@ font-size:.9rem;
     align-items: center;
     box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
     padding: 0 25px;
+    background: #ffffff;
+    flex-shrink: 0;
 }
 .btn-purple {
     background-color: #6f42c1;
@@ -327,6 +339,7 @@ font-size:.9rem;
     display: flex;
     flex-direction: column;
     height: 100%;
+    border-left: 2px solid #e0e0e0;
 }
 .avatar-placeholder {
     width: 45px; height: 45px;
@@ -446,33 +459,42 @@ font-size:.9rem;
 
 
 /* =========================================================================
-   PHASE 5: ADVANCED RESPONSIVE MEDIA QUERIES FOR MOBILE VIEWPONS
+   PHASE 5: ADVANCED RESPONSIVE MEDIA QUERIES FOR MOBILE PHONE TERMINALS
    ========================================================================= */
 @media (max-width: 991.98px) {
-    /* Stack split view work zones completely into vertical layers */
+    .cbt-wrapper {
+        overflow: hidden;
+        height: 100vh;
+    }
+
+    /* Convert split frame to isolated scroll stack container */
     .cbt-split-workspace {
         display: flex;
         flex-direction: column;
-        height: calc(100vh - 105px); /* Preserve exact headroom for elements */
+        height: calc(100vh - 120px); /* Headroom deduction rules */
         overflow-y: auto;
+        padding-bottom: 140px; /* Safe clearing block from floating dock */
     }
 
-    /* Expand main question display viewport across the full display profile width */
     .cbt-left-viewport {
         width: 100% !important;
         flex: none;
         height: auto;
     }
 
-    /* Wrap header blocks and auto-align timing card metrics */
+    /* Stack header metadata layout */
     .cbt-header {
         height: auto;
         flex-direction: column;
         align-items: flex-start !important;
-        padding: 10px 15px;
-        gap: 8px;
+        padding: 8px 12px;
+        gap: 6px;
     }
     
+    .cbt-exam-title {
+        font-size: 1.1rem;
+    }
+
     .timer-pane-wrapper {
         width: 100%;
         justify-content: space-between;
@@ -480,26 +502,27 @@ font-size:.9rem;
     }
 
     .timer-card {
-        font-size: 0.85rem;
-        padding: 6px 12px;
+        font-size: 0.8rem;
+        padding: 4px 8px;
     }
 
-    /* Shrink excessive spacing on text blocks for tighter viewports */
+    /* Reduce spacing constraints to maximize on-screen real estate */
     .question-body-card {
-        padding: 20px 15px !important;
+        padding: 15px 12px !important;
+        padding-bottom: 30px !important;
     }
 
     .question-prompt {
-        font-size: 1.1rem;
-        margin-bottom: 20px;
+        font-size: 1.05rem;
+        margin-bottom: 15px;
     }
 
     .option-item-btn {
-        padding: 12px 15px;
-        font-size: 0.95rem;
+        padding: 10px 12px;
+        font-size: 0.9rem;
     }
 
-    /* Move the right-hand sidebar index smoothly underneath the viewport */
+    /* Shift sidebar down to the bottom of the scroll stack layout container */
     .cbt-right-sidebar {
         width: 100% !important;
         max-width: none;
@@ -508,25 +531,32 @@ font-size:.9rem;
         border-top: 2px solid #dee2e6;
         height: auto;
         flex: none;
+        padding-bottom: 20px;
     }
 
-    /* Re-map grid definitions to fluidly group numbers without spill-outs */
+    /* Clean auto-fit math logic stops number boxes from overlapping or jumping bounds */
     .cbt-matrix-grid {
-        grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)) !important;
-        gap: 8px;
-        max-height: 220px;
+        grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)) !important;
+        gap: 6px;
+        max-height: 180px;
         overflow-y: auto;
-        padding: 15px !important;
+        padding: 12px !important;
     }
 
-    /* Format control toolbar to securely position two tidy action button rows */
+    /* FLOATING BOTTOM DOCK DESIGN RULE - Pin controls securely above phone screen edges */
     .cbt-control-toolbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
         height: auto;
         flex-direction: column;
-        gap: 10px;
-        padding: 12px 15px !important;
-        background-color: #f8f9fa;
-        border-top: 1px solid #dee2e6;
+        gap: 8px;
+        padding: 10px 12px !important;
+        background-color: #ffffff;
+        border-top: 2px solid #ced4da;
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.15);
+        z-index: 10050;
     }
 
     .cbt-control-toolbar .left-controls,
@@ -534,39 +564,31 @@ font-size:.9rem;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        gap: 8px;
+        gap: 6px;
     }
 
-    /* Distribute row space evenly across active action triggers */
+    /* Balance buttons cleanly to fit small screen widths perfectly */
     .cbt-control-toolbar button {
         flex: 1;
-        font-size: 0.82rem !important;
-        padding: 10px 4px !important;
+        font-size: 0.78rem !important;
+        padding: 8px 2px !important;
         margin: 0 !important;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
 
-    /* Smooth out container constraints for popup screens */
+    /* Popup display adjustment fixes */
     .instruction-container, 
     .scorecard-wrapper-card {
-        width: 100% !important;
-        max-height: 95vh;
+        width: 95% !important;
+        max-height: 92vh;
         overflow-y: auto;
-        padding: 20px 15px !important;
+        padding: 15px !important;
     }
 
     .metric-grid-dashboard {
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 10px;
-    }
-    
-    .metric-card {
-        padding: 15px 10px;
-    }
-    
-    .metric-card h2 {
-        font-size: 1.4rem;
+        gap: 8px;
     }
 }
