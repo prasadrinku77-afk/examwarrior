@@ -75,7 +75,6 @@ let currentExamType = '';
 let currentTier = 'PT'; 
 
 // --- DYNAMIC MULTI-FILE PDF DATABASE ---
-// You can add as many files into these categories as you like!
 const pdfNotesDatabase = {
   upsc: {
     PT: {
@@ -249,7 +248,6 @@ function renderResourceLinks() {
     
     targetGrid.innerHTML = ''; 
 
-    // Category Shell Outline Titles
     const catalogShelves = [
         { id: 'books', name: 'Recommended Reference Books', icon: 'fa-book text-warning' },
         { id: 'pyp', name: 'Previous Year Papers', icon: 'fa-folder-open text-info' },
@@ -258,7 +256,6 @@ function renderResourceLinks() {
         { id: 'syllabus', name: 'Latest Syllabus & Guides', icon: 'fa-newspaper text-danger' }
     ];
 
-    // Read matching catalog block out from structural global variable state safely
     const examDataset = pdfNotesDatabase[currentExamType];
     let structuredGroup = null;
 
@@ -271,10 +268,8 @@ function renderResourceLinks() {
     }
 
     catalogShelves.forEach(category => {
-        // Find targeted item lists array internally
         const filesArray = (structuredGroup && structuredGroup[category.id]) ? structuredGroup[category.id] : [];
 
-        // Build main category parent board layout block item cleanly
         const categoryCard = document.createElement('div');
         categoryCard.className = 'col-md-6';
         
@@ -365,6 +360,20 @@ function renderVideoLinks() {
         videoGrid.appendChild(videoColumn);
     });
 }
+
+// ======================================
+// LIVE MOCK SESSION ENGINE
+// ======================================
+
+window.startLiveCloudMockSession = function() {
+    console.log("Initializing Live Cloud Mock Session...");
+    
+    // Customize your action here (Alerting user for now):
+    alert("Mock Test Session feature is spinning up! Please check back shortly.");
+    
+    // Note: If you want to redirect them to a test portal layout instead, replace the line above with:
+    // window.open("https://your-mocktest-url.com", "_blank");
+};
 
 // ======================================
 // SMOOTH SCROLL
